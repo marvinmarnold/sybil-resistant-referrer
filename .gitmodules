@@ -1,0 +1,24 @@
+[submodule "contracts/redeem-referral/lib/ds-test"]
+	path = contracts/redeem-referral/lib/ds-test
+	url = https://github.com/dapphub/ds-test
+[submodule "contracts/redeem-referral/lib/semaphore"]
+	path = contracts/redeem-referral/lib/semaphore
+	url = https://github.com/appliedzkp/semaphore
+[submodule "contracts/redeem-referral/lib/forge-std"]
+	path = contracts/redeem-referral/lib/forge-std
+	url = https://github.com/brockelmore/forge-std
+[submodule "contracts/redeem-referral/lib/zk-kit"]
+	path = contracts/redeem-referral/lib/zk-kit
+	url = https://github.com/appliedzkp/zk-kit
+[submodule "contracts/redeem-referral/lib/openzeppelin-contracts"]
+	path = contracts/redeem-referral/lib/openzeppelin-contracts
+	url = https://github.com/openzeppelin/openzeppelin-contracts
+[submodule "contracts/redeem-referral/lib/solmate"]
+	path = contracts/redeem-referral/lib/solmate
+	url = https://github.com/rari-capital/solmate
+[submodule "contracts/redeem-referral/lib/world-id-contracts"]
+	path = contracts/redeem-referral/lib/world-id-contracts
+	url = https://github.com/worldcoin/world-id-contracts
+[submodule "contracts/redeem-referral/lib/prb-test"]
+	path = contracts/redeem-referral/lib/prb-test
+	url = https://github.com/PaulRBerg/prb-test
