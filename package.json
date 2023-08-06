@@ -9,12 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "ethers": "v5",
     "@rainbow-me/rainbowkit": "^1.0.8",
     "@worldcoin/idkit": "^0.5.1",
+    "ethers": "v5",
     "next": "^13.4.3",
+    "query-string": "^8.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.14.2",
+    "recoil": "^0.7.7",
     "viem": "1.5.3",
     "wagmi": "~1.3.9"
   },
