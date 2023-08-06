@@ -29,3 +29,4 @@ yarn-error.log*
 
 # remappings
 remappings.txt
+.editorconfig
