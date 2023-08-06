@@ -37,6 +37,8 @@ export default function Worldcoin() {
 
     const onSuccess = (success: ISuccessResult) => {
 		if (!success) return;
+		console.log("Got worldcoin response")
+		console.log(success)
 
 		const merkleRoot = decode<BigNumber>('uint256', success.merkle_root).toBigInt()
 		setMerkelRoot(merkleRoot)

@@ -6,17 +6,14 @@ import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { useEffect, useState } from 'react';
 import {
   optimismGoerli,
-  goerli,
-  mainnet,
-  optimism,
-  polygon,
-  zora,
+  polygonMumbai
 } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
-    optimismGoerli
+    // optimismGoerli,
+    polygonMumbai
   ],
   [publicProvider()]
 );
