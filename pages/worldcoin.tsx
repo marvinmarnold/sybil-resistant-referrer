@@ -1,73 +1,74 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 import { useState, useEffect } from 'react'
-// import { BigNumber } from 'ethers'
+import { BigNumber } from 'ethers'
 import { decode } from '@/lib/wld'
-import ContractAbi from '@/abi/Contract.abi'
+import AirdropAbi from '@/abi/Airdrop.abi'
 import { CredentialType, IDKitWidget, ISuccessResult, solidityEncode } from '@worldcoin/idkit'
 import { useAccount, useContractWrite, usePrepareContractWrite } from 'wagmi'
 
 export default function Worldcoin() {
 	const { address } = useAccount()
-	const [proof, setProof] = useState<ISuccessResult | null>(null)
+	const [wcResult, setWcResult] = useState<ISuccessResult | null>(null)
+	const [canValidateOnchain, setCanValidateOnchain] = useState<boolean>(false)
+	const [merkleRoot, setMerkelRoot] = useState<bigint | null>(null)
+	const [nullifier, setNullifier] = useState<bigint | null>(null)
+	const [proof, setProof] = useState<[bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint] | null>(null)
 
-	// const { config } = usePrepareContractWrite({
-	// 	address: process.env.NEXT_PUBLIC_CONTRACT_ADDR as `0x${string}`,
-	// 	abi: ContractAbi,
-	// 	enabled: proof != null && address != null,
-	// 	functionName: 'verifyAndExecute',
-	// 	args: [
-	// 		address!,
-	// 		proof?.merkle_root ? decode<BigNumber>('uint256', proof?.merkle_root ?? '') : BigNumber.from(0),
-	// 		proof?.nullifier_hash ? decode<BigNumber>('uint256', proof?.nullifier_hash ?? '') : BigNumber.from(0),
-	// 		proof?.proof
-	// 			? decode<[BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber]>(
-	// 					'uint256[8]',
-	// 					proof?.proof ?? ''
-	// 			  )
-	// 			: [
-	// 					BigNumber.from(0),
-	// 					BigNumber.from(0),
-	// 					BigNumber.from(0),
-	// 					BigNumber.from(0),
-	// 					BigNumber.from(0),
-	// 					BigNumber.from(0),
-	// 					BigNumber.from(0),
-	// 					BigNumber.from(0),
-	// 			  ],
-	// 	],
-	// })
+	useEffect(() => {
+		setCanValidateOnchain(wcResult != null && address != null)
+	}, [wcResult, address])
 
-	// const { write } = useContractWrite(config)
+	const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDR as `0x${string}`
+	const { config } = usePrepareContractWrite({
+		address: contractAddress,
+		abi: AirdropAbi,
+		enabled: canValidateOnchain,
+		functionName: 'claim',
+		args: [
+			address!,
+			merkleRoot!,
+			nullifier!,
+			proof!,
+		],
+	})
+
+	const { write: validateOnchain } = useContractWrite(config)
 
     const onSuccess = (success: ISuccessResult) => {
+		if (!success) return;
 
-        console.log("Confirming with WC")
-        console.log(success)
-        console.log(address)
+		const merkleRoot = decode<BigNumber>('uint256', success.merkle_root).toBigInt()
+		setMerkelRoot(merkleRoot)
+
+		const nullifier = decode<BigNumber>('uint256', success.nullifier_hash).toBigInt()
+		setNullifier(nullifier)
+
+		const proof = decode<[BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber]>(
+			'uint256[8]',
+			success.proof
+	  	).map((n) => n.toBigInt()) as [bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint]
+		setProof(proof)
+
+		setWcResult(success)
     }
 
+	// Show connect button if not connected
+	if (!address) return <ConnectButton />
+
+	// Show referral button if logged in
+	if (proof) return <button onClick={validateOnchain}>Claim referral</button>
+
+	// Verify with Worldcoin
 	return (
-		<div>
-			{address ? (
-				proof ? (
-					<h1>TODO: submit proof</h1>
-				) : (
-                    // <p>{address} connected</p>
-					<IDKitWidget
-						action="p1"
-						onSuccess={onSuccess}
-						signal={address}
-						credential_types={[CredentialType.Orb, CredentialType.Phone]}
-						app_id={process.env.NEXT_PUBLIC_APP_ID!}
-						enableTelemetry
-					>
-						{({ open }) => <button onClick={open}>verify with world id</button>}
-					</IDKitWidget>
-				)
-			) : (
-				<ConnectButton />
-				)}
-		</div>
+		<IDKitWidget
+			action="p1"
+			onSuccess={onSuccess}
+			signal={address}
+			credential_types={[CredentialType.Orb, CredentialType.Phone]}
+			app_id={process.env.NEXT_PUBLIC_APP_ID!}
+		>
+			{({ open }) => <button onClick={open}>Verify with world id</button>}
+		</IDKitWidget>
 	)
 }

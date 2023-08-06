@@ -7,5 +7,5 @@ pnpm install
 pnpm dev
 ```
 
-Then open the simulator: https://simulator.worldcoin.org/
-Verification info currently logged to browser console once modal closed.
+- Then open the simulator: https://simulator.worldcoin.org/
+- Verification info currently logged to browser console once modal closed.
