@@ -9,6 +9,7 @@ import {
   polygonMumbai
 } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
+import Navbar from '@/components/Navbar';
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
@@ -41,6 +42,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (<>
     {ready ? (<WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains}>
+        <Navbar/>
         <Component {...pageProps} />
       </RainbowKitProvider>
     </WagmiConfig>) : null }</>

@@ -9,9 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "ethers": "v5",
     "@rainbow-me/rainbowkit": "^1.0.8",
     "@worldcoin/idkit": "^0.5.1",
+    "ethers": "v5",
     "next": "^13.4.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -21,8 +21,11 @@
   "devDependencies": {
     "@types/node": "^18.16.12",
     "@types/react": "^18.2.6",
+    "autoprefixer": "^10.4.14",
     "eslint": "^8.15.0",
     "eslint-config-next": "^13.4.3",
+    "postcss": "^8.4.27",
+    "tailwindcss": "^3.3.3",
     "typescript": "^5.0.4"
   }
 }
