@@ -1,12 +1,12 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import styles from '../../styles/Home.module.css';
-import { useRouter } from 'next/router'
+import { Box, Text, Flex } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 
 const Home: NextPage = () => {
-  const router = useRouter()
+  const router = useRouter();
   return (
-    <div className={styles.container}>
+    <Box maxW="container.md" mx="auto" p={8}>
       <Head>
         <title>Create Ref Link</title>
         <meta
@@ -15,12 +15,13 @@ const Home: NextPage = () => {
         />
         <link href="/favicon.ico" rel="icon" />
       </Head>
-      <p>Post: {router.query.campaign}</p>
 
-      <main className={styles.main}>
+      <Text mb={4}>Post: {router.query.campaign}</Text>
 
-      </main>
-    </div>
+      <Flex direction="column" mt={8}>
+        {/* Main content goes here */}
+      </Flex>
+    </Box>
   );
 };
 

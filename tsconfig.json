@@ -12,7 +12,7 @@
   "include": [
     "next-env.d.ts",
     "src"
-  ],
+, "_pages"  ],
   "exclude": [
     "node_modules"
   ]

@@ -7,44 +7,44 @@ import { ReactNode, useEffect, useState } from 'react'
 import { Web3Modal } from '@web3modal/react'
 
 interface Props {
-  children: ReactNode
+ children: ReactNode
 }
 
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? ''
 if (!projectId) {
-  console.warn('You need to provide a NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID env variable')
+ console.warn('You need to provide a NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID env variable')
 }
 const { chains, publicClient, webSocketPublicClient } = configureChains(ETH_CHAINS, [publicProvider(), w3mProvider({ projectId: projectId })])
 
 const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors: w3mConnectors({ version: 2, chains, projectId: projectId }),
-  publicClient,
-  webSocketPublicClient,
+ autoConnect: true,
+ connectors: w3mConnectors({ version: 2, chains, projectId: projectId }),
+ publicClient,
+ webSocketPublicClient,
 })
 
 const ethereumClient = new EthereumClient(wagmiConfig, chains)
 
 export function Web3Provider(props: Props) {
-  const { colorMode } = useColorMode()
-  const [ready, setReady] = useState(false)
+ const { colorMode } = useColorMode()
+ const [ready, setReady] = useState(false)
 
-  useEffect(() => {
-    setReady(true)
-  }, [])
+ useEffect(() => {
+  setReady(true)
+ }, [])
 
-  return (
-    <>
-      {ready && <WagmiConfig config={wagmiConfig}>{props.children}</WagmiConfig>}
+ return (
+  <>
+   {ready && <WagmiConfig config={wagmiConfig}>{props.children}</WagmiConfig>}
 
-      <Web3Modal
-        projectId={projectId}
-        ethereumClient={ethereumClient}
-        themeMode={colorMode}
-        themeVariables={{
-          '--w3m-accent-color': THEME_COLOR_SCHEME,
-        }}
-      />
-    </>
-  )
+   <Web3Modal
+    projectId={projectId}
+    ethereumClient={ethereumClient}
+    themeMode={colorMode}
+    themeVariables={{
+     '--w3m-accent-color': THEME_COLOR_SCHEME,
+    }}
+   />
+  </>
+ )
 }
