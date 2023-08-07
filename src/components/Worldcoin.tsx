@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useEffect } from 'react'
 import { Button } from '@chakra-ui/react'
 import { BigNumber } from 'ethers'
@@ -5,16 +7,18 @@ import { decode } from '@/../../lib/wld'
 import AirdropAbi from '@/../../abi/Airdrop.abi'
 import { CredentialType, IDKitWidget, ISuccessResult } from '@worldcoin/idkit'
 import { useAccount, useContractWrite, usePrepareContractWrite } from 'wagmi'
+import { useRecoilState } from 'recoil'
+
+import { merkleRootAtom, nullifierAtom, proofAtom } from 'recoil/worldcoin'
 
 export default function Worldcoin() {
  const { address } = useAccount()
  const [wcResult, setWcResult] = useState<ISuccessResult | null>(null)
  const [canValidateOnchain, setCanValidateOnchain] = useState<boolean>(false)
 
- //  TODO: Set this as global state
- const [merkleRoot, setMerkelRoot] = useState<bigint | null>(null)
- const [nullifier, setNullifier] = useState<bigint | null>(null)
- const [proof, setProof] = useState<[bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint] | null>(null)
+ const [merkleRoot, setMerkelRoot] = useRecoilState(merkleRootAtom)
+ const [nullifier, setNullifier] = useRecoilState(nullifierAtom)
+ const [proof, setProof] = useRecoilState(proofAtom)
 
  useEffect(() => {
   setCanValidateOnchain(wcResult != null && address != null)

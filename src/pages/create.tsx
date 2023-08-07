@@ -1,23 +1,12 @@
 import { useState } from 'react'
-import { Button, FormControl, FormLabel, Input, NumberInput, NumberInputField, Text } from '@chakra-ui/react'
-import { useWeb3React } from '@web3-react/core'
-import { ethers } from 'ethers'
+import { Button, FormControl, FormLabel, Input, NumberInput, NumberInputField } from '@chakra-ui/react'
 
-function Campaign() {
+const Campaign = () => {
  const [contractAddress, setContractAddress] = useState('')
  const [abi, setAbi] = useState('')
  const [functionToTrack, setFunctionToTrack] = useState('')
  const [referrerReward, setReferrerReward] = useState('')
  const [referredReward, setReferredReward] = useState('')
-
- const { library, account } = useWeb3React()
-
- const sendTransaction = async () => {
-  if (library && account && contractAddress && abi && functionToTrack && referrerReward && referredReward) {
-   const contract = new ethers.Contract(contractAddress, JSON.parse(abi), library.getSigner(account))
-   await contract[functionToTrack](ethers.utils.parseEther(referrerReward), ethers.utils.parseEther(referredReward))
-  }
- }
 
  return (
   <div>
@@ -41,10 +30,12 @@ function Campaign() {
      <NumberInputField placeholder="0.05" />
     </NumberInput>
 
-    <Button mt={4} onClick={sendTransaction}>
+    <Button mt={4} onClick={() => console.log('Sent')}>
      Submit
     </Button>
    </FormControl>
   </div>
  )
 }
+
+export default Campaign
