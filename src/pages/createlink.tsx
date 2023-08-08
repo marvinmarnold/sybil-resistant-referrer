@@ -14,7 +14,7 @@ const CreateLink: NextPage = () => {
  // TODO: Fetch proof from shared state
  const { address = '' } = useAccount()
  const proof = useRecoilValue(proofAtom)
- const [selectedCampaign, setSelectedCampaign] = useState(null)
+ const [selectedCampaign, setSelectedCampaign] = useState<null | string>(null)
  const [link, setLink] = useState('')
  const toast = useToast()
 
