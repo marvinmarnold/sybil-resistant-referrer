@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { useEffect, useState } from 'react'
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 import { Button, Heading, Text } from '@chakra-ui/react'
@@ -9,18 +8,19 @@ import { RewardAbi, MintAbi } from 'abis'
 
 function ClaimReward() {
  const router = useRouter()
- const [ref, setRef] = useState(null)
- const [receipt, setReceipt] = useState(null)
- const [campaignId, setCampaignId] = useState(null)
- const [campaign, setCampaign] = useState(null)
+
+ const [ref, setRef] = useState<string | null>(null)
+ const [receipt, setReceipt] = useState<string | null>(null)
+ const [campaignId, setCampaignId] = useState<string | string[] | null>(null)
+ const [campaign, setCampaign] = useState<{ contractAddress: `0x${string}`; campaignId: string; campaignName: string } | null>(null)
 
  function getCampaignById(campaignId: string | null) {
-  if (campaignId === null) return
+  if (!campaignId) return null
   return campaigns.find((campaign) => campaign.campaignId === campaignId)
  }
 
  useEffect(() => {
-  const currentCampaign = getCampaignById(campaignId)
+  const currentCampaign = getCampaignById(campaignId as string)
   if (currentCampaign) {
    setCampaign(currentCampaign)
   }
@@ -29,7 +29,7 @@ function ClaimReward() {
  useEffect(() => {
   const { ref: refParam, campaignId: campaignIdParam } = router.query
 
-  if (refParam) {
+  if (refParam && typeof refParam === 'string') {
    setRef(refParam)
   }
 
@@ -53,22 +53,22 @@ function ClaimReward() {
 
  useEffect(() => {
   const prevReceipt = localStorage.getItem('receipt')
-  if (prevReceipt === null) return
-  setReceipt(prevReceipt)
+  if (prevReceipt) {
+   setReceipt(prevReceipt)
+  }
  }, [])
 
  useEffect(() => {
-  if (waitForMintTransaction.isSuccess) {
+  if (waitForMintTransaction.isSuccess && mintNFT.data?.hash) {
    localStorage.setItem('receipt', mintNFT.data?.hash)
    setReceipt(mintNFT.data?.hash)
   }
- }, [waitForMintTransaction.isSuccess])
+ }, [waitForMintTransaction.isSuccess, mintNFT.data?.hash])
 
  const prepareReward = usePrepareContractWrite({
   address: campaign?.contractAddress,
   abi: RewardAbi,
   functionName: 'claimReward',
-  //   params: [receipt, ref],
  })
 
  const claimReward = useContractWrite(prepareReward.config)

@@ -1,4 +1,10 @@
-const campaigns = [
+interface campaignType {
+ contractAddress: `0x${string}`
+ campaignId: string
+ campaignName: string
+}
+
+const campaigns: campaignType[] = [
  {
   contractAddress: '0x...',
   campaignId: '1',
