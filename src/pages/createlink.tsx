@@ -1,23 +1,53 @@
-import { Box, Text, Heading } from '@chakra-ui/react'
+import { useState } from 'react'
+import { Box, Icon, Heading, useToast, Select, Button } from '@chakra-ui/react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useAccount, useNetwork, useSignMessage } from 'wagmi'
+import { useRecoilValue } from 'recoil'
+import { proofAtom } from 'recoil/worldcoin'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { FiCopy } from 'react-icons/fi'
+
+import campaigns from 'utils/campaigns'
 
 const CreateLink: NextPage = () => {
  // TODO: Fetch proof from shared state
- const { address } = useAccount()
- const proof = 'aaaa'
+ const { address = '' } = useAccount()
+ const proof = useRecoilValue(proofAtom)
+ const [selectedCampaign, setSelectedCampaign] = useState(null)
+ const [link, setLink] = useState('')
+ const toast = useToast()
+
+ const createLink = () => {
+  if (!selectedCampaign) return
+
+  const { campaignId = '' } = campaigns.find((c) => c.campaignName === selectedCampaign)
+  if (campaignId && address) {
+   const url = `${window.location.host}/retrieve?campaignId=${campaignId}&ref=${selectedCampaign?.address}`
+   setLink(url)
+  }
+
+  toast({
+   title: 'Success',
+   description: 'Link has been created successfully',
+   status: 'success',
+   duration: 9000,
+   isClosable: true,
+  })
+ }
 
  // Don't show page if there's no WorldId
  // TODO: Link to download Worldcoin App
  // TODO: QR Code for worldcoin app
- if (!proof || !address)
-  return (
-   <Box>
-    <Heading>You must log in with Eth Address and Worldcoin</Heading>
-    <Text>Connect here!</Text>
-   </Box>
-  )
+
+ // FIXME: Disabled until worldcoin works
+ //  if (!proof || !address)
+ //   return (
+ //    <Box>
+ //     <Heading>You must log in with Eth Address and Worldcoin</Heading>
+ //     <Text>Connect here!</Text>
+ //    </Box>
+ //   )
 
  return (
   <Box maxW="container.md" mx="auto" p={8}>
@@ -28,6 +58,26 @@ const CreateLink: NextPage = () => {
    </Head>
    <Box>
     <Heading>Create Referral Link</Heading>
+    <Select placeholder="Select campaign" onChange={(e) => setSelectedCampaign(e.target.value)}>
+     {campaigns.map((campaign) => (
+      <option key={campaign.campaignId} value={campaign.campaignName}>
+       {campaign.campaignName}
+      </option>
+     ))}
+    </Select>
+
+    <Button colorScheme="teal" onClick={createLink}>
+     Create Link
+    </Button>
+
+    {link && (
+     <div>
+      <a href={link}>{link}</a>
+      <CopyToClipboard text={link}>
+       <Button leftIcon={<Icon as={FiCopy} />}>Copy Link</Button>
+      </CopyToClipboard>
+     </div>
+    )}
    </Box>
   </Box>
  )

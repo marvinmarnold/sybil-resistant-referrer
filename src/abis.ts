@@ -127,3 +127,26 @@ export function watchMessageEvent<TAbi extends readonly unknown[] = typeof messa
 ) {
  return watchContractEvent({ abi: messageABI, address: messageAddress[11155111], ...config } as WatchContractEventConfig<TAbi, TEventName>, callback)
 }
+
+export const MintAbi = [
+ {
+  name: 'mint',
+  type: 'function',
+  stateMutability: 'nonpayable',
+  inputs: [],
+  outputs: [],
+ },
+]
+
+export const RewardAbi = [
+ {
+  name: 'claimReward',
+  type: 'function',
+  stateMutability: 'nonpayable',
+  inputs: [
+   { name: 'receipt', type: 'bytes32' },
+   { name: 'referral', type: 'bytes32' },
+  ],
+  outputs: [],
+ },
+]

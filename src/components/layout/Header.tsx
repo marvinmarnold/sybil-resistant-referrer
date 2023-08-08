@@ -15,7 +15,6 @@ interface Props {
 
 export function Header(props: Props) {
  const { address } = useAccount()
- console.log('🚀 ~ file: Header.tsx:18 ~ Header ~ address:', address)
 
  const className = props.className ?? ''
 
