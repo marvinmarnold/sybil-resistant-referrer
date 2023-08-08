@@ -1,8 +1,8 @@
+/* eslint-disable */
 import { useEffect, useState } from 'react'
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 import { Button, Heading, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import queryString from 'query-string'
 
 import campaigns from 'utils/campaigns'
 import { RewardAbi, MintAbi } from 'abis'
@@ -11,18 +11,23 @@ function ClaimReward() {
  const router = useRouter()
  const [ref, setRef] = useState(null)
  const [receipt, setReceipt] = useState(null)
- const [campaign, setCampaign] = useState(null)
  const [campaignId, setCampaignId] = useState(null)
+ const [campaign, setCampaign] = useState(null)
 
- function getCampaignById(campaignId: string | string[]) {
+ function getCampaignById(campaignId: string | null) {
+  if (campaignId === null) return
   return campaigns.find((campaign) => campaign.campaignId === campaignId)
  }
 
  useEffect(() => {
-  console.log('🚀 ~ file: retrieve.tsx:23 ~ useEffect ~ router.query:', router.query)
+  const currentCampaign = getCampaignById(campaignId)
+  if (currentCampaign) {
+   setCampaign(currentCampaign)
+  }
+ }, [campaignId])
+
+ useEffect(() => {
   const { ref: refParam, campaignId: campaignIdParam } = router.query
-  console.log('🚀 ~ file: retrieve.tsx:23 ~ useEffect ~ campaignParam:', campaignIdParam)
-  console.log('🚀 ~ file: retrieve.tsx:23 ~ useEffect ~ refParam:', refParam)
 
   if (refParam) {
    setRef(refParam)
@@ -63,7 +68,7 @@ function ClaimReward() {
   address: campaign?.contractAddress,
   abi: RewardAbi,
   functionName: 'claimReward',
-  params: [receipt, ref],
+  //   params: [receipt, ref],
  })
 
  const claimReward = useContractWrite(prepareReward.config)

@@ -21,9 +21,9 @@ const CreateLink: NextPage = () => {
  const createLink = () => {
   if (!selectedCampaign) return
 
-  const { campaignId = '' } = campaigns.find((c) => c.campaignName === selectedCampaign)
-  if (campaignId && address) {
-   const url = `${window.location.host}/retrieve?campaignId=${campaignId}&ref=${selectedCampaign?.address}`
+  const campaign = campaigns.find((c) => c.campaignName === selectedCampaign)
+  if (campaign?.campaignId && address) {
+   const url = `${window.location.host}/retrieve?campaignId=${campaign?.campaignId}&ref=${address}`
    setLink(url)
   }
 
