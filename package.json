@@ -16,7 +16,6 @@
   "@emotion/react": "^11",
   "@emotion/styled": "^11",
   "@next/font": "13.1.1",
-  "@rainbow-me/rainbowkit": "^1.0.8",
   "@web3-react/core": "^8.2.0",
   "@web3modal/ethereum": "^2.4.1",
   "@web3modal/react": "^2.4.1",
