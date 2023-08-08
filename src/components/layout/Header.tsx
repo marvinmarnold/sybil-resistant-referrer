@@ -5,7 +5,7 @@ import { LinkComponent } from './LinkComponent'
 import { ThemeSwitcher } from './ThemeSwitcher'
 import { PassportScore } from './PassportScore'
 import { Web3Button } from '@web3modal/react'
-import { useAccount, useContractWrite, usePrepareContractWrite } from 'wagmi'
+import { useAccount } from 'wagmi'
 
 import Worldcoin from 'components/Worldcoin'
 

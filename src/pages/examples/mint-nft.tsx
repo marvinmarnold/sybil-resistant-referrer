@@ -3,24 +3,27 @@ import { Button, Heading, Text, ListItem, UnorderedList } from '@chakra-ui/react
 import { NextSeo } from 'next-seo'
 import { LinkComponent } from 'components/layout/LinkComponent'
 
+const MintAbi = [
+ {
+  name: 'mint',
+  type: 'function',
+  stateMutability: 'nonpayable',
+  inputs: [],
+  outputs: [],
+ },
+]
+
 function MintNFT() {
  const { chain } = useNetwork()
 
+ // WAGMI NFT Example contract
+ // https://opensea.io/collection/wagmi-mint-example
  const prepareContractWrite = usePrepareContractWrite({
-  // WAGMI NFT Example contract
-  // https://opensea.io/collection/wagmi-mint-example
   address: '0xFBA3912Ca04dd458c843e2EE08967fC04f3579c2',
-  abi: [
-   {
-    name: 'mint',
-    type: 'function',
-    stateMutability: 'nonpayable',
-    inputs: [],
-    outputs: [],
-   },
-  ],
+  abi: MintAbi,
   functionName: 'mint',
  })
+
  const contractWrite = useContractWrite(prepareContractWrite.config)
  const waitForTransaction = useWaitForTransaction({ hash: contractWrite.data?.hash })
 
