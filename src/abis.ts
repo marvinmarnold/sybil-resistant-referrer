@@ -96,7 +96,10 @@ export function writeMessage<TFunctionName extends string, TMode extends WriteCo
      chainId?: TMode extends 'prepared' ? TChainId : keyof typeof messageAddress
     })
 ) {
- return writeContract({ abi: messageABI, address: messageAddress[11155111], ...config } as WriteContractArgs<typeof messageABI, TFunctionName>)
+ return writeContract({ abi: messageABI, address: messageAddress[11155111], ...config } as unknown as WriteContractArgs<
+  typeof messageABI,
+  TFunctionName
+ >)
 }
 
 /**
