@@ -11,7 +11,7 @@ interface Props {
 }
 
 export function LinkComponent(props: Props) {
- const className = props.className ?? ''
+ const className = props.className ?? 'margin-left'
  const isExternal = props.href.match(/^([a-z0-9]*:|.{0})\/\/.*$/) || props.isExternal
  const color = useColorModeValue(`${THEME_COLOR_SCHEME}.600`, `${THEME_COLOR_SCHEME}.400`)
 

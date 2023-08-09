@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, useColorModeValue, Spacer, Heading } from '@chakra-ui/react'
+import { Flex, useColorModeValue, Spacer, Heading, Text } from '@chakra-ui/react'
 import { SITE_NAME } from 'utils/config'
 import { LinkComponent } from './LinkComponent'
 import { ThemeSwitcher } from './ThemeSwitcher'
@@ -37,7 +37,17 @@ export function Header(props: Props) {
    </LinkComponent>
 
    <Spacer />
-
+   <Flex>
+   <LinkComponent href="/createCampaign">
+    <Text>Create Campaign</Text>
+   </LinkComponent>
+   
+   <LinkComponent  href="/generateReferrals">
+    <Text>Generate Referrals</Text>
+   </LinkComponent>
+    
+   </Flex>
+   <Spacer />
    <Flex alignItems="center" gap={4}>
     <PassportScore />
     <ConnectionButtons />
