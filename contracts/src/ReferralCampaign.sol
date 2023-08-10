@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import {IERC20Or721} from "./IERC20Or721.sol";
 
 //@notice A Referral Campaign Contract for storing referres and their respective referees
-contract ReferralCampaign is Ownable,Initializable {
+contract ReferralCampaign is Ownable, Initializable {
 
     IERC20Or721 public rewardToken;
 
@@ -17,6 +17,9 @@ contract ReferralCampaign is Ownable,Initializable {
     event AcceptedReferral(address indexed, address);
 
     /*Campaign manager creates campaign onchain, supplying:*/
+
+    // rtc Amount Approved be Campaign Manager
+    uint256 rtcAmountApproved = 0;
 
     //@dev Campaign Creator
     address campaignManager;
@@ -42,9 +45,19 @@ contract ReferralCampaign is Ownable,Initializable {
     // @dev Storing referee's per referrer
     mapping(address => uint256) internal numReferralsByReferrer;
 
+    modifier onlyCampaignManager() {
+        require(msg.sender == campaignManager, "Only the campaignManager can call this function");
+        _;
+    }
+
+    modifier checkRtcApprovalBalance() {
+        require(rewardToken.allowance(campaignManager, address(this)) >= (rewardReferrer + rewardReferee));
+        _;
+    }
+
     constructor() {}
 
-    function initialize (
+    function initialize(
         address _manager, 
         address _campaignTokenContract, 
         address _rewardTokenContract, 
@@ -66,6 +79,12 @@ contract ReferralCampaign is Ownable,Initializable {
         minCampaignTokenBalance = _minCampaignTokenBalance;
     }
 
+    //@dev Function to get approval of spending RTC tokens on behalf of campaign manager
+    //@params _amount to be approved for spending
+    function addBalance(uint256 _amount) public onlyCampaignManager {
+        rewardToken.approve(address(this), _amount);
+    }
+
     //@dev Function to add a Referrer
     function addReferrer() public {
         //@dev Instead of require, verification to be done by worldcoin
@@ -78,7 +97,7 @@ contract ReferralCampaign is Ownable,Initializable {
 
     //@dev To accept a referral, the referee will call this function
     //@params _referrer to link the referral
-    function acceptReferral(address _referrer) public {
+    function acceptReferral(address _referrer) public checkRtcApprovalBalance {
 
         address referee = msg.sender;
 
@@ -93,6 +112,8 @@ contract ReferralCampaign is Ownable,Initializable {
         numReferralsByReferrer[_referrer]++;
 
         // @dev tranferring rewards (rtcToken) to referrer and referree
+        rewardToken.transferFrom(campaignManager, _referrer, rewardReferrer);
+        rewardToken.transferFrom(campaignManager, referee, rewardReferee);
         // SafeTransferLib.safeTransferFrom(rtcTokenAddress, address(this), _referrer, rewardReferrer);
         // SafeTransferLib.safeTransferFrom(rtcTokenAddress, address(this), referee, rewardReferee);
         emit AcceptedReferral(referee ,_referrer);
