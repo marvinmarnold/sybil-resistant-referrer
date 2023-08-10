@@ -13,6 +13,12 @@ contract CampaignFactory {
     //@dev Referral Campaign Implementation
     address immutable referralCampaign;
 
+    //@dev WorldID Address OP Goelri
+    address worldID = 0x515f06B36E6D3b707eAecBdeD18d8B384944c87f;
+
+    //@dev Worldcoin Developer portal App ID , TO be updated
+    string appID="app_staging_390a3ed8c033ea9b6fa30e64a72d383d";
+
     //@dev Campaign struct with campiagn address and token address
     struct Campaign{
         address campaignAddress;
@@ -33,15 +39,15 @@ contract CampaignFactory {
     }
 
     //@dev Create a referral campaign
-    //@params Token address
+    //@params actionId will the campaign ID
     function addCampaign(        
         address _campaignTokenContract, 
         address _rewardTokenContract, 
         uint256 _maxReferralsPerReferrer, 
         uint256 _rewardReferrer, 
         uint256 _rewardReferee, 
-        uint256 _minCampaignTokenBalance) public payable returns (address) {
-        
+        uint256 _minCampaignTokenBalance,
+        string _actionId) public payable returns (address) {
         // Make a clone contract
         address clone = Clones.clone(referralCampaign);
         ReferralCampaign(clone).initialize(msg.sender, 
@@ -50,7 +56,11 @@ contract CampaignFactory {
             _maxReferralsPerReferrer, 
             _rewardReferrer, 
             _rewardReferee, 
-            _minCampaignTokenBalance);
+            _minCampaignTokenBalance,
+            worldID,
+            appID,
+            _actionID
+            );
 
         // Emit an event containing the new campaign information
         Campaign memory campaign = Campaign(clone, msg.sender, 
@@ -69,9 +79,7 @@ contract CampaignFactory {
     function getCampaigns(address _manager) external view returns (address[] memory campaignAddresses) {
         Campaign[] memory managerCampaigns = campaignsForManager[_manager];
         uint256 numberOfCampaigns = managerCampaigns.length;
-
         campaignAddresses = new address[](numberOfCampaigns);
-
         for (uint256 i = 0; i < numberOfCampaigns; i++) {
             campaignAddresses[i] = managerCampaigns[i].campaignAddress;
         }
