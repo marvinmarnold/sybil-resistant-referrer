@@ -37,9 +37,10 @@ contract ReferralCampaign is Ownable,Initializable {
     // @dev Storing referee's per referrer
     mapping(address=>uint256) internal referrers;
 
-    constructor(address _rtcTokenAddress ) {
+    constructor(address _rtcTokenAddress, uint256 _totalAmount) {
         require(_rtcTokenAddress != address(0), "_rtcTokenAddress should be valid");
         rtcToken = IERC20(_rtcTokenAddress);
+        rtcToken.approve(address(this), _totalAmount);
     }
 
     function initialize (
