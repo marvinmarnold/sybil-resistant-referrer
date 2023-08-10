@@ -1,0 +1,31 @@
+lockfileVersion: '6.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+dependencies:
+  '@openzeppelin/contracts':
+    specifier: ^4.9.3
+    version: 4.9.3
+  dotenv:
+    specifier: ^16.3.1
+    version: 16.3.1
+  solmate:
+    specifier: ^6.2.0
+    version: 6.2.0
+
+packages:
+
+  /@openzeppelin/contracts@4.9.3:
+    resolution: {integrity: sha512-He3LieZ1pP2TNt5JbkPA4PNT9WC3gOTOlDcFGJW4Le4QKqwmiNJCRt44APfxMxvq7OugU/cqYuPcSBzOw38DAg==}
+    dev: false
+
+  /dotenv@16.3.1:
+    resolution: {integrity: sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==}
+    engines: {node: '>=12'}
+    dev: false
+
+  /solmate@6.2.0:
+    resolution: {integrity: sha512-AM38ioQ2P8zRsA42zenb9or6OybRjOLXIu3lhIT8rhddUuduCt76pUEuLxOIg9GByGojGz+EbpFdCB6B+QZVVA==}
+    dev: false

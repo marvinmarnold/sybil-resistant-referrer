@@ -11,10 +11,8 @@ bytecode_hash = "none"
 
 remappings = [
     'src/=src/',
-    '@prb/test/=lib/prb-test/src/',
-    'ds-test/=lib/ds-test/src/',
-    '@zk-kit/=lib/zk-kit/packages/',
-    '@openzeppelin/=lib/openzeppelin-contracts/'
+    '@openzeppelin/=node_modules/@openzeppelin/',
+    'solmate/=node_modules/solmate/src/'
 ]
 
 # The default is to optimise, but let's be clear about it.
