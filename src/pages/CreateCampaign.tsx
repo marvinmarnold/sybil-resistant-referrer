@@ -15,7 +15,7 @@ import {
  Stack,
  useColorModeValue,
 } from '@chakra-ui/react'
-import React from 'react'
+import React, { useState } from 'react'
 import styled from '@emotion/styled'
 import { motion } from 'framer-motion'
 
@@ -55,7 +55,12 @@ const keyframes = `
     }
   }
 `
-const createCampaign = () => {
+const CreateCampaign = () => {
+ const [contractAddress, setContractAddress] = useState('')
+ const [abi, setAbi] = useState('')
+ const [functionToTrack, setFunctionToTrack] = useState('')
+ const [referrerReward, setReferrerReward] = useState('')
+ const [referredReward, setReferredReward] = useState('')
  return (
   <Container>
    <style>{keyframes}</style>
@@ -64,13 +69,13 @@ const createCampaign = () => {
     <Blob bottom="-85px" right="-100px" backgroundColor="yellow.300" style={{ animationDelay: '4s' }}></Blob>
    </Box>
 
-   <Box position="absolute" top={32} display="flex" justifyContent="center">
+   <Box position="absolute" top={24} display="flex" justifyContent="center">
     <form
      style={{
       color: 'gray.400',
       fontFamily: 'Montserrat',
       padding: '36px',
-      height: '530px',
+      height: 'fit',
       width: '600px',
       backgroundColor: 'rgba(0, 0, 0, 0.05)',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
@@ -92,31 +97,67 @@ const createCampaign = () => {
       <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
        Contract Address
       </FormLabel>
-      <Input placeholder="Address" size="md" type="string" backgroundColor={'transparent'} borderColor="gray.400" />
+      <Input
+       value={contractAddress}
+       onChange={(e) => setContractAddress(e.target.value)}
+       placeholder="Address"
+       size="md"
+       type="string"
+       backgroundColor={'transparent'}
+       borderColor="gray.400"
+      />
      </FormControl>
 
      <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
       <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
-       Emmit action
+       ABI
       </FormLabel>
-      <Input placeholder="ABI" size="md" type="string" borderColor="gray.400" />
+      <Input value={abi} onChange={(e) => setAbi(e.target.value)} placeholder="ABI" size="md" type="string" borderColor="gray.400" />
+     </FormControl>
+
+     <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
+      <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+       Function to Track
+      </FormLabel>
+      <Input
+       value={functionToTrack}
+       onChange={(e) => setFunctionToTrack(e.target.value)}
+       placeholder="ABI"
+       size="md"
+       type="string"
+       borderColor="gray.400"
+      />
      </FormControl>
 
      <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
       <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
        Referral Number
       </FormLabel>
-      <Input placeholder="Number" size="md" type="number" borderColor="gray.400" />
+      <Input
+       value={referrerReward}
+       onChange={(value) => setReferrerReward(String(value))}
+       placeholder="Number"
+       size="md"
+       type="number"
+       borderColor="gray.400"
+      />
      </FormControl>
 
      <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
       <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
        Reward Amount
       </FormLabel>
-      <Input placeholder="Amount" size="md" type="number" borderColor="gray.400" />
+      <Input
+       value={referredReward}
+       onChange={(value) => setReferredReward(String(value))}
+       placeholder="Amount"
+       size="md"
+       type="number"
+       borderColor="gray.400"
+      />
      </FormControl>
 
-     <Box display="flex" justifyContent="center" mt={5} mb={10}>
+     <Box display="flex" justifyContent="center" mt={5}>
       <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
        <Button
         backgroundColor="purple.300"
@@ -128,7 +169,8 @@ const createCampaign = () => {
         px={12}
         fontFamily="sans-serif"
         color="white"
-        type="submit">
+        type="submit"
+        onClick={() => console.log('Sent')}>
         Create
        </Button>
       </motion.div>
@@ -139,4 +181,4 @@ const createCampaign = () => {
  )
 }
 
-export default createCampaign
+export default CreateCampaign

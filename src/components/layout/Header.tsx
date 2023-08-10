@@ -37,7 +37,7 @@ export function Header(props: Props) {
 
    <Spacer />
    <Flex>
-    <LinkComponent href="/createCampaign">
+    <LinkComponent href="/CreateCampaign">
      <Text>Create Campaign</Text>
     </LinkComponent>
 
