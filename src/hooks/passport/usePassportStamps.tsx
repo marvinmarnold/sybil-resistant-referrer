@@ -48,6 +48,7 @@ export function usePassportStamps(withMetadata: boolean = false) {
   if (API_KEY && isConnected && address) {
    getStamps()
   }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
  }, [API_KEY, address, isConnected])
 
  return state

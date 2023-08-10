@@ -58,7 +58,7 @@ export default function PassportExample() {
       {stamps.map((stamp) => (
        <Card key={stamp.credential.proof.jws} maxW="sm">
         <CardBody>
-         <Image src={stamp.metadata?.platform.icon} boxSize="50px" />
+         <Image src={stamp.metadata?.platform.icon} alt="pass" boxSize="50px" />
          <Text style={{ marginTop: '30px' }} fontSize="md">
           {stamp.credential.credentialSubject.provider}
          </Text>
@@ -81,7 +81,7 @@ export default function PassportExample() {
        {availableStamps.map((stamp) => (
         <Card key={stamp.id} maxW="sm">
          <CardBody>
-          <Image src={stamp.icon} boxSize="50px" />
+          <Image src={stamp.icon} boxSize="50px" alt="pass" />
           <Text style={{ marginTop: '30px' }} fontSize="md">
            {stamp.name}
           </Text>
