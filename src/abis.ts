@@ -96,7 +96,10 @@ export function writeMessage<TFunctionName extends string, TMode extends WriteCo
      chainId?: TMode extends 'prepared' ? TChainId : keyof typeof messageAddress
     })
 ) {
- return writeContract({ abi: messageABI, address: messageAddress[11155111], ...config } as WriteContractArgs<typeof messageABI, TFunctionName>)
+ return writeContract({ abi: messageABI, address: messageAddress[11155111], ...config } as unknown as WriteContractArgs<
+  typeof messageABI,
+  TFunctionName
+ >)
 }
 
 /**
@@ -124,3 +127,26 @@ export function watchMessageEvent<TAbi extends readonly unknown[] = typeof messa
 ) {
  return watchContractEvent({ abi: messageABI, address: messageAddress[11155111], ...config } as WatchContractEventConfig<TAbi, TEventName>, callback)
 }
+
+export const MintAbi = [
+ {
+  name: 'mint',
+  type: 'function',
+  stateMutability: 'nonpayable',
+  inputs: [],
+  outputs: [],
+ },
+]
+
+export const RewardAbi = [
+ {
+  name: 'claimReward',
+  type: 'function',
+  stateMutability: 'nonpayable',
+  inputs: [
+   { name: 'receipt', type: 'bytes32' },
+   { name: 'referral', type: 'bytes32' },
+  ],
+  outputs: [],
+ },
+]
