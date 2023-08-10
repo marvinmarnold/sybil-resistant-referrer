@@ -59,7 +59,7 @@ const CreateCampaign = () => {
  const [contractAddress, setContractAddress] = useState('')
  const [abi, setAbi] = useState('')
  const [functionToTrack, setFunctionToTrack] = useState('')
- const [referrerReward, setReferrerReward] = useState('')
+ const [referralNumber, setReferralNumber] = useState('')
  const [referredReward, setReferredReward] = useState('')
  return (
   <Container>
@@ -122,7 +122,7 @@ const CreateCampaign = () => {
       <Input
        value={functionToTrack}
        onChange={(e) => setFunctionToTrack(e.target.value)}
-       placeholder="ABI"
+       placeholder="Function"
        size="md"
        type="string"
        borderColor="gray.400"
@@ -134,25 +134,25 @@ const CreateCampaign = () => {
        Referral Number
       </FormLabel>
       <Input
-       value={referrerReward}
-       onChange={(value) => setReferrerReward(String(value))}
-       placeholder="Number"
+       value={functionToTrack}
+       onChange={(e) => setReferralNumber(e.target.value)}
+       placeholder="0.05"
        size="md"
-       type="number"
+       type="string"
        borderColor="gray.400"
       />
      </FormControl>
 
      <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
       <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
-       Reward Amount
+       Referred Reward
       </FormLabel>
       <Input
-       value={referredReward}
-       onChange={(value) => setReferredReward(String(value))}
-       placeholder="Amount"
+       value={functionToTrack}
+       onChange={(e) => setReferredReward(e.target.value)}
+       placeholder="0.05"
        size="md"
-       type="number"
+       type="string"
        borderColor="gray.400"
       />
      </FormControl>
