@@ -3,6 +3,7 @@ pragma solidity ^0.8.17;
 
 import "./ReferralCampaign.sol";
 import "@openzeppelin/contracts/proxy/Clones.sol";
+import "./IWorldID.sol";
 
 //@notice A Referral Campaign Factory Contract, all referral campaign will be depolyed using this contract
 contract CampaignFactory {
@@ -13,8 +14,8 @@ contract CampaignFactory {
     //@dev Referral Campaign Implementation
     address immutable referralCampaign;
 
-    //@dev WorldID Address OP Goelri
-    address worldID = 0x515f06B36E6D3b707eAecBdeD18d8B384944c87f;
+    //@dev WorldID Address Base
+    IWorldID worldID = IWorldID(0x515f06B36E6D3b707eAecBdeD18d8B384944c87f);
 
     //@dev Worldcoin Developer portal App ID , TO be updated
     string appID="app_staging_390a3ed8c033ea9b6fa30e64a72d383d";
@@ -47,7 +48,7 @@ contract CampaignFactory {
         uint256 _rewardReferrer, 
         uint256 _rewardReferee, 
         uint256 _minCampaignTokenBalance,
-        string _actionId) public payable returns (address) {
+        string memory _actionId) public payable returns (address) {
         // Make a clone contract
         address clone = Clones.clone(referralCampaign);
         ReferralCampaign(clone).initialize(msg.sender, 
@@ -59,7 +60,7 @@ contract CampaignFactory {
             _minCampaignTokenBalance,
             worldID,
             appID,
-            _actionID
+            _actionId
             );
 
         // Emit an event containing the new campaign information
