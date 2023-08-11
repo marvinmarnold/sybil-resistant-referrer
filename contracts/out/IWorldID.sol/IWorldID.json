@@ -1,0 +1,427 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "root",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "groupId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "signalHash",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "nullifierHash",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "externalNullifierHash",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256[8]",
+          "name": "proof",
+          "type": "uint256[8]"
+        }
+      ],
+      "name": "verifyProof",
+      "outputs": [],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "verifyProof(uint256,uint256,uint256,uint256,uint256,uint256[8])": "3bc778e3"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.19+commit.7dd6d404\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"root\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"groupId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"signalHash\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"nullifierHash\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"externalNullifierHash\",\"type\":\"uint256\"},{\"internalType\":\"uint256[8]\",\"name\":\"proof\",\"type\":\"uint256[8]\"}],\"name\":\"verifyProof\",\"outputs\":[],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"verifyProof(uint256,uint256,uint256,uint256,uint256,uint256[8])\":{\"details\":\"Note that a double-signaling check is not included here, and should be carried by the caller.\",\"params\":{\"externalNullifierHash\":\"A keccak256 hash of the external nullifier\",\"groupId\":\"The id of the Semaphore group\",\"nullifierHash\":\"The nullifier hash\",\"proof\":\"The zero-knowledge proof\",\"root\":\"The of the Merkle tree\",\"signalHash\":\"A keccak256 hash of the Semaphore signal\"}}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"verifyProof(uint256,uint256,uint256,uint256,uint256,uint256[8])\":{\"notice\":\"Reverts if the zero-knowledge proof is invalid.\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/IWorldID.sol\":\"IWorldID\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"none\"},\"optimizer\":{\"enabled\":true,\"runs\":10000},\"remappings\":[\":@openzeppelin/=node_modules/@openzeppelin/\",\":solmate/=node_modules/solmate/src/\",\":src/=src/\"]},\"sources\":{\"src/IWorldID.sol\":{\"keccak256\":\"0x36f5a08a9f832575e2f555b8cc26b787cd135db3f32f45b02e31fc693ddf333c\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://92193ca73c09b3df48d1b73d88df223d23aba7f6435816730fc4730ec93b597c\",\"dweb:/ipfs/QmPsFZyQHa58LQC29JaEpXqi8N2XNCc7CYcaYKEga4v1ic\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.19+commit.7dd6d404"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "root",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "groupId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "signalHash",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nullifierHash",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "externalNullifierHash",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256[8]",
+              "name": "proof",
+              "type": "uint256[8]"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "verifyProof"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "verifyProof(uint256,uint256,uint256,uint256,uint256,uint256[8])": {
+            "details": "Note that a double-signaling check is not included here, and should be carried by the caller.",
+            "params": {
+              "externalNullifierHash": "A keccak256 hash of the external nullifier",
+              "groupId": "The id of the Semaphore group",
+              "nullifierHash": "The nullifier hash",
+              "proof": "The zero-knowledge proof",
+              "root": "The of the Merkle tree",
+              "signalHash": "A keccak256 hash of the Semaphore signal"
+            }
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {
+          "verifyProof(uint256,uint256,uint256,uint256,uint256,uint256[8])": {
+            "notice": "Reverts if the zero-knowledge proof is invalid."
+          }
+        },
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        "@openzeppelin/=node_modules/@openzeppelin/",
+        "solmate/=node_modules/solmate/src/",
+        "src/=src/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 10000
+      },
+      "metadata": {
+        "bytecodeHash": "none"
+      },
+      "compilationTarget": {
+        "src/IWorldID.sol": "IWorldID"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "src/IWorldID.sol": {
+        "keccak256": "0x36f5a08a9f832575e2f555b8cc26b787cd135db3f32f45b02e31fc693ddf333c",
+        "urls": [
+          "bzz-raw://92193ca73c09b3df48d1b73d88df223d23aba7f6435816730fc4730ec93b597c",
+          "dweb:/ipfs/QmPsFZyQHa58LQC29JaEpXqi8N2XNCc7CYcaYKEga4v1ic"
+        ],
+        "license": "MIT"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "src/IWorldID.sol",
+    "id": 1067,
+    "exportedSymbols": {
+      "IWorldID": [
+        1066
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "31:717:11",
+    "nodes": [
+      {
+        "id": 1047,
+        "nodeType": "PragmaDirective",
+        "src": "31:24:11",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".10"
+        ]
+      },
+      {
+        "id": 1066,
+        "nodeType": "ContractDefinition",
+        "src": "57:691:11",
+        "nodes": [
+          {
+            "id": 1065,
+            "nodeType": "FunctionDefinition",
+            "src": "564:182:11",
+            "nodes": [],
+            "documentation": {
+              "id": 1048,
+              "nodeType": "StructuredDocumentation",
+              "src": "79:483:11",
+              "text": "@notice Reverts if the zero-knowledge proof is invalid.\n @param root The of the Merkle tree\n @param groupId The id of the Semaphore group\n @param signalHash A keccak256 hash of the Semaphore signal\n @param nullifierHash The nullifier hash\n @param externalNullifierHash A keccak256 hash of the external nullifier\n @param proof The zero-knowledge proof\n @dev  Note that a double-signaling check is not included here, and should be carried by the caller."
+            },
+            "functionSelector": "3bc778e3",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "verifyProof",
+            "nameLocation": "573:11:11",
+            "parameters": {
+              "id": 1063,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1050,
+                  "mutability": "mutable",
+                  "name": "root",
+                  "nameLocation": "596:4:11",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1065,
+                  "src": "588:12:11",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1049,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "588:7:11",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1052,
+                  "mutability": "mutable",
+                  "name": "groupId",
+                  "nameLocation": "612:7:11",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1065,
+                  "src": "604:15:11",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1051,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "604:7:11",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1054,
+                  "mutability": "mutable",
+                  "name": "signalHash",
+                  "nameLocation": "631:10:11",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1065,
+                  "src": "623:18:11",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1053,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "623:7:11",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1056,
+                  "mutability": "mutable",
+                  "name": "nullifierHash",
+                  "nameLocation": "653:13:11",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1065,
+                  "src": "645:21:11",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1055,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "645:7:11",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1058,
+                  "mutability": "mutable",
+                  "name": "externalNullifierHash",
+                  "nameLocation": "678:21:11",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1065,
+                  "src": "670:29:11",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1057,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "670:7:11",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1062,
+                  "mutability": "mutable",
+                  "name": "proof",
+                  "nameLocation": "723:5:11",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1065,
+                  "src": "703:25:11",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$8_calldata_ptr",
+                    "typeString": "uint256[8]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 1059,
+                      "name": "uint256",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "703:7:11",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 1061,
+                    "length": {
+                      "hexValue": "38",
+                      "id": 1060,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "711:1:11",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_8_by_1",
+                        "typeString": "int_const 8"
+                      },
+                      "value": "8"
+                    },
+                    "nodeType": "ArrayTypeName",
+                    "src": "703:10:11",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$8_storage_ptr",
+                      "typeString": "uint256[8]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "584:147:11"
+            },
+            "returnParameters": {
+              "id": 1064,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "745:0:11"
+            },
+            "scope": 1066,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IWorldID",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          1066
+        ],
+        "name": "IWorldID",
+        "nameLocation": "67:8:11",
+        "scope": 1067,
+        "usedErrors": []
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 11
+}
