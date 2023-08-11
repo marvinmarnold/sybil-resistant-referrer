@@ -1,18 +1,72 @@
-import { Box, Button, FormControl, FormLabel, Input, useBreakpointValue, useColorMode } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import { Box, Button, FormControl, FormLabel, Input, useBreakpointValue, useColorMode, useToast } from '@chakra-ui/react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-
+import { uuid } from 'uuidv4'
 import Background from 'components/Background'
 import Container from 'components/layout/Container'
-
+import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
+import CampaignFactoryABI from '../../contracts/out/CampaignFactory.sol/CampaignFactory.json'
 const CreateCampaign = () => {
- const [contractAddress, setContractAddress] = useState('')
- const [abi, setAbi] = useState('')
- const [functionToTrack, setFunctionToTrack] = useState('')
- const [referralNumber, setReferralNumber] = useState('')
- const [referredReward, setReferredReward] = useState('')
+ const [campaignContractAddress, setCampaignContractAddress] = useState('')
+ const [rewardTokenAddress, setRewardTokenAddress] = useState('')
+ const [maxReferalsperReferee, setMaxReferralsPerReferee] = useState<number>()
+ const [rewardReferrer, setRewardReferrer] = useState<number>()
+ const [rewardReferee, setRewardReferee] = useState<number>()
+ const [minCampaignTokenBalance, setMinCampaignTokenBalance] = useState<number>()
+ const [returnedData, setReturnedData] = useState<any>()
  const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
  const { colorMode } = useColorMode()
+ const toast = useToast()
+ const { address } = useAccount()
+ const actionid = uuid()
+ //  console.log(' UUID ' , actionid);
+
+ // console.log("Before Write:",typeof(campaignContractAddress),typeof(rewardTokenAddress),typeof(maxReferalsperReferee),typeof(rewardReferrer),typeof(rewardReferee),typeof(minCampaignTokenBalance),typeof(actionid));
+ const {
+  config,
+  error: prepareError,
+  isError: isPrepareError,
+ } = usePrepareContractWrite({
+  address: '0x5E9229BE5e4f91F97884C8cE4bcbDb91Dd5C5535',
+  abi: CampaignFactoryABI.abi,
+  functionName: 'addCampaign',
+  args: [campaignContractAddress, rewardTokenAddress, maxReferalsperReferee, rewardReferrer, rewardReferee, minCampaignTokenBalance, actionid],
+ })
+ const { data, isLoading: writeLoading, isError: writeError, write } = useContractWrite(config)
+ const { isLoading: isContractLoading, isSuccess: writeSuccess } = useWaitForTransaction({
+  hash: data?.hash,
+ })
+ useEffect(() => {
+  if (writeSuccess) {
+   console.log('Returned Data', data)
+   setReturnedData(data)
+
+   toast({
+    title: 'Success',
+    description: 'Transaction submited successfully',
+    status: 'success',
+    duration: 9000,
+    isClosable: true,
+   })
+  }
+ }, [writeSuccess, data])
+
+ const handleSubmit = async (event: React.FormEvent) => {
+  event.preventDefault()
+
+  try {
+   await write?.()
+  } catch (error) {
+   console.error('Error submitting transaction:', error)
+   toast({
+    title: 'Error',
+    description: 'There was an error submitting the transaction.',
+    status: 'error',
+    duration: 9000,
+    isClosable: true,
+   })
+  }
+ }
 
  return (
   <Container>
@@ -20,6 +74,7 @@ const CreateCampaign = () => {
 
    <Box position="absolute" top={24} display="flex" justifyContent="center">
     <form
+     onSubmit={handleSubmit}
      style={{
       color: 'gray.400',
       fontFamily: 'Montserrat',
@@ -42,66 +97,88 @@ const CreateCampaign = () => {
       Create Campaign
      </h2>
 
-     <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
-      <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
-       Contract Address
-      </FormLabel>
-      <Input
-       value={contractAddress}
-       onChange={(e) => setContractAddress(e.target.value)}
-       placeholder="Address"
-       size="md"
-       type="string"
-       backgroundColor={'transparent'}
-       borderColor="gray.400"
-      />
-     </FormControl>
+     <div style={{ display: 'flex', gap: '15px' }}>
+      <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
+       <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+        Campaign Contract Address
+       </FormLabel>
+       <Input
+        value={campaignContractAddress}
+        onChange={(e) => setCampaignContractAddress(e.target.value)}
+        placeholder="Address"
+        size="md"
+        type="string"
+        backgroundColor={'transparent'}
+        borderColor="gray.400"
+       />
+      </FormControl>
+
+      <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
+       <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+        Reward Token Address
+       </FormLabel>
+       <Input
+        value={rewardTokenAddress}
+        onChange={(e) => setRewardTokenAddress(e.target.value)}
+        placeholder="Address"
+        size="md"
+        type="string"
+        borderColor="gray.400"
+       />
+      </FormControl>
+     </div>
 
      <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
       <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
-       ABI
-      </FormLabel>
-      <Input value={abi} onChange={(e) => setAbi(e.target.value)} placeholder="ABI" size="md" type="string" borderColor="gray.400" />
-     </FormControl>
-
-     <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
-      <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
-       Function to Track
+       Max Referrals per Referee
       </FormLabel>
       <Input
-       value={functionToTrack}
-       onChange={(e) => setFunctionToTrack(e.target.value)}
-       placeholder="Function"
-       size="md"
-       type="string"
-       borderColor="gray.400"
-      />
-     </FormControl>
-
-     <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
-      <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
-       Referral Number
-      </FormLabel>
-      <Input
-       value={functionToTrack}
-       onChange={(e) => setReferralNumber(e.target.value)}
+       value={maxReferalsperReferee}
+       onChange={(e) => setMaxReferralsPerReferee(parseFloat(e.target.value))}
        placeholder="0.05"
        size="md"
-       type="string"
+       type="number"
        borderColor="gray.400"
       />
      </FormControl>
 
      <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
       <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
-       Referred Reward
+       Reward referrer
       </FormLabel>
       <Input
-       value={functionToTrack}
-       onChange={(e) => setReferredReward(e.target.value)}
+       value={rewardReferrer}
+       onChange={(e) => setRewardReferrer(parseFloat(e.target.value))}
        placeholder="0.05"
        size="md"
-       type="string"
+       type="number"
+       borderColor="gray.400"
+      />
+     </FormControl>
+
+     <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
+      <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+       Reward Referee
+      </FormLabel>
+      <Input
+       value={rewardReferee}
+       onChange={(e) => setRewardReferee(parseFloat(e.target.value))}
+       placeholder="0.05"
+       size="md"
+       type="number"
+       borderColor="gray.400"
+      />
+     </FormControl>
+     <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
+      <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+       Minimum Campaign Token Balance
+      </FormLabel>
+      <Input
+       value={minCampaignTokenBalance}
+       onChange={(e) => setMinCampaignTokenBalance(parseFloat(e.target.value))}
+       placeholder="0.05"
+       size="md"
+       type="number"
        borderColor="gray.400"
       />
      </FormControl>
@@ -119,8 +196,8 @@ const CreateCampaign = () => {
         fontFamily="sans-serif"
         color="white"
         type="submit"
-        onClick={() => console.log('Sent')}>
-        Create
+        disabled={writeLoading || isContractLoading}>
+        {writeLoading || isContractLoading ? 'Loading...' : 'Create'}
        </Button>
       </motion.div>
      </Box>
