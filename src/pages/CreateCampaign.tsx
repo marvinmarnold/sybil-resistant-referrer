@@ -1,7 +1,7 @@
 import { Box, Button, FormControl, FormLabel, Input, useBreakpointValue, useColorMode, useToast } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { uuid } from 'uuidv4';
+import { uuid } from 'uuidv4'
 import Background from 'components/Background'
 import Container from 'components/layout/Container'
 import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
@@ -13,15 +13,15 @@ const CreateCampaign = () => {
  const [rewardReferrer, setRewardReferrer] = useState<number>()
  const [rewardReferee, setRewardReferee] = useState<number>()
  const [minCampaignTokenBalance, setMinCampaignTokenBalance] = useState<number>()
- const [returnedData,setReturnedData]   = useState<any>()
+ const [returnedData, setReturnedData] = useState<any>()
  const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
  const { colorMode } = useColorMode()
  const toast = useToast()
  const { address } = useAccount()
- const actionid=uuid()
- console.log(' UUID ' , actionid);
+ const actionid = uuid()
+ //  console.log(' UUID ' , actionid);
 
-console.log("Before Write:",typeof(campaignContractAddress),typeof(rewardTokenAddress),typeof(maxReferalsperReferee),typeof(rewardReferrer),typeof(rewardReferee),typeof(minCampaignTokenBalance),typeof(actionid));
+ // console.log("Before Write:",typeof(campaignContractAddress),typeof(rewardTokenAddress),typeof(maxReferalsperReferee),typeof(rewardReferrer),typeof(rewardReferee),typeof(minCampaignTokenBalance),typeof(actionid));
  const {
   config,
   error: prepareError,
@@ -30,44 +30,51 @@ console.log("Before Write:",typeof(campaignContractAddress),typeof(rewardTokenAd
   address: '0x5E9229BE5e4f91F97884C8cE4bcbDb91Dd5C5535',
   abi: CampaignFactoryABI.abi,
   functionName: 'addCampaign',
-  args: [campaignContractAddress,rewardTokenAddress,maxReferalsperReferee,rewardReferrer,rewardReferee,minCampaignTokenBalance,actionid]
+  args: [campaignContractAddress, rewardTokenAddress, maxReferalsperReferee, rewardReferrer, rewardReferee, minCampaignTokenBalance, actionid],
  })
- const { data, isLoading, isError:writeError, write } = useContractWrite(config);
- const { isLoading: isContractLoading, isSuccess:writeSuccess } = useWaitForTransaction({
-    hash: data?.hash,
-   })
+ const { data, isLoading: writeLoading, isError: writeError, write } = useContractWrite(config)
+ const { isLoading: isContractLoading, isSuccess: writeSuccess } = useWaitForTransaction({
+  hash: data?.hash,
+ })
  useEffect(() => {
-    if (writeSuccess) {
-        console.log("Returned Data", data);
-     setReturnedData(data);
-  
-     toast({
-      title: 'Success',
-      description: 'Transaccion submited successfully',
-      status: 'success',
-      duration: 9000,
-      isClosable: true,
-     })
-    }
-   }, [writeSuccess])
-  
-   useEffect(() => {
-    toast({
-     title: 'Error',
-     description: 'There was an error',
-     status: 'error',
-     duration: 9000,
-     isClosable: true,
-    })
-   },[writeError,write])
-  
-   
+  if (writeSuccess) {
+   console.log('Returned Data', data)
+   setReturnedData(data)
+
+   toast({
+    title: 'Success',
+    description: 'Transaction submited successfully',
+    status: 'success',
+    duration: 9000,
+    isClosable: true,
+   })
+  }
+ }, [writeSuccess, data])
+
+ const handleSubmit = async (event: React.FormEvent) => {
+  event.preventDefault()
+
+  try {
+   await write?.()
+  } catch (error) {
+   console.error('Error submitting transaction:', error)
+   toast({
+    title: 'Error',
+    description: 'There was an error submitting the transaction.',
+    status: 'error',
+    duration: 9000,
+    isClosable: true,
+   })
+  }
+ }
+
  return (
   <Container>
    <Background />
 
    <Box position="absolute" top={24} display="flex" justifyContent="center">
     <form
+     onSubmit={handleSubmit}
      style={{
       color: 'gray.400',
       fontFamily: 'Montserrat',
@@ -90,29 +97,35 @@ console.log("Before Write:",typeof(campaignContractAddress),typeof(rewardTokenAd
       Create Campaign
      </h2>
 
-     
-     <div style={{display:"flex",gap:"15px"}}>
-     <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
-      <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
-       Campaign Contract Address
-      </FormLabel>
-      <Input
-       value={campaignContractAddress}
-       onChange={(e) => setCampaignContractAddress(e.target.value)}
-       placeholder="Address"
-       size="md"
-       type="string"
-       backgroundColor={'transparent'}
-       borderColor="gray.400"
-      />
-     </FormControl>
+     <div style={{ display: 'flex', gap: '15px' }}>
+      <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
+       <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+        Campaign Contract Address
+       </FormLabel>
+       <Input
+        value={campaignContractAddress}
+        onChange={(e) => setCampaignContractAddress(e.target.value)}
+        placeholder="Address"
+        size="md"
+        type="string"
+        backgroundColor={'transparent'}
+        borderColor="gray.400"
+       />
+      </FormControl>
 
-     <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
-      <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
-       Reward Token Address
-      </FormLabel>
-      <Input value={rewardTokenAddress} onChange={(e) => setRewardTokenAddress(e.target.value)} placeholder="Address" size="md" type="string" borderColor="gray.400" />
-     </FormControl>
+      <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
+       <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+        Reward Token Address
+       </FormLabel>
+       <Input
+        value={rewardTokenAddress}
+        onChange={(e) => setRewardTokenAddress(e.target.value)}
+        placeholder="Address"
+        size="md"
+        type="string"
+        borderColor="gray.400"
+       />
+      </FormControl>
      </div>
 
      <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
@@ -183,8 +196,8 @@ console.log("Before Write:",typeof(campaignContractAddress),typeof(rewardTokenAd
         fontFamily="sans-serif"
         color="white"
         type="submit"
-      onClick={() => write?.()}>
-        Create
+        disabled={writeLoading || isContractLoading}>
+        {writeLoading || isContractLoading ? 'Loading...' : 'Create'}
        </Button>
       </motion.div>
      </Box>

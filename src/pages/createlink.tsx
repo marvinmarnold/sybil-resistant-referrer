@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
-import { Box, Button, Icon, useToast, Text, useBreakpointValue, useColorMode, Heading, useTheme } from '@chakra-ui/react'
+import { Box, Button, Icon, useToast, Text, useBreakpointValue, useColorMode, Heading, useTheme, Link } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
 import type { NextPage } from 'next'
-import { useAccount, useNetwork, usePublicClient, usePrepareContractWrite, useContractWrite, useWaitForTransaction } from 'wagmi'
+import { useAccount, usePublicClient, usePrepareContractWrite, useContractWrite, useWaitForTransaction } from 'wagmi'
 import { useRecoilValue } from 'recoil'
 import { proofAtom } from 'recoil/worldcoin'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { FiCopy } from 'react-icons/fi'
+import { FiCopy, FiExternalLink } from 'react-icons/fi'
 import { Hash, TransactionReceipt, stringify } from 'viem'
 import 'viem/window'
 
@@ -21,7 +21,7 @@ import referralCampaignContract from '../../contracts/out/ReferralCampaign.sol/R
 const CreateLink: NextPage = () => {
  // TODO: Fetch proof from shared state
  const account = useAccount()
- const proof = useRecoilValue(proofAtom)
+ const stringProof = useRecoilValue(proofAtom)
  const theme = useTheme()
  const { colorMode } = useColorMode()
  const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
@@ -36,6 +36,8 @@ const CreateLink: NextPage = () => {
 
  const { address = '0x...' } = account
 
+ const proof = stringProof.map((value: string) => BigInt(value))
+
  const {
   config,
   error: prepareError,
@@ -43,7 +45,7 @@ const CreateLink: NextPage = () => {
  } = usePrepareContractWrite({
   ...referralCampaignContract,
   functionName: 'addReferrer',
-  address: selectedCampaign ? selectedCampaign.param0 : '0x',
+  address: selectedCampaign?.param0,
  })
 
  const { data, error, isError, write } = useContractWrite(config)
@@ -95,14 +97,6 @@ const CreateLink: NextPage = () => {
    setIsLoading(true)
    if (!selectedCampaign || !account) return
 
-   //    const { request } = await publicClient.simulateContract({
-   //     ...referralCampaignContract,
-   //     functionName: 'addReferrer',
-   //     address: selectedCampaign.param0,
-   //    })
-
-   //    const hash = await walletClient.writeContract(request)
-
    write?.()
    setHash(hash)
   } catch (error) {
@@ -117,17 +111,22 @@ const CreateLink: NextPage = () => {
   }
  }
 
- // Don't show page if there's no WorldId
- // TODO: Link to download Worldcoin App
- // TODO: QR Code for worldcoin app
-
- // FIXME: Disabled until worldcoin works
- //   if (!proof || !address)
- if (!address)
+ if (proof.length === 0 || !address)
   return (
    <Box>
-    <Heading>You must log in with Eth Address and Worldcoin</Heading>
-    <Text>Connect here!</Text>
+    <Heading margin={10}>You must log in with Eth Address and Worldcoin</Heading>
+
+    {/* // Don't show page if there's no WorldId connected  */}
+    {proof.length === 0 && (
+     <Box margin={20}>
+      <Link href="https://worldcoin.org/download-app" isExternal>
+       <Button variant="outline">
+        Download Worldcoin App
+        <Icon as={FiExternalLink} mx="2px" />
+       </Button>
+      </Link>
+     </Box>
+    )}
    </Box>
   )
 
@@ -229,7 +228,7 @@ const CreateLink: NextPage = () => {
       )}
       {isSuccess && (
        <div>
-        Successfully minted your NFT!
+        Successfully claimed your reward!
         <div>
          <a href={`https://etherscan.io/tx/${data?.hash}`}>Etherscan</a>
         </div>

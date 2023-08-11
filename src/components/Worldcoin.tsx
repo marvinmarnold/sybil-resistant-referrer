@@ -4,10 +4,9 @@ import { useState, useEffect } from 'react'
 import { Button } from '@chakra-ui/react'
 import { BigNumber } from 'ethers'
 import { decode } from '@/../../lib/wld'
-// import AirdropAbi from '@/../../abi/Airdrop.abi'
 import { CredentialType, IDKitWidget, ISuccessResult } from '@worldcoin/idkit'
-import { useAccount, useContractWrite, usePrepareContractWrite } from 'wagmi'
-import { useRecoilState } from 'recoil'
+import { useAccount } from 'wagmi'
+import { useRecoilState, useSetRecoilState } from 'recoil'
 
 import { merkleRootAtom, nullifierAtom, proofAtom } from 'recoil/worldcoin'
 
@@ -16,38 +15,30 @@ export default function Worldcoin() {
  const [wcResult, setWcResult] = useState<ISuccessResult | null>(null)
  const [canValidateOnchain, setCanValidateOnchain] = useState<boolean>(false)
 
- const [merkleRoot, setMerkelRoot] = useRecoilState(merkleRootAtom)
- const [nullifier, setNullifier] = useRecoilState(nullifierAtom)
- const [proof, setProof] = useRecoilState(proofAtom)
+ const setMerkelRoot = useSetRecoilState(merkleRootAtom)
+ const setNullifier = useSetRecoilState(nullifierAtom)
+ const [stringProof, setProof] = useRecoilState(proofAtom)
+
+ const proof = stringProof.map((value: string) => BigInt(value))
 
  useEffect(() => {
   setCanValidateOnchain(wcResult != null && address != null)
  }, [wcResult, address])
 
- //  const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDR as `0x${string}`
- //  const { config } = usePrepareContractWrite({
- //   address: contractAddress,
- //   abi: AirdropAbi,
- //   enabled: canValidateOnchain,
- //   functionName: 'claim',
- //   args: [address!, merkleRoot!, nullifier!, proof!],
- //  })
-
- //  const { write: validateOnchain } = useContractWrite(config)
-
  const onSuccess = (success: ISuccessResult) => {
   if (!success) return
 
   const merkleRoot = decode<BigNumber>('uint256', success.merkle_root).toBigInt()
-  setMerkelRoot(merkleRoot)
+  setMerkelRoot(merkleRoot.toString())
 
   const nullifier = decode<BigNumber>('uint256', success.nullifier_hash).toBigInt()
-  setNullifier(nullifier)
+  setNullifier(nullifier.toString())
 
-  const proof = decode<[BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber]>('uint256[8]', success.proof).map(
+  const tempProof = decode<[BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber]>('uint256[8]', success.proof).map(
    (n) => n.toBigInt()
   ) as [bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint]
-  setProof(proof)
+
+  setProof(tempProof.map((value) => value.toString())) // Convert BigInt values to strings to be accepted by localStorage
 
   setWcResult(success)
  }
@@ -56,7 +47,7 @@ export default function Worldcoin() {
  // if (!address) return <ConnectButton />;
 
  // Show WorldId icon if logged in
- if (proof) return <p>🌐</p>
+ if (proof.length !== 0) return <Button isActive={false}>🌐 Connected</Button>
 
  // Verify with Worldcoin
  return (
