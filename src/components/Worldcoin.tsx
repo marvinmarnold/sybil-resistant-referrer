@@ -27,18 +27,27 @@ export default function Worldcoin() {
 
  const onSuccess = (success: ISuccessResult) => {
   if (!success) return
+  console.log("Got Worldcoin response")
+//   console.log(success)
 
   const merkleRoot = decode<BigNumber>('uint256', success.merkle_root).toBigInt()
   setMerkelRoot(merkleRoot.toString())
+  console.log("merkle")
+  console.log(merkleRoot)
 
   const nullifier = decode<BigNumber>('uint256', success.nullifier_hash).toBigInt()
   setNullifier(nullifier.toString())
+  console.log("nullifier")
+  console.log(nullifier)
 
   const tempProof = decode<[BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber]>('uint256[8]', success.proof).map(
    (n) => n.toBigInt()
   ) as [bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint]
 
-  setProof(tempProof.map((value) => value.toString())) // Convert BigInt values to strings to be accepted by localStorage
+  const convertedProof = tempProof.map((value) => value.toString())
+  setProof(convertedProof) // Convert BigInt values to strings to be accepted by localStorage
+    console.log("convertedProof")
+  console.log(convertedProof)
 
   setWcResult(success)
  }
