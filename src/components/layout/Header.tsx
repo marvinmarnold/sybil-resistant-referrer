@@ -1,8 +1,7 @@
 import React from 'react'
-import { Flex, useColorModeValue, Spacer, Heading, Text } from '@chakra-ui/react'
+import { Flex, useColorModeValue, Spacer, Heading } from '@chakra-ui/react'
 import { SITE_NAME } from 'utils/config'
 import { LinkComponent } from './LinkComponent'
-import { ThemeSwitcher } from './ThemeSwitcher'
 import { PassportScore } from './PassportScore'
 import { Web3Button } from '@web3modal/react'
 import { useAccount } from 'wagmi'
@@ -15,9 +14,6 @@ interface Props {
 }
 
 export function Header(props: Props) {
- const { address } = useAccount()
- console.log('🚀 ~ file: Header.tsx:19 ~ Header ~ address:', address)
-
  const className = props.className ?? ''
 
  const ConnectionButtons = () => {
