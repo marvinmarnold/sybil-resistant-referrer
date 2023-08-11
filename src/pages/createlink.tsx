@@ -1,50 +1,120 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Box, Button, Icon, useToast, Text, useBreakpointValue, useColorMode, Heading, useTheme } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
 import type { NextPage } from 'next'
-import { useAccount, useNetwork, useSignMessage } from 'wagmi'
+import { useAccount, useNetwork, usePublicClient, usePrepareContractWrite, useContractWrite, useWaitForTransaction } from 'wagmi'
 import { useRecoilValue } from 'recoil'
 import { proofAtom } from 'recoil/worldcoin'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { FiCopy } from 'react-icons/fi'
+import { Hash, TransactionReceipt, stringify } from 'viem'
+import 'viem/window'
 
 import Container from 'components/layout/Container'
 import CampaignsMenu from 'components/layout/CampaignsMenu'
 import Background from 'components/Background'
+import { CampaignType } from 'types/index'
 
-type Campaign = {
- id: string
- param0: string
- name: string
-}
+import referralCampaignContract from '../../contracts/out/ReferralCampaign.sol/ReferralCampaign.json'
 
 const CreateLink: NextPage = () => {
  // TODO: Fetch proof from shared state
- const { address = '' } = useAccount()
- const theme = useTheme()
+ const account = useAccount()
  const proof = useRecoilValue(proofAtom)
- const [selectedCampaign, setSelectedCampaign] = useState<null | Campaign>(null)
- const [link, setLink] = useState('')
- const toast = useToast()
- const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
+ const theme = useTheme()
  const { colorMode } = useColorMode()
+ const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
+ const toast = useToast()
+ const publicClient = usePublicClient()
 
- const createLink = () => {
-  if (!selectedCampaign) return
+ const [selectedCampaign, setSelectedCampaign] = useState<null | CampaignType>(null)
+ const [link, setLink] = useState('')
+ const [isLoading, setIsLoading] = useState(false)
+ const [hash, setHash] = useState<Hash>()
+ const [receipt, setReceipt] = useState<TransactionReceipt>()
 
-  if (selectedCampaign?.id && address) {
-   const url = `${window.location.host}/retrieve?campaignId=${selectedCampaign?.id}&ref=${address}`
-   setLink(url)
+ const { address = '0x...' } = account
+
+ const {
+  config,
+  error: prepareError,
+  isError: isPrepareError,
+ } = usePrepareContractWrite({
+  ...referralCampaignContract,
+  functionName: 'addReferrer',
+  address: selectedCampaign ? selectedCampaign.param0 : '0x',
+ })
+
+ const { data, error, isError, write } = useContractWrite(config)
+
+ const { isLoading: isContractLoading, isSuccess } = useWaitForTransaction({
+  hash: data?.hash,
+ })
+
+ useEffect(() => {
+  if (isSuccess) {
+   if (selectedCampaign?.id && address) {
+    const url = `${window.location.host}/retrieve?campaignId=${selectedCampaign?.id}&ref=${address}`
+    setLink(url)
+   }
+   setIsLoading(false)
+
+   toast({
+    title: 'Success',
+    description: 'Transaccion submited successfully',
+    status: 'success',
+    duration: 9000,
+    isClosable: true,
+   })
   }
+ }, [isSuccess])
 
+ useEffect(() => {
+  setIsLoading(false)
   toast({
-   title: 'Success',
-   description: 'Link has been created successfully',
-   status: 'success',
+   title: 'Error',
+   description: 'There was an error',
+   status: 'error',
    duration: 9000,
    isClosable: true,
   })
+ }, [isError])
+
+ useEffect(() => {
+  ;(async () => {
+   if (hash) {
+    const receipt = await publicClient.waitForTransactionReceipt({ hash })
+    setReceipt(receipt)
+   }
+  })()
+ }, [hash, publicClient])
+
+ const createLink = async () => {
+  try {
+   setIsLoading(true)
+   if (!selectedCampaign || !account) return
+
+   //    const { request } = await publicClient.simulateContract({
+   //     ...referralCampaignContract,
+   //     functionName: 'addReferrer',
+   //     address: selectedCampaign.param0,
+   //    })
+
+   //    const hash = await walletClient.writeContract(request)
+
+   write?.()
+   setHash(hash)
+  } catch (error) {
+   toast({
+    title: 'Error',
+    description: 'There was an error',
+    status: 'error',
+    duration: 9000,
+    isClosable: true,
+   })
+   setIsLoading(false)
+  }
  }
 
  // Don't show page if there's no WorldId
@@ -136,12 +206,36 @@ const CreateLink: NextPage = () => {
           fontFamily="sans-serif"
           color="white"
           type="submit"
+          isLoading={isLoading}
           onClick={createLink}>
           Create
          </Button>
         </motion.div>
        </Box>
       )}
+     </Box>
+
+     <Box margin={10}>
+      {/* TODO: isContractLoading */}
+      {receipt && (
+       <>
+        <div>
+         Receipt:{' '}
+         <pre>
+          <code>{stringify(receipt, null, 2)}</code>
+         </pre>
+        </div>
+       </>
+      )}
+      {isSuccess && (
+       <div>
+        Successfully minted your NFT!
+        <div>
+         <a href={`https://etherscan.io/tx/${data?.hash}`}>Etherscan</a>
+        </div>
+       </div>
+      )}
+      {(isPrepareError || isError) && <div>Error: {(prepareError || error)?.message}</div>}
      </Box>
     </div>
    </Box>

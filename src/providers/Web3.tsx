@@ -5,7 +5,7 @@ import { ETH_CHAINS, THEME_COLOR_SCHEME } from 'utils/config'
 import { useColorMode } from '@chakra-ui/react'
 import { ReactNode, useEffect, useState } from 'react'
 import { Web3Modal } from '@web3modal/react'
-import { Box, useTheme } from '@chakra-ui/react'
+import { useTheme } from '@chakra-ui/react'
 
 interface Props {
  children: ReactNode

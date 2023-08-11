@@ -4,6 +4,8 @@ import { ChevronDownIcon } from '@chakra-ui/icons'
 import { request, gql } from 'graphql-request'
 import { useState, useEffect } from 'react'
 
+import { CampaignType } from 'types/index'
+
 // param0 is the contract address
 const query = gql`
  {
@@ -20,7 +22,7 @@ const CampaignsMenu = ({ selectedCampaign, setSelectedCampaign }: any) => {
  const { chain } = useNetwork()
  const theme = useTheme()
  const [currentEndpoint, setCurrentEndpoint] = useState('')
- const [campaigns, setCampaigns] = useState<Campaign[] | []>([])
+ const [campaigns, setCampaigns] = useState<CampaignType[] | []>([])
 
  useEffect(() => {
   // TODO: Change depending on the chain

@@ -36,7 +36,11 @@ cast send \
 -> transactionHash         0x2a72ea1e95880b814358f3c0af4c69f89e03d99b793a126269f1bb371309677a
 ```
 
-5. Determine the new campaign address. There are many ways to do this. I pulled up the transaction on [OP Goerli scan](https://goerli-optimism.etherscan.io/tx/0x2a72ea1e95880b814358f3c0af4c69f89e03d99b793a126269f1bb371309677a#eventlog). The created contract in this case is `0x39e7a81f51355b8deb4a18f00fcf4ac9ec8b6b5a`.
+5. Determine the new campaign address. There are many ways to do this. I pulled up the transaction on [OP Goerli scan](https://goerli-optimism.etherscan.io/tx/0x2a72ea1e95880b814358f3c0af4c69f89e03d99b793a126269f1bb371309677a#eventlog).
+We can also check out campaigns created on The Graph's [OP Goerli playground subgraph](https://thegraph.com/studio/subgraph/refer-optimism-goerli/playground)
+
+ The created contract in this case is `0x39e7a81f51355b8deb4a18f00fcf4ac9ec8b6b5a`.
+
 
 6. Register as referrer (0x1635b64e3f897C4E3E5bA9972ea4618ee682dADE)
 ```
