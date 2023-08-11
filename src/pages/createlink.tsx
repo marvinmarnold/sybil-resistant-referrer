@@ -1,9 +1,8 @@
-import { useState } from 'react'
-import { Box, Button, Icon, useToast, Select, useBreakpointValue, useColorMode, Heading } from '@chakra-ui/react'
+import { useState, useEffect } from 'react'
+import { Box, Button, Icon, useToast, Select, useBreakpointValue, useColorMode, Heading, useTheme } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
 import type { NextPage } from 'next'
-import Head from 'next/head'
 import { useAccount, useNetwork, useSignMessage } from 'wagmi'
 import { useRecoilValue } from 'recoil'
 import { proofAtom } from 'recoil/worldcoin'
@@ -11,45 +10,65 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { FiCopy } from 'react-icons/fi'
 import { request, gql } from 'graphql-request'
 
-import campaigns from 'utils/campaigns'
 import Container from 'components/layout/Container'
+import CampaignsMenu from 'components/layout/CampaignsMenu'
 import Background from 'components/Background'
 
+// param0 is the contract address
 const query = gql`
  {
   campaignCreateds {
    id
-   manager
-   campaignAddress
+   param0
+   param1
+   blockTimestamp
   }
  }
 `
 
+type Campaign = {
+ id: string
+ param0: string
+ name: string
+}
+
 const CreateLink: NextPage = () => {
  // TODO: Fetch proof from shared state
  const { address = '' } = useAccount()
+ const theme = useTheme()
  const proof = useRecoilValue(proofAtom)
- const [selectedCampaign, setSelectedCampaign] = useState<null | string>(null)
+ const [selectedCampaign, setSelectedCampaign] = useState<null | Campaign>(null)
  const [link, setLink] = useState('')
  const toast = useToast()
  const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
  const { colorMode } = useColorMode()
  const { chain } = useNetwork()
+ const [currentEndpoint, setCurrentEndpoint] = useState('')
+ const [campaigns, setCampaigns] = useState<Campaign[] | []>([])
 
- //  useEffect(() => {
- //   // TODO: Change depending on the chain
- //   const endpoint = 'https://api.studio.thegraph.com/query/18941/refer-optimism-goerli/version/latest'
- //   setCurrentEndpoint(endpoint)
- //  }, [chain])
+ console.log('🚀 ~ file: createlink.tsx:42 ~ link:', link)
+ useEffect(() => {
+  // TODO: Change depending on the chain
+  const endpoint = 'https://api.studio.thegraph.com/query/18941/refer-optimism-goerli/version/latest'
+  setCurrentEndpoint(endpoint)
+ }, [chain])
 
- //  request(currentEndpoint, query).then((data) => console.log(data))
+ useEffect(() => {
+  ;(async () => {
+   try {
+    const resp: any = await request(currentEndpoint, query)
+    setCampaigns(resp?.campaignCreateds)
+   } catch (error) {
+    console.error(error)
+   }
+  })()
+ }, [currentEndpoint])
 
  const createLink = () => {
   if (!selectedCampaign) return
 
-  const campaign = campaigns.find((c) => c.campaignName === selectedCampaign)
-  if (campaign?.campaignId && address) {
-   const url = `${window.location.host}/retrieve?campaignId=${campaign?.campaignId}&ref=${address}`
+  if (selectedCampaign?.id && address) {
+   const url = `${window.location.host}/retrieve?campaignId=${selectedCampaign?.id}&ref=${address}`
    setLink(url)
   }
 
@@ -103,20 +122,12 @@ const CreateLink: NextPage = () => {
       Create Referral Link
      </h2>
 
-     <Select placeholder="Select campaign" onChange={(e) => setSelectedCampaign(e.target.value)}>
-      {campaigns.map((campaign) => (
-       <option key={campaign.campaignId} value={campaign.campaignName}>
-        {campaign.campaignName}
-       </option>
-      ))}
-     </Select>
-
      <Box display="flex" justifyContent="center" mt={5}>
       {link ? (
        <Box>
-        <Box>
+        <Box margin={5}>
          <a href={link}>
-          <Heading>
+          <Heading as="h4" size="md">
            {link.slice(0, 15)}...{link.slice(-10)}
           </Heading>
          </a>
@@ -143,22 +154,26 @@ const CreateLink: NextPage = () => {
         </Box>
        </Box>
       ) : (
-       <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
-        <Button
-         backgroundColor="purple.300"
-         variant="gradient"
-         borderRadius="10px"
-         border={'0.5px solid #312E2A'}
-         boxShadow={'2.8px 3.8px 0px 0px #312E2A'}
-         py={2}
-         px={12}
-         fontFamily="sans-serif"
-         color="white"
-         type="submit"
-         onClick={createLink}>
-         Create
-        </Button>
-       </motion.div>
+       <Box>
+        <CampaignsMenu campaigns={campaigns} selectedCampaign={selectedCampaign} setSelectedCampaign={setSelectedCampaign} />
+
+        <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+         <Button
+          backgroundColor="purple.300"
+          variant="gradient"
+          borderRadius="10px"
+          border={'0.5px solid #312E2A'}
+          boxShadow={'2.8px 3.8px 0px 0px #312E2A'}
+          py={2}
+          px={12}
+          fontFamily="sans-serif"
+          color="white"
+          type="submit"
+          onClick={createLink}>
+          Create
+         </Button>
+        </motion.div>
+       </Box>
       )}
      </Box>
     </div>
