@@ -8,6 +8,7 @@ import { Web3Button } from '@web3modal/react'
 import { useAccount } from 'wagmi'
 
 import Worldcoin from 'components/Worldcoin'
+import ChainSelector from 'components/ChainSelector'
 
 interface Props {
  className?: string
@@ -15,15 +16,16 @@ interface Props {
 
 export function Header(props: Props) {
  const { address } = useAccount()
+ console.log('🚀 ~ file: Header.tsx:19 ~ Header ~ address:', address)
 
  const className = props.className ?? ''
 
  const ConnectionButtons = () => {
   return (
-   <div>
+   <>
     <Web3Button icon="hide" label="Connect Wallet" />
     <Worldcoin />
-   </div>
+   </>
   )
  }
 
@@ -36,20 +38,12 @@ export function Header(props: Props) {
    </LinkComponent>
 
    <Spacer />
-   <Flex>
-    <LinkComponent href="/CreateCampaign">
-     <Text>Create Campaign</Text>
-    </LinkComponent>
-
-    <LinkComponent href="/generateReferrals">
-     <Text>Generate Referrals</Text>
-    </LinkComponent>
-   </Flex>
-   <Spacer />
    <Flex alignItems="center" gap={4}>
     <PassportScore />
     <ConnectionButtons />
-    <ThemeSwitcher />
+    {/* TODO: Add chain selector */}
+    {/* <ChainSelector /> */}
+    {/* <ThemeSwitcher /> */}
    </Flex>
   </Flex>
  )
