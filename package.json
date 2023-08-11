@@ -23,6 +23,8 @@
   "dayjs": "^1.11.7",
   "ethers": "v5",
   "framer-motion": "^8.0.2",
+  "graphql": "^16.7.1",
+  "graphql-request": "^6.1.0",
   "iron-session": "^6.3.1",
   "next": "^13.4.3",
   "next-seo": "^5.15.0",

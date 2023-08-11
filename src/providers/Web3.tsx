@@ -5,6 +5,7 @@ import { ETH_CHAINS, THEME_COLOR_SCHEME } from 'utils/config'
 import { useColorMode } from '@chakra-ui/react'
 import { ReactNode, useEffect, useState } from 'react'
 import { Web3Modal } from '@web3modal/react'
+import { Box, useTheme } from '@chakra-ui/react'
 
 interface Props {
  children: ReactNode
@@ -27,6 +28,7 @@ const ethereumClient = new EthereumClient(wagmiConfig, chains)
 
 export function Web3Provider(props: Props) {
  const { colorMode } = useColorMode()
+ const theme = useTheme()
  const [ready, setReady] = useState(false)
 
  useEffect(() => {
@@ -42,7 +44,7 @@ export function Web3Provider(props: Props) {
     ethereumClient={ethereumClient}
     themeMode={colorMode}
     themeVariables={{
-     '--w3m-accent-color': THEME_COLOR_SCHEME,
+     '--w3m-accent-color': theme.colors[THEME_COLOR_SCHEME ?? 'black'][500],
     }}
    />
   </>

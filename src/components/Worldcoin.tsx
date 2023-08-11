@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Button } from '@chakra-ui/react'
 import { BigNumber } from 'ethers'
 import { decode } from '@/../../lib/wld'
-import AirdropAbi from '@/../../abi/Airdrop.abi'
+// import AirdropAbi from '@/../../abi/Airdrop.abi'
 import { CredentialType, IDKitWidget, ISuccessResult } from '@worldcoin/idkit'
 import { useAccount, useContractWrite, usePrepareContractWrite } from 'wagmi'
 import { useRecoilState } from 'recoil'
@@ -24,16 +24,16 @@ export default function Worldcoin() {
   setCanValidateOnchain(wcResult != null && address != null)
  }, [wcResult, address])
 
- const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDR as `0x${string}`
- const { config } = usePrepareContractWrite({
-  address: contractAddress,
-  abi: AirdropAbi,
-  enabled: canValidateOnchain,
-  functionName: 'claim',
-  args: [address!, merkleRoot!, nullifier!, proof!],
- })
+ //  const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDR as `0x${string}`
+ //  const { config } = usePrepareContractWrite({
+ //   address: contractAddress,
+ //   abi: AirdropAbi,
+ //   enabled: canValidateOnchain,
+ //   functionName: 'claim',
+ //   args: [address!, merkleRoot!, nullifier!, proof!],
+ //  })
 
- const { write: validateOnchain } = useContractWrite(config)
+ //  const { write: validateOnchain } = useContractWrite(config)
 
  const onSuccess = (success: ISuccessResult) => {
   if (!success) return
@@ -66,7 +66,7 @@ export default function Worldcoin() {
    signal={address}
    credential_types={[CredentialType.Orb, CredentialType.Phone]}
    app_id={process.env.NEXT_PUBLIC_APP_ID!}>
-   {({ open }) => <Button onClick={open}>Verify with world id</Button>}
+   {({ open }) => <Button onClick={open}>🌐 Verify World Id</Button>}
   </IDKitWidget>
  )
 }
