@@ -93,7 +93,6 @@ contract ReferralCampaign is Ownable,Initializable {
         require(_rewardTokenContract != address(0), "_rewardTokenContract must be defined");
         // don't hardcode to ERC20
         rewardToken = IERC20Or721(_rewardTokenContract);
-        rewardToken.approve(address(this), type(uint256).max);
         campaignManager = _manager;
         campaignTokenContract = _campaignTokenContract;
         rewardTokenContract = _rewardTokenContract;
@@ -102,7 +101,7 @@ contract ReferralCampaign is Ownable,Initializable {
         rewardReferee = _rewardReferee;
         minCampaignTokenBalance = _minCampaignTokenBalance;
         externalNullifier = abi.encodePacked(abi.encodePacked(_appId).hashToField(), _actionId).hashToField();
-        worldId=_worldId;
+        worldId = _worldId;
     }
 
     /// @param signal An arbitrary input from the user, usually the user's wallet address (check README for further details)
@@ -133,6 +132,7 @@ contract ReferralCampaign is Ownable,Initializable {
     function addReferrer(address signal, uint256 root, uint256 nullifierHash, uint256[8] calldata proof) public {
         //@dev Instead of require, verification to be done by worldcoin
         require(numReferralsByReferrer[msg.sender] == 0, "Referrer already registered.");
+        // rewardToken.transferFrom(msg.sender, address(this), maxReferralsPerReferrer * (rewardReferrer + rewardReferee));
 
         // verifyAndExecute(signal, root, nullifierHash, proof);
 
@@ -143,7 +143,7 @@ contract ReferralCampaign is Ownable,Initializable {
 
     //@dev To accept a referral, the referee will call this function
     //@params _referrer to link the referral
-    function acceptReferral(address _referrer,address signal, uint256 root, uint256 nullifierHash, uint256[8] calldata proof) public {
+    function acceptReferral(address _referrer, address signal, uint256 root, uint256 nullifierHash, uint256[8] calldata proof) public {
 
          address referee = msg.sender;
 
