@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Box, Button, Icon, useToast, Select, useBreakpointValue, useColorMode, Heading, useTheme } from '@chakra-ui/react'
+import { useState } from 'react'
+import { Box, Button, Icon, useToast, Text, useBreakpointValue, useColorMode, Heading, useTheme } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
 import type { NextPage } from 'next'
@@ -8,23 +8,10 @@ import { useRecoilValue } from 'recoil'
 import { proofAtom } from 'recoil/worldcoin'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { FiCopy } from 'react-icons/fi'
-import { request, gql } from 'graphql-request'
 
 import Container from 'components/layout/Container'
 import CampaignsMenu from 'components/layout/CampaignsMenu'
 import Background from 'components/Background'
-
-// param0 is the contract address
-const query = gql`
- {
-  campaignCreateds {
-   id
-   param0
-   param1
-   blockTimestamp
-  }
- }
-`
 
 type Campaign = {
  id: string
@@ -42,27 +29,6 @@ const CreateLink: NextPage = () => {
  const toast = useToast()
  const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
  const { colorMode } = useColorMode()
- const { chain } = useNetwork()
- const [currentEndpoint, setCurrentEndpoint] = useState('')
- const [campaigns, setCampaigns] = useState<Campaign[] | []>([])
-
- console.log('🚀 ~ file: createlink.tsx:42 ~ link:', link)
- useEffect(() => {
-  // TODO: Change depending on the chain
-  const endpoint = 'https://api.studio.thegraph.com/query/18941/refer-optimism-goerli/version/latest'
-  setCurrentEndpoint(endpoint)
- }, [chain])
-
- useEffect(() => {
-  ;(async () => {
-   try {
-    const resp: any = await request(currentEndpoint, query)
-    setCampaigns(resp?.campaignCreateds)
-   } catch (error) {
-    console.error(error)
-   }
-  })()
- }, [currentEndpoint])
 
  const createLink = () => {
   if (!selectedCampaign) return
@@ -86,13 +52,14 @@ const CreateLink: NextPage = () => {
  // TODO: QR Code for worldcoin app
 
  // FIXME: Disabled until worldcoin works
- //  if (!proof || !address)
- //   return (
- //    <Box>
- //     <Heading>You must log in with Eth Address and Worldcoin</Heading>
- //     <Text>Connect here!</Text>
- //    </Box>
- //   )
+ //   if (!proof || !address)
+ if (!address)
+  return (
+   <Box>
+    <Heading>You must log in with Eth Address and Worldcoin</Heading>
+    <Text>Connect here!</Text>
+   </Box>
+  )
 
  return (
   <Container>
@@ -155,7 +122,7 @@ const CreateLink: NextPage = () => {
        </Box>
       ) : (
        <Box>
-        <CampaignsMenu campaigns={campaigns} selectedCampaign={selectedCampaign} setSelectedCampaign={setSelectedCampaign} />
+        <CampaignsMenu selectedCampaign={selectedCampaign} setSelectedCampaign={setSelectedCampaign} />
 
         <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
          <Button
