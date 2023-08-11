@@ -1,73 +1,22 @@
-import {
- Box,
- Button,
- FormControl,
- FormLabel,
- Input,
- NumberDecrementStepper,
- NumberIncrementStepper,
- NumberInput,
- NumberInputField,
- NumberInputStepper,
- Radio,
- RadioGroup,
- Select,
- Stack,
- useColorModeValue,
-} from '@chakra-ui/react'
+import { Box, Button, FormControl, FormLabel, Input, useBreakpointValue, useColorMode } from '@chakra-ui/react'
 import React, { useState } from 'react'
-import styled from '@emotion/styled'
 import { motion } from 'framer-motion'
 
-const Container = styled(Box)`
- background-color: gray.50;
- height: 100vh;
- display: flex;
- align-items: center;
- justify-content: center;
- padding: 0 16px;
-`
+import Background from 'components/Background'
+import Container from 'components/layout/Container'
 
-const Blob = styled(Box)`
- position: absolute;
- width: 352px;
- height: 352px;
- border-radius: 50%;
- mix-blend-mode: multiply;
- filter: blur(20px);
- opacity: 0.5;
- animation: blob 8s infinite;
-`
-
-const keyframes = `
-  @keyframes blob {
-    0% {
-      transform: translate(0px, 0px) scale(1);
-    }
-    33% {
-      transform: translate(30px, 40px) scale(1.9);
-    }
-    66% {
-      transform: translate(20px, 20px) scale(0.8);
-    }
-    100% {
-      transform: translate(0px, 0px) scale(1);
-    }
-  }
-`
 const CreateCampaign = () => {
  const [contractAddress, setContractAddress] = useState('')
  const [abi, setAbi] = useState('')
  const [functionToTrack, setFunctionToTrack] = useState('')
  const [referralNumber, setReferralNumber] = useState('')
  const [referredReward, setReferredReward] = useState('')
+ const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
+ const { colorMode } = useColorMode()
+
  return (
   <Container>
-   <style>{keyframes}</style>
-   <Box position="relative" width="100%" maxWidth="lg">
-    <Blob bottom="-85px" left="-100px" backgroundColor="purple.300" style={{ animationDelay: '0s' }}></Blob>
-    <Blob bottom="-85px" right="-100px" backgroundColor="yellow.300" style={{ animationDelay: '4s' }}></Blob>
-   </Box>
+   <Background />
 
    <Box position="absolute" top={24} display="flex" justifyContent="center">
     <form
@@ -76,8 +25,8 @@ const CreateCampaign = () => {
       fontFamily: 'Montserrat',
       padding: '36px',
       height: 'fit',
-      width: '600px',
-      backgroundColor: 'rgba(0, 0, 0, 0.05)',
+      width: formWidth,
+      backgroundColor: colorMode === 'dark' ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.7)',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
       backdropFilter: 'blur(70px)',
       borderRadius: '40px',

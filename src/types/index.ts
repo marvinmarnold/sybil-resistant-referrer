@@ -45,3 +45,9 @@ export interface PassportStamp {
   }
  }
 }
+
+export interface CampaignType {
+ id: string
+ param0: `0x${string}`
+ name: string
+}
