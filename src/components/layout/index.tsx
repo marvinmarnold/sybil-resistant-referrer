@@ -13,13 +13,13 @@ export function Layout(props: Props) {
   <Box margin="0 auto" minH="100vh">
    <Header />
 
-   <Container maxW="container.lg">{props.children}</Container>
+   <Container maxW="container.lg" style={{ overflowX: 'hidden' }}>
+    {props.children}
+   </Container>
 
    <Box position="fixed" bottom={2} right={2}>
     <NetworkStatus />
    </Box>
-
-   <Footer />
   </Box>
  )
 }

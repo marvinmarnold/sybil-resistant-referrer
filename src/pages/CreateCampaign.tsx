@@ -15,17 +15,22 @@ const CreateCampaign = () => {
  const [minCampaignTokenBalance, setMinCampaignTokenBalance] = useState<number>()
  const [returnedData, setReturnedData] = useState<any>()
  const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
+ const [isLoading, setIsLoading] = useState<boolean>()
  const { colorMode } = useColorMode()
  const toast = useToast()
  const { address } = useAccount()
- const actionid = uuid()
- //  console.log(' UUID ' , actionid);
+ let actionid
+ useEffect(() => {
+  actionid = uuid()
+  console.log(' UUID ', actionid)
+ }, [])
 
  // console.log("Before Write:",typeof(campaignContractAddress),typeof(rewardTokenAddress),typeof(maxReferalsperReferee),typeof(rewardReferrer),typeof(rewardReferee),typeof(minCampaignTokenBalance),typeof(actionid));
  const {
   config,
   error: prepareError,
   isError: isPrepareError,
+  isSuccess: prepareSuccess,
  } = usePrepareContractWrite({
   address: '0x5E9229BE5e4f91F97884C8cE4bcbDb91Dd5C5535',
   abi: CampaignFactoryABI.abi,
@@ -36,6 +41,7 @@ const CreateCampaign = () => {
  const { isLoading: isContractLoading, isSuccess: writeSuccess } = useWaitForTransaction({
   hash: data?.hash,
  })
+
  useEffect(() => {
   if (writeSuccess) {
    console.log('Returned Data', data)
@@ -51,20 +57,20 @@ const CreateCampaign = () => {
   }
  }, [writeSuccess, data])
 
- const handleSubmit = async (event: React.FormEvent) => {
-  event.preventDefault()
-
+ const CreateCampaign = async () => {
   try {
-   await write?.()
+   setIsLoading(true)
+   if (prepareSuccess) write?.()
+   setIsLoading(false)
   } catch (error) {
-   console.error('Error submitting transaction:', error)
    toast({
     title: 'Error',
-    description: 'There was an error submitting the transaction.',
+    description: 'There was an error',
     status: 'error',
     duration: 9000,
     isClosable: true,
    })
+   setIsLoading(false)
   }
  }
 
@@ -74,7 +80,6 @@ const CreateCampaign = () => {
 
    <Box position="absolute" top={24} display="flex" justifyContent="center">
     <form
-     onSubmit={handleSubmit}
      style={{
       color: 'gray.400',
       fontFamily: 'Montserrat',
@@ -195,7 +200,7 @@ const CreateCampaign = () => {
         px={12}
         fontFamily="sans-serif"
         color="white"
-        type="submit"
+        onClick={CreateCampaign}
         disabled={writeLoading || isContractLoading}>
         {writeLoading || isContractLoading ? 'Loading...' : 'Create'}
        </Button>
