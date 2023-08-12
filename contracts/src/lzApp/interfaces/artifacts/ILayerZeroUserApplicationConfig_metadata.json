@@ -1,0 +1,118 @@
+{
+	"compiler": {
+		"version": "0.8.19+commit.7dd6d404"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_srcChainId",
+						"type": "uint16"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_srcAddress",
+						"type": "bytes"
+					}
+				],
+				"name": "forceResumeReceive",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_version",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint16",
+						"name": "_chainId",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_configType",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_config",
+						"type": "bytes"
+					}
+				],
+				"name": "setConfig",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_version",
+						"type": "uint16"
+					}
+				],
+				"name": "setReceiveVersion",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_version",
+						"type": "uint16"
+					}
+				],
+				"name": "setSendVersion",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lzApp/interfaces/ILayerZeroUserApplicationConfig.sol": "ILayerZeroUserApplicationConfig"
+		},
+		"evmVersion": "paris",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lzApp/interfaces/ILayerZeroUserApplicationConfig.sol": {
+			"keccak256": "0x2608306b39bf0d3035b924dd48ecbb673c9b44059dacb132f9c65059b942fb9e",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://7f0d82aea65506113784dc68d20066e799b99e3d18f0e0187fe2d1a3aa6ce56f",
+				"dweb:/ipfs/QmUZQVLYXevQuv8uJrw29oZ3VC4K8Gw9v1ssxaRZQzLULU"
+			]
+		}
+	},
+	"version": 1
+}

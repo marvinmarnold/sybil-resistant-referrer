@@ -1,0 +1,45 @@
+{
+	"compiler": {
+		"version": "0.8.19+commit.7dd6d404"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lzApp/util/ExcessivelySafeCall.sol": "ExcessivelySafeCall"
+		},
+		"evmVersion": "paris",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lzApp/util/ExcessivelySafeCall.sol": {
+			"keccak256": "0xe0f9373c55ec09caee9b20b22291f0bde6dd22a5cf48bd1b67cfb35b1580468c",
+			"license": "MIT OR Apache-2.0",
+			"urls": [
+				"bzz-raw://831108bbffd3eb63bef63eeebf421d699b6973d0c73b6ed92fd4a68c6f834901",
+				"dweb:/ipfs/QmbWLv8rUEkkLuFGMTRqum67jBsMAtv7wjFzDRDfDLfcB4"
+			]
+		}
+	},
+	"version": 1
+}

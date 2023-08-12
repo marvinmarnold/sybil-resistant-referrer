@@ -1,0 +1,132 @@
+{
+	"deploy": {
+		"VM:-": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"main:1": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"ropsten:3": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"rinkeby:4": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"kovan:42": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"goerli:5": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"Custom": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		}
+	},
+	"data": {
+		"bytecode": {
+			"functionDebugData": {},
+			"generatedSources": [],
+			"linkReferences": {},
+			"object": "",
+			"opcodes": "",
+			"sourceMap": ""
+		},
+		"deployedBytecode": {
+			"functionDebugData": {},
+			"generatedSources": [],
+			"immutableReferences": {},
+			"linkReferences": {},
+			"object": "",
+			"opcodes": "",
+			"sourceMap": ""
+		},
+		"gasEstimates": null,
+		"methodIdentifiers": {
+			"forceResumeReceive(uint16,bytes)": "42d65a8d",
+			"setConfig(uint16,uint16,uint256,bytes)": "cbed8b9c",
+			"setReceiveVersion(uint16)": "10ddb137",
+			"setSendVersion(uint16)": "07e0db17"
+		}
+	},
+	"abi": [
+		{
+			"inputs": [
+				{
+					"internalType": "uint16",
+					"name": "_srcChainId",
+					"type": "uint16"
+				},
+				{
+					"internalType": "bytes",
+					"name": "_srcAddress",
+					"type": "bytes"
+				}
+			],
+			"name": "forceResumeReceive",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint16",
+					"name": "_version",
+					"type": "uint16"
+				},
+				{
+					"internalType": "uint16",
+					"name": "_chainId",
+					"type": "uint16"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_configType",
+					"type": "uint256"
+				},
+				{
+					"internalType": "bytes",
+					"name": "_config",
+					"type": "bytes"
+				}
+			],
+			"name": "setConfig",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint16",
+					"name": "_version",
+					"type": "uint16"
+				}
+			],
+			"name": "setReceiveVersion",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint16",
+					"name": "_version",
+					"type": "uint16"
+				}
+			],
+			"name": "setSendVersion",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		}
+	]
+}
