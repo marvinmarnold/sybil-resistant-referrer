@@ -34,7 +34,7 @@ const CreateCampaign = () => {
  const bigIntRewardReferee = rewardReferee ? parseUnits(rewardReferee, contractDecimals) : 0
  const bigIntMinCampaignTokenBalance = minCampaignTokenBalance ? parseUnits(minCampaignTokenBalance, contractDecimals) : 0
 
- const { config, error, isError, isSuccess } = usePrepareContractWrite({
+ const { config, error, isError } = usePrepareContractWrite({
   ...CampaignFactory,
   functionName: 'addCampaign',
   address: process.env.NEXT_PUBLIC_CAMPAIGN_FACTORY_ADDR_OP as `0x${string}`,
@@ -105,7 +105,7 @@ const CreateCampaign = () => {
       borderRadius: '40px',
       border: '1px solid rgba(179, 186, 209, 0.5)',
      }}>
-     {isSuccess ? (
+     {writeSuccess ? (
       // TODO: Add campaign ref to the link
       <SuccessComponent link={'http://localhost:3000/createlink'} data={data} message="Successfully created a campaign!" />
      ) : (

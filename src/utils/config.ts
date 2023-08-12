@@ -34,7 +34,7 @@ export const THEME_CONFIG = {
 export const SOCIAL_TWITTER = 'refer'
 export const SOCIAL_GITHUB = 'refer'
 
-export const ETH_CHAINS = [mainnet, zoraTestnet, optimismGoerli, baseGoerli, modeTestnet]
+export const ETH_CHAINS = [mainnet, optimismGoerli, baseGoerli, zoraTestnet, modeTestnet]
 
 export const SERVER_SESSION_SETTINGS = {
  cookieName: SITE_NAME,
