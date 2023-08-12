@@ -63,7 +63,7 @@ const Worldcoin = ({ proof, setProof, setNullifier, setRoot, action }: WorldType
   <IDKitWidget
    action={action}
    onSuccess={onSuccess}
-   signal={address}
+   signal="0x414afCBd5C0Cf1babe79eF1C5d34C77Ba2F991ba"
    credential_types={[CredentialType.Orb, CredentialType.Phone]}
    app_id={process.env.NEXT_PUBLIC_APP_ID!}>
    {({ open }) => (

@@ -132,9 +132,8 @@ contract ReferralCampaign is Ownable,Initializable {
     function addReferrer(address signal, uint256 root, uint256 nullifierHash, uint256[8] calldata proof) public {
         //@dev Instead of require, verification to be done by worldcoin
         require(numReferralsByReferrer[msg.sender] == 0, "Referrer already registered.");
-        // rewardToken.transferFrom(msg.sender, address(this), maxReferralsPerReferrer * (rewardReferrer + rewardReferee));
 
-        // verifyAndExecute(signal, root, nullifierHash, proof);
+        verifyAndExecute(signal, root, nullifierHash, proof);
 
         // @dev Initiating the referrer to one to distinguish between already registered with no referees from the ones who have not registered.
         numReferralsByReferrer[msg.sender] = 1;
@@ -155,7 +154,7 @@ contract ReferralCampaign is Ownable,Initializable {
         uint256 senderBalance = IERC20Or721(campaignTokenContract).balanceOf(msg.sender);
         require(senderBalance >= minCampaignTokenBalance, "Referree does not have enough campaign tokens to qualify.");
 
-        // verifyAndExecute(signal, root, nullifierHash, proof);
+        verifyAndExecute(signal, root, nullifierHash, proof);
 
         numReferralsByReferrer[_referrer]++;
 
