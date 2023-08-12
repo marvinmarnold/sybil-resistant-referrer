@@ -22,8 +22,9 @@ const CreateCampaign = () => {
  const [minCampaignTokenBalance, setMinCampaignTokenBalance] = useState<string>()
  const [returnedData, setReturnedData] = useState<any>()
  const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
-
+ const [isLoading, setIsLoading] = useState<boolean>()
  const { address } = useAccount()
+
  const actionid = uuid()
 
  const bigIntMaxReferalsperReferee = maxReferalsperReferee ? parseUnits(maxReferalsperReferee, contractDecimals) : 0
