@@ -1,7 +1,7 @@
 import { Box, Button, FormControl, FormLabel, Input, useBreakpointValue, useColorMode, useToast, FormHelperText } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { uuid } from 'uuidv4'
+import { v4 as uuidv4 } from 'uuid'
 import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 import { parseUnits } from 'viem'
 
@@ -27,7 +27,7 @@ const CreateCampaign = () => {
  const [isLoading, setIsLoading] = useState<boolean>(false)
 
  const { address } = useAccount()
- const actionid = uuid()
+ const actionid = uuidv4()
 
  const bigIntMaxReferalsperReferee = maxReferalsperReferee ? parseUnits(maxReferalsperReferee, contractDecimals) : 0
  const bigIntRewardReferer = rewardReferrer ? parseUnits(rewardReferrer, contractDecimals) : 0
