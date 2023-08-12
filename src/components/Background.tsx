@@ -33,7 +33,7 @@ const Background = () => {
  return (
   <>
    <style>{keyframes}</style>
-   <Box position="relative" width="100%" maxWidth="lg">
+   <Box position="absolute" width="100%" maxWidth="lg">
     <Blob bottom="-85px" left="-100px" backgroundColor="purple.300" style={{ animationDelay: '0s' }}></Blob>
     <Blob bottom="-85px" right="-100px" backgroundColor="yellow.300" style={{ animationDelay: '4s' }}></Blob>
    </Box>

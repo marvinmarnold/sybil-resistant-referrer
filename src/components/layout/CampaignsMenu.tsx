@@ -18,7 +18,7 @@ const query = gql`
  }
 `
 
-const CampaignsMenu = ({ selectedCampaign, setSelectedCampaign }: any) => {
+const CampaignsMenu = ({ selectedCampaign, setSelectedCampaign, isActive }: any) => {
  const { chain } = useNetwork()
  const theme = useTheme()
  const [currentEndpoint, setCurrentEndpoint] = useState('')
@@ -46,7 +46,7 @@ const CampaignsMenu = ({ selectedCampaign, setSelectedCampaign }: any) => {
    <Menu>
     {({ isOpen }) => (
      <>
-      <MenuButton as={Button} rightIcon={<ChevronDownIcon />} borderRadius="md">
+      <MenuButton as={Button} rightIcon={<ChevronDownIcon />} borderRadius="md" disabled={!isActive}>
        {selectedCampaign?.id ? selectedCampaign?.param0 : 'Select Campaign'}
       </MenuButton>
       <MenuList border="none" boxShadow="sm" borderRadius="md" mt={1} zIndex={1}>
