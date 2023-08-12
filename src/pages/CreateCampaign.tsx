@@ -27,7 +27,7 @@ const CreateCampaign = () => {
   error: prepareError,
   isError: isPrepareError,
  } = usePrepareContractWrite({
-  address: '0x5E9229BE5e4f91F97884C8cE4bcbDb91Dd5C5535',
+  address: process.env.NEXT_PUBLIC_CAMPAIGN_FACTORY_ADDR! as `0x${string}`,
   abi: CampaignFactoryABI.abi,
   functionName: 'addCampaign',
   args: [campaignContractAddress, rewardTokenAddress, maxReferalsperReferee, rewardReferrer, rewardReferee, minCampaignTokenBalance, actionid],
