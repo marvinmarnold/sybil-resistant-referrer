@@ -15,16 +15,17 @@ const CreateCampaign = () => {
 
  const [campaignContractAddress, setCampaignContractAddress] = useState('')
  const [rewardTokenAddress, setRewardTokenAddress] = useState('')
- const [maxReferalsperReferee, setMaxReferralsPerReferee] = useState<string>()
- const [rewardReferrer, setRewardReferrer] = useState<string | undefined>()
- const [rewardReferee, setRewardReferee] = useState<string | undefined>()
- const [contractDecimals, setContractDecimals] = useState<number>(18)
+ const [maxReferalsperReferee, setMaxReferralsPerReferee] = useState<string>('')
+ const [rewardReferrer, setRewardReferrer] = useState<string>('')
+ const [rewardReferee, setRewardReferee] = useState<string>('')
+ const [contractDecimals, setContractDecimals] = useState<number>(10)
+ const [args, setArg] = useState<any[]>([])
  const [minCampaignTokenBalance, setMinCampaignTokenBalance] = useState<string>()
  const [returnedData, setReturnedData] = useState<any>()
  const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
- const [isLoading, setIsLoading] = useState<boolean>()
- const { address } = useAccount()
+ const [isLoading, setIsLoading] = useState<boolean>(false)
 
+ const { address } = useAccount()
  const actionid = uuid()
 
  const bigIntMaxReferalsperReferee = maxReferalsperReferee ? parseUnits(maxReferalsperReferee, contractDecimals) : 0
@@ -40,16 +41,8 @@ const CreateCampaign = () => {
  } = usePrepareContractWrite({
   ...CampaignFactory,
   functionName: 'addCampaign',
-  address: process.env.NEXT_PUBLIC_CAMPAIGN_FACTORY_ADDR_OP! as `0x${string}`,
-  args: [
-   campaignContractAddress,
-   rewardTokenAddress,
-   bigIntMaxReferalsperReferee,
-   bigIntRewardReferer,
-   bigIntRewardReferee,
-   bigIntMinCampaignTokenBalance,
-   actionid,
-  ],
+  address: process.env.NEXT_PUBLIC_CAMPAIGN_FACTORY_ADDR_OP as `0x${string}`,
+  args,
  })
 
  const { data, isLoading: writeLoading, isError: writeError, write } = useContractWrite(config)
@@ -73,11 +66,19 @@ const CreateCampaign = () => {
   }
  }, [writeSuccess, data])
 
- const CreateCampaign = async () => {
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
   try {
-   setIsLoading(true)
-   if (prepareSuccess) write?.()
-   setIsLoading(false)
+   setArg([
+    campaignContractAddress,
+    rewardTokenAddress,
+    bigIntMaxReferalsperReferee,
+    bigIntRewardReferer,
+    bigIntRewardReferee,
+    bigIntMinCampaignTokenBalance,
+    actionid,
+   ])
+   await write?.()
   } catch (error) {
    toast({
     title: 'Error',
@@ -232,7 +233,9 @@ const CreateCampaign = () => {
         px={12}
         fontFamily="sans-serif"
         color="white"
-        onClick={CreateCampaign}
+        type="submit"
+        isLoading={isLoading}
+        onClick={handleSubmit}
         disabled={writeLoading || isContractLoading}>
         {writeLoading || isContractLoading ? 'Loading...' : 'Create'}
        </Button>
