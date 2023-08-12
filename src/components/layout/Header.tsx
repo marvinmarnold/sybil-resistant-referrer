@@ -6,7 +6,6 @@ import { PassportScore } from './PassportScore'
 import { Web3Button } from '@web3modal/react'
 import { useAccount } from 'wagmi'
 
-import Worldcoin from 'components/Worldcoin'
 import ChainSelector from 'components/ChainSelector'
 
 interface Props {
@@ -15,15 +14,6 @@ interface Props {
 
 export function Header(props: Props) {
  const className = props.className ?? ''
-
- const ConnectionButtons = () => {
-  return (
-   <>
-    <Web3Button icon="hide" label="Connect Wallet" />
-    <Worldcoin />
-   </>
-  )
- }
 
  return (
   <Flex as="header" className={className} bg={useColorModeValue('gray.100', 'gray.900')} px={4} py={2} mb={8} alignItems="center">
@@ -36,7 +26,7 @@ export function Header(props: Props) {
    <Spacer />
    <Flex alignItems="center" gap={4}>
     <PassportScore />
-    <ConnectionButtons />
+    <Web3Button icon="hide" label="Connect Wallet" />
     {/* TODO: Add chain selector */}
     {/* <ChainSelector /> */}
     {/* <ThemeSwitcher /> */}

@@ -1,5 +1,25 @@
 import { ThemingProps } from '@chakra-ui/react'
-import { mainnet, sepolia, polygon, optimism, arbitrum, optimismGoerli } from '@wagmi/chains'
+import { mainnet, optimismGoerli, baseGoerli, zoraTestnet } from '@wagmi/chains'
+import { Chain } from '@wagmi/core'
+
+export const modeTestnet = {
+ id: 919,
+ name: 'Mode Testnet',
+ network: 'mode',
+ nativeCurrency: {
+  decimals: 18,
+  name: 'ETH',
+  symbol: 'ETH',
+ },
+ rpcUrls: {
+  public: { http: ['https://sepolia.mode.network'] },
+  default: { http: ['https://sepolia.mode.network'] },
+ },
+ blockExplorers: {
+  etherscan: { name: 'BlockScout', url: 'https://sepolia.explorer.mode.network/' },
+  default: { name: 'BlockScout', url: 'https://sepolia.explorer.mode.network/' },
+ },
+} as const satisfies Chain
 
 export const SITE_NAME = '🤝 Refer'
 export const SITE_DESCRIPTION = 'Sibyl resistance referral campaigns '
@@ -14,7 +34,7 @@ export const THEME_CONFIG = {
 export const SOCIAL_TWITTER = 'refer'
 export const SOCIAL_GITHUB = 'refer'
 
-export const ETH_CHAINS = [mainnet, sepolia, polygon, optimism, arbitrum, optimismGoerli]
+export const ETH_CHAINS = [mainnet, zoraTestnet, optimismGoerli, baseGoerli, modeTestnet]
 
 export const SERVER_SESSION_SETTINGS = {
  cookieName: SITE_NAME,

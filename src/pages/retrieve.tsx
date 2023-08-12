@@ -1,33 +1,47 @@
-import { useEffect, useState } from 'react'
-import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
-import { Button, Heading, Text } from '@chakra-ui/react'
+import { useState, useEffect } from 'react'
+import { Box, Button, Icon, useToast, Text, useBreakpointValue, useColorMode, Heading, useTheme } from '@chakra-ui/react'
+import { motion } from 'framer-motion'
+
+import type { NextPage } from 'next'
+import { useAccount, usePublicClient, usePrepareContractWrite, useContractWrite, useWaitForTransaction } from 'wagmi'
+import { FiExternalLink } from 'react-icons/fi'
+import { Hash } from 'viem'
+import 'viem/window'
 import { useRouter } from 'next/router'
 
-import campaigns from 'utils/campaigns'
-import { RewardAbi, MintAbi } from 'abis'
+import Container from 'components/layout/Container'
+import CampaignsMenu from 'components/layout/CampaignsMenu'
+import History from 'components/layout/History'
+import Background from 'components/Background'
+import Worldcoin from 'components/Worldcoin'
+import referralCampaignContract from '../../contracts/out/ReferralCampaign.sol/ReferralCampaign.json'
 
-function ClaimReward() {
+const CreateLink: NextPage = () => {
+ // TODO: Fetch proof from shared state
+ const account = useAccount()
+ const theme = useTheme()
+ const { colorMode } = useColorMode()
+ const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
+ const toast = useToast()
+ const publicClient = usePublicClient()
  const router = useRouter()
 
- const [ref, setRef] = useState<string | null>(null)
- const [receipt, setReceipt] = useState<string | null>(null)
- const [campaignId, setCampaignId] = useState<string | string[] | null>(null)
- const [campaign, setCampaign] = useState<{ contractAddress: `0x${string}`; campaignId: string; campaignName: string } | null>(null)
+ const [campaignId, setCampaignId] = useState<any>(null)
+ const [campaignAddy, setCampaignAddy] = useState<any>(null)
+ const [ref, setRef] = useState<any>(null)
 
- function getCampaignById(campaignId: string | null) {
-  if (!campaignId) return null
-  return campaigns.find((campaign) => campaign.campaignId === campaignId)
- }
+ const [link, setLink] = useState('')
+ const [isLoading, setIsLoading] = useState(false)
 
- useEffect(() => {
-  const currentCampaign = getCampaignById(campaignId as string)
-  if (currentCampaign) {
-   setCampaign(currentCampaign)
-  }
- }, [campaignId])
+ const [proof, setProof] = useState<string[]>([])
+ const [nullifier, setNullifier] = useState<string | null>(null)
+ const [root, setRoot] = useState<string | null>(null)
+ const [hash, setHash] = useState<Hash>()
+
+ const { address = '0x...' } = account
 
  useEffect(() => {
-  const { ref: refParam, campaignId: campaignIdParam } = router.query
+  const { ref: refParam, campaignId: campaignIdParam, campaignAddy: campaignAddyParam } = router.query
 
   if (refParam && typeof refParam === 'string') {
    setRef(refParam)
@@ -36,85 +50,151 @@ function ClaimReward() {
   if (campaignIdParam) {
    setCampaignId(campaignIdParam)
   }
+
+  if (campaignAddyParam) {
+   setCampaignAddy(campaignAddyParam)
+  }
  }, [router.query])
 
- const prepareMint = usePrepareContractWrite({
-  address: campaign?.contractAddress,
-  abi: MintAbi,
-  functionName: 'mint',
+ //  TODO: Add history on Atom
+ const history = []
+ const {
+  config,
+  error: prepareError,
+  isError: isPrepareError,
+ } = usePrepareContractWrite({
+  ...referralCampaignContract,
+  functionName: 'acceptReferral',
+  address: campaignAddy,
+  //   address _referrer, address signal, uint256 root, uint256 nullifierHash, uint256[8] calldata proof
+  // FIXME: the second is the address of the claimer or the campaignId?
+  args: [ref, address, root, nullifier, proof],
  })
 
- const mintNFT = useContractWrite(prepareMint.config)
- const waitForMintTransaction = useWaitForTransaction({ hash: mintNFT.data?.hash })
+ const { data, error, isError, write } = useContractWrite(config)
 
- const handleMintNFT = () => {
-  mintNFT.write?.()
- }
-
- useEffect(() => {
-  const prevReceipt = localStorage.getItem('receipt')
-  if (prevReceipt) {
-   setReceipt(prevReceipt)
-  }
- }, [])
-
- useEffect(() => {
-  if (waitForMintTransaction.isSuccess && mintNFT.data?.hash) {
-   localStorage.setItem('receipt', mintNFT.data?.hash)
-   setReceipt(mintNFT.data?.hash)
-  }
- }, [waitForMintTransaction.isSuccess, mintNFT.data?.hash])
-
- const prepareReward = usePrepareContractWrite({
-  address: campaign?.contractAddress,
-  abi: RewardAbi,
-  functionName: 'claimReward',
+ const { isLoading: isContractLoading, isSuccess } = useWaitForTransaction({
+  hash: data?.hash,
  })
 
- const claimReward = useContractWrite(prepareReward.config)
- const waitForRewardTransaction = useWaitForTransaction({ hash: claimReward.data?.hash })
+ useEffect(() => {
+  setIsLoading(false)
+  toast({
+   title: 'Error',
+   description: 'There was an error',
+   status: 'error',
+   duration: 9000,
+   isClosable: true,
+  })
+ }, [isError])
 
- const handleClaimReward = () => {
-  claimReward.write?.()
+ const claimRewardTxn = async () => {
+  try {
+   setIsLoading(true)
+   if (!campaignId || !account) return
+
+   write?.()
+   setHash(hash)
+
+   setIsLoading(false)
+  } catch (error) {
+   toast({
+    title: 'Error',
+    description: 'There was an error',
+    status: 'error',
+    duration: 9000,
+    isClosable: true,
+   })
+   setIsLoading(false)
+  }
  }
+
+ if (!address)
+  return (
+   <Box>
+    <Heading margin={10}>You must log in with an Ethereum Address</Heading>
+   </Box>
+  )
 
  return (
-  <div>
-   <Heading as="h3" fontSize="xl" my={4}>
-    Claim Reward
-   </Heading>
-   {!receipt ? (
-    <Button width="full" disabled={waitForMintTransaction.isLoading || mintNFT.isLoading || !mintNFT.write} mt={4} onClick={handleMintNFT}>
-     {waitForMintTransaction.isLoading ? 'Minting NFT...' : mintNFT.isLoading ? 'Check your wallet' : 'Mint NFT'}
-    </Button>
-   ) : (
-    <Button
-     width="full"
-     disabled={waitForRewardTransaction.isLoading || claimReward.isLoading || !claimReward.write}
-     mt={4}
-     onClick={handleClaimReward}>
-     {waitForRewardTransaction.isLoading ? 'Claiming reward...' : claimReward.isLoading ? 'Check your wallet' : 'Claim Reward'}
-    </Button>
-   )}
-   {waitForRewardTransaction.isSuccess && (
-    <div>
-     <Text mt={2} fontSize="lg">
-      Successfully claimed reward!
-     </Text>
+  <Container>
+   <Background />
+
+   <Box display="flex" justifyContent="center">
+    <div
+     style={{
+      color: 'gray.400',
+      fontFamily: 'Montserrat',
+      padding: '36px',
+      margin: '10px',
+      height: 'fit',
+      width: formWidth,
+      backgroundColor: colorMode === 'dark' ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.7)',
+      boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+      backdropFilter: 'blur(70px)',
+      borderRadius: '40px',
+      border: '1px solid rgba(179, 186, 209, 0.5)',
+     }}>
+     <h2
+      style={{
+       textAlign: 'center',
+       fontWeight: 'bold',
+       fontSize: '1.5rem',
+       fontFamily: 'sans-serif',
+      }}>
+      Claim Referral Rewards
+     </h2>
+
+     <Text>Campaign {campaignId}</Text>
+
+     <Box display="flex" justifyContent="center" mt={5}>
+      {!isSuccess && (
+       <Box>
+        <Box>{campaignId && <Worldcoin proof={proof} setProof={setProof} setNullifier={setNullifier} setRoot={setRoot} action={campaignId} />}</Box>
+        {proof?.length > 0 && (
+         <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+          <Button
+           backgroundColor="purple.300"
+           variant="gradient"
+           borderRadius="10px"
+           border={'0.5px solid #312E2A'}
+           boxShadow={'2.8px 3.8px 0px 0px #312E2A'}
+           py={2}
+           px={12}
+           fontFamily="sans-serif"
+           color="white"
+           type="submit"
+           isLoading={isLoading || isContractLoading}
+           onClick={claimRewardTxn}>
+           Claim
+          </Button>
+         </motion.div>
+        )}
+       </Box>
+      )}
+     </Box>
+
+     {isSuccess && (
+      <Box margin={10}>
+       <div>
+        Successfully claimed reward!
+        <Button variant="outline">
+         <a href={`https://etherscan.io/tx/${data?.hash}`}>
+          Check txn
+          <Icon as={FiExternalLink} />
+         </a>
+        </Button>
+       </div>
+      </Box>
+     )}
+     {/* DEBUG ONLY */}
+     {/* {(isPrepareError || isError) && <div>Error: {(prepareError || error)?.message}</div>} */}
     </div>
-   )}
-   {waitForRewardTransaction.isError && (
-    <div>
-     <Text mt={2} color="red" fontSize="lg">
-      Error claiming reward
-     </Text>
-     <Text color="red" fontSize="lg" fontWeight="bold">
-      {waitForRewardTransaction.error?.message}
-     </Text>
-    </div>
-   )}
-  </div>
+   </Box>
+
+   {history.length > 0 && <History />}
+  </Container>
  )
 }
 
-export default ClaimReward
+export default CreateLink
