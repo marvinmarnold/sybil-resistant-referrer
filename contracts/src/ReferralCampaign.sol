@@ -124,7 +124,7 @@ contract ReferralCampaign is Ownable,Initializable {
 		);
 
 		// We now record the user has done this, so they can't do it again (proof of uniqueness)
-		nullifierHashes[nullifierHash] = true; 
+		nullifierHashes[nullifierHash] = true;
 	}
 
 
@@ -132,9 +132,8 @@ contract ReferralCampaign is Ownable,Initializable {
     function addReferrer(address signal, uint256 root, uint256 nullifierHash, uint256[8] calldata proof) public {
         //@dev Instead of require, verification to be done by worldcoin
         require(numReferralsByReferrer[msg.sender] == 0, "Referrer already registered.");
-        // rewardToken.transferFrom(msg.sender, address(this), maxReferralsPerReferrer * (rewardReferrer + rewardReferee));
 
-        // verifyAndExecute(signal, root, nullifierHash, proof);
+        verifyAndExecute(signal, root, nullifierHash, proof);
 
         // @dev Initiating the referrer to one to distinguish between already registered with no referees from the ones who have not registered.
         numReferralsByReferrer[msg.sender] = 1;
@@ -155,11 +154,11 @@ contract ReferralCampaign is Ownable,Initializable {
         uint256 senderBalance = IERC20Or721(campaignTokenContract).balanceOf(msg.sender);
         require(senderBalance >= minCampaignTokenBalance, "Referree does not have enough campaign tokens to qualify.");
 
-        // verifyAndExecute(signal, root, nullifierHash, proof);
+        verifyAndExecute(signal, root, nullifierHash, proof);
 
         numReferralsByReferrer[_referrer]++;
 
-        // @dev tranferring rewards (rtcToken) to referrer and referree
+        //@dev tranferring rewards (rtcToken) to referrer and referree
         rewardToken.transferFrom(campaignManager, _referrer, rewardReferrer);
         rewardToken.transferFrom(campaignManager, referee, rewardReferee);
         emit AcceptedReferral(referee ,_referrer);
