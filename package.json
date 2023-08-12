@@ -22,7 +22,7 @@
   "@worldcoin/idkit": "^0.5.1",
   "dayjs": "^1.11.7",
   "ethers": "v5",
-  "framer-motion": "^8.0.2",
+  "framer-motion": "^10.15.1",
   "graphql": "^16.7.1",
   "graphql-request": "^6.1.0",
   "iron-session": "^6.3.1",
