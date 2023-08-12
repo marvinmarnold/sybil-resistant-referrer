@@ -2,17 +2,19 @@ import { Box, Button, FormControl, FormLabel, Input, useBreakpointValue, useColo
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { v4 as uuidv4 } from 'uuid'
-import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
+import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction, useNetwork } from 'wagmi'
 import { parseUnits } from 'viem'
 
 import CampaignFactory from '../../contracts/out/CampaignFactory.sol/CampaignFactory.json'
 import Background from 'components/Background'
 import Container from 'components/layout/Container'
 import SuccessComponent from 'components/layout/SuccessComponent'
+import { networks } from 'utils/network'
 
 const CreateCampaign = () => {
  const toast = useToast()
  const { colorMode } = useColorMode()
+ const network = useNetwork()
 
  const [campaignContractAddress, setCampaignContractAddress] = useState('')
  const [rewardTokenAddress, setRewardTokenAddress] = useState('')
@@ -34,10 +36,13 @@ const CreateCampaign = () => {
  const bigIntRewardReferee = rewardReferee ? parseUnits(rewardReferee, contractDecimals) : 0
  const bigIntMinCampaignTokenBalance = minCampaignTokenBalance ? parseUnits(minCampaignTokenBalance, contractDecimals) : 0
 
+ const chainId: number = network.chain?.id ?? 5
+
  const { config, error, isError } = usePrepareContractWrite({
   ...CampaignFactory,
   functionName: 'addCampaign',
-  address: process.env.NEXT_PUBLIC_CAMPAIGN_FACTORY_ADDR_OP as `0x${string}`,
+  //   FIXME: Add depending on the chain
+  address: networks[chainId].factoryContract,
   args,
  })
 
