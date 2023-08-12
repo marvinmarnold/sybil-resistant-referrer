@@ -213,15 +213,13 @@ const CreateLink: NextPage = () => {
         </Box>
        </Box>
 
-       <div>
-        Successfully created referral link!
-        <div>
-         <a href={`https://etherscan.io/tx/${data?.hash}`}>
-          Etherscan
-          <Icon as={FiExternalLink} />
-         </a>
-        </div>
-       </div>
+       <Text>Successfully created referral link!</Text>
+       <Button variant="outline">
+        <a href={`https://etherscan.io/tx/${data?.hash}`}>
+         Check txn
+         <Icon as={FiExternalLink} />
+        </a>
+       </Button>
       </Box>
      )}
      {/* DEBUG ONLY */}

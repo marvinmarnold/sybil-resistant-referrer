@@ -61,7 +61,6 @@ const Worldcoin = ({ proof, setProof, setNullifier, setRoot, action }: WorldType
  // Verify with Worldcoin
  return (
   <IDKitWidget
-   // FIXME: make this p1 dinamic repending on the campaign UUID identifier
    action={action}
    onSuccess={onSuccess}
    signal={address}
@@ -72,9 +71,10 @@ const Worldcoin = ({ proof, setProof, setNullifier, setRoot, action }: WorldType
      <Text>Verify with World Id 🌐</Text>
      <Button onClick={open}>I&apos;m a human 👋</Button>
 
+     <Text>or</Text>
      {/* // Don't show page if there's no WorldId connected  */}
      {proof?.length === 0 && (
-      <Box margin={20}>
+      <Box>
        <Link href="https://worldcoin.org/download-app" isExternal>
         <Button variant="outline">
          Download Worldcoin App
