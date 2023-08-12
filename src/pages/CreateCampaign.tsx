@@ -1,43 +1,58 @@
-import { Box, Button, FormControl, FormLabel, Input, useBreakpointValue, useColorMode, useToast } from '@chakra-ui/react'
+import { Box, Button, FormControl, FormLabel, Input, useBreakpointValue, useColorMode, useToast, FormHelperText } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { uuid } from 'uuidv4'
+import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
+import { parseUnits } from 'viem'
+
+import CampaignFactory from '../../contracts/out/CampaignFactory.sol/CampaignFactory.json'
 import Background from 'components/Background'
 import Container from 'components/layout/Container'
-import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
-import CampaignFactoryABI from '../../contracts/out/CampaignFactory.sol/CampaignFactory.json'
+
 const CreateCampaign = () => {
+ const toast = useToast()
+ const { colorMode } = useColorMode()
+
  const [campaignContractAddress, setCampaignContractAddress] = useState('')
  const [rewardTokenAddress, setRewardTokenAddress] = useState('')
- const [maxReferalsperReferee, setMaxReferralsPerReferee] = useState<number>()
- const [rewardReferrer, setRewardReferrer] = useState<number>()
- const [rewardReferee, setRewardReferee] = useState<number>()
- const [minCampaignTokenBalance, setMinCampaignTokenBalance] = useState<number>()
+ const [maxReferalsperReferee, setMaxReferralsPerReferee] = useState<string>()
+ const [rewardReferrer, setRewardReferrer] = useState<string | undefined>()
+ const [rewardReferee, setRewardReferee] = useState<string | undefined>()
+ const [contractDecimals, setContractDecimals] = useState<number>(18)
+ const [minCampaignTokenBalance, setMinCampaignTokenBalance] = useState<string>()
  const [returnedData, setReturnedData] = useState<any>()
  const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
- const [isLoading, setIsLoading] = useState<boolean>()
- const { colorMode } = useColorMode()
- const toast = useToast()
- const { address } = useAccount()
- let actionid
- useEffect(() => {
-  actionid = uuid()
-  console.log(' UUID ', actionid)
- }, [])
 
- // console.log("Before Write:",typeof(campaignContractAddress),typeof(rewardTokenAddress),typeof(maxReferalsperReferee),typeof(rewardReferrer),typeof(rewardReferee),typeof(minCampaignTokenBalance),typeof(actionid));
+ const { address } = useAccount()
+ const actionid = uuid()
+
+ const bigIntMaxReferalsperReferee = maxReferalsperReferee ? parseUnits(maxReferalsperReferee, contractDecimals) : 0
+ const bigIntRewardReferer = rewardReferrer ? parseUnits(rewardReferrer, contractDecimals) : 0
+ const bigIntRewardReferee = rewardReferee ? parseUnits(rewardReferee, contractDecimals) : 0
+ const bigIntMinCampaignTokenBalance = minCampaignTokenBalance ? parseUnits(minCampaignTokenBalance, contractDecimals) : 0
+
  const {
   config,
   error: prepareError,
   isError: isPrepareError,
   isSuccess: prepareSuccess,
  } = usePrepareContractWrite({
-  address: process.env.NEXT_PUBLIC_CAMPAIGN_FACTORY_ADDR! as `0x${string}`,
-  abi: CampaignFactoryABI.abi,
+  ...CampaignFactory,
   functionName: 'addCampaign',
-  args: [campaignContractAddress, rewardTokenAddress, maxReferalsperReferee, rewardReferrer, rewardReferee, minCampaignTokenBalance, actionid],
+  address: process.env.NEXT_PUBLIC_CAMPAIGN_FACTORY_ADDR_OP! as `0x${string}`,
+  args: [
+   campaignContractAddress,
+   rewardTokenAddress,
+   bigIntMaxReferalsperReferee,
+   bigIntRewardReferer,
+   bigIntRewardReferee,
+   bigIntMinCampaignTokenBalance,
+   actionid,
+  ],
  })
+
  const { data, isLoading: writeLoading, isError: writeError, write } = useContractWrite(config)
+
  const { isLoading: isContractLoading, isSuccess: writeSuccess } = useWaitForTransaction({
   hash: data?.hash,
  })
@@ -102,45 +117,31 @@ const CreateCampaign = () => {
       Create Campaign
      </h2>
 
-     <div style={{ display: 'flex', gap: '15px' }}>
-      <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
-       <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
-        Campaign Contract Address
-       </FormLabel>
-       <Input
-        value={campaignContractAddress}
-        onChange={(e) => setCampaignContractAddress(e.target.value)}
-        placeholder="Address"
-        size="md"
-        type="string"
-        backgroundColor={'transparent'}
-        borderColor="gray.400"
-       />
-      </FormControl>
-
-      <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
-       <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
-        Reward Token Address
-       </FormLabel>
-       <Input
-        value={rewardTokenAddress}
-        onChange={(e) => setRewardTokenAddress(e.target.value)}
-        placeholder="Address"
-        size="md"
-        type="string"
-        borderColor="gray.400"
-       />
-      </FormControl>
-     </div>
+     <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
+      <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+       Campaign Contract Address
+      </FormLabel>
+      <FormHelperText>The contract people have to interact with</FormHelperText>
+      <Input
+       value={campaignContractAddress}
+       onChange={(e) => setCampaignContractAddress(e.target.value)}
+       placeholder="Address"
+       size="md"
+       type="string"
+       backgroundColor={'transparent'}
+       borderColor="gray.400"
+      />
+     </FormControl>
 
      <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
       <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
-       Max Referrals per Referee
+       Max Referrals per Referer
       </FormLabel>
+      <FormHelperText>Number of times a person can get rewarded by sharing referrals on this campaign</FormHelperText>
       <Input
        value={maxReferalsperReferee}
-       onChange={(e) => setMaxReferralsPerReferee(parseFloat(e.target.value))}
-       placeholder="0.05"
+       onChange={(e) => setMaxReferralsPerReferee(e.target.value)}
+       placeholder="i.e: 3"
        size="md"
        type="number"
        borderColor="gray.400"
@@ -149,11 +150,41 @@ const CreateCampaign = () => {
 
      <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
       <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
-       Reward referrer
+       Reward Token Address
+      </FormLabel>
+      <FormHelperText>Token beind sent as reward (ERC-20)</FormHelperText>
+      <Input
+       value={rewardTokenAddress}
+       onChange={(e) => setRewardTokenAddress(e.target.value)}
+       placeholder="Address"
+       size="md"
+       type="string"
+       borderColor="gray.400"
+      />
+     </FormControl>
+
+     <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
+      <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+       Contract Decimals
       </FormLabel>
       <Input
+       value={contractDecimals}
+       onChange={(e) => setContractDecimals(parseFloat(e.target.value))}
+       placeholder="18"
+       size="md"
+       type="number"
+       borderColor="gray.400"
+      />
+     </FormControl>
+
+     <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
+      <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+       Reward Referrer
+      </FormLabel>
+      <FormHelperText>Amount of the token you provided</FormHelperText>
+      <Input
        value={rewardReferrer}
-       onChange={(e) => setRewardReferrer(parseFloat(e.target.value))}
+       onChange={(e) => setRewardReferrer(e.target.value)}
        placeholder="0.05"
        size="md"
        type="number"
@@ -167,7 +198,7 @@ const CreateCampaign = () => {
       </FormLabel>
       <Input
        value={rewardReferee}
-       onChange={(e) => setRewardReferee(parseFloat(e.target.value))}
+       onChange={(e) => setRewardReferee(e.target.value)}
        placeholder="0.05"
        size="md"
        type="number"
@@ -180,7 +211,7 @@ const CreateCampaign = () => {
       </FormLabel>
       <Input
        value={minCampaignTokenBalance}
-       onChange={(e) => setMinCampaignTokenBalance(parseFloat(e.target.value))}
+       onChange={(e) => setMinCampaignTokenBalance(e.target.value)}
        placeholder="0.05"
        size="md"
        type="number"
