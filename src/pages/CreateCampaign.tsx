@@ -8,6 +8,7 @@ import { parseUnits } from 'viem'
 import CampaignFactory from '../../contracts/out/CampaignFactory.sol/CampaignFactory.json'
 import Background from 'components/Background'
 import Container from 'components/layout/Container'
+import SuccessComponent from 'components/layout/SuccessComponent'
 
 const CreateCampaign = () => {
  const toast = useToast()
@@ -33,12 +34,7 @@ const CreateCampaign = () => {
  const bigIntRewardReferee = rewardReferee ? parseUnits(rewardReferee, contractDecimals) : 0
  const bigIntMinCampaignTokenBalance = minCampaignTokenBalance ? parseUnits(minCampaignTokenBalance, contractDecimals) : 0
 
- const {
-  config,
-  error: prepareError,
-  isError: isPrepareError,
-  isSuccess: prepareSuccess,
- } = usePrepareContractWrite({
+ const { config, error, isError, isSuccess } = usePrepareContractWrite({
   ...CampaignFactory,
   functionName: 'addCampaign',
   address: process.env.NEXT_PUBLIC_CAMPAIGN_FACTORY_ADDR_OP as `0x${string}`,
@@ -96,7 +92,7 @@ const CreateCampaign = () => {
    <Background />
 
    <Box position="absolute" top={24} display="flex" justifyContent="center">
-    <form
+    <div
      style={{
       color: 'gray.400',
       fontFamily: 'Montserrat',
@@ -109,139 +105,146 @@ const CreateCampaign = () => {
       borderRadius: '40px',
       border: '1px solid rgba(179, 186, 209, 0.5)',
      }}>
-     <h2
-      style={{
-       textAlign: 'center',
-       fontWeight: 'bold',
-       fontSize: '1.5rem',
-       fontFamily: 'sans-serif',
-      }}>
-      Create Campaign
-     </h2>
+     {isSuccess ? (
+      // TODO: Add campaign ref to the link
+      <SuccessComponent link={'http://localhost:3000/createlink'} data={data} message="Successfully created a campaign!" />
+     ) : (
+      <form>
+       <h2
+        style={{
+         textAlign: 'center',
+         fontWeight: 'bold',
+         fontSize: '1.5rem',
+         fontFamily: 'sans-serif',
+        }}>
+        Create Campaign
+       </h2>
 
-     <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
-      <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
-       Campaign Contract Address
-      </FormLabel>
-      <FormHelperText>The contract people have to interact with</FormHelperText>
-      <Input
-       value={campaignContractAddress}
-       onChange={(e) => setCampaignContractAddress(e.target.value)}
-       placeholder="Address"
-       size="md"
-       type="string"
-       backgroundColor={'transparent'}
-       borderColor="gray.400"
-      />
-     </FormControl>
+       <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
+        <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+         Campaign Contract Address
+        </FormLabel>
+        <FormHelperText>The contract people have to interact with</FormHelperText>
+        <Input
+         value={campaignContractAddress}
+         onChange={(e) => setCampaignContractAddress(e.target.value)}
+         placeholder="Address"
+         size="md"
+         type="string"
+         backgroundColor={'transparent'}
+         borderColor="gray.400"
+        />
+       </FormControl>
 
-     <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
-      <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
-       Max Referrals per Referer
-      </FormLabel>
-      <FormHelperText>Number of times a person can get rewarded by sharing referrals on this campaign</FormHelperText>
-      <Input
-       value={maxReferalsperReferee}
-       onChange={(e) => setMaxReferralsPerReferee(e.target.value)}
-       placeholder="i.e: 3"
-       size="md"
-       type="number"
-       borderColor="gray.400"
-      />
-     </FormControl>
+       <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
+        <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+         Max Referrals per Referer
+        </FormLabel>
+        <FormHelperText>Number of times a person can get rewarded by sharing referrals on this campaign</FormHelperText>
+        <Input
+         value={maxReferalsperReferee}
+         onChange={(e) => setMaxReferralsPerReferee(e.target.value)}
+         placeholder="i.e: 3"
+         size="md"
+         type="number"
+         borderColor="gray.400"
+        />
+       </FormControl>
 
-     <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
-      <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
-       Reward Token Address
-      </FormLabel>
-      <FormHelperText>Token beind sent as reward (ERC-20)</FormHelperText>
-      <Input
-       value={rewardTokenAddress}
-       onChange={(e) => setRewardTokenAddress(e.target.value)}
-       placeholder="Address"
-       size="md"
-       type="string"
-       borderColor="gray.400"
-      />
-     </FormControl>
+       <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
+        <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+         Reward Token Address
+        </FormLabel>
+        <FormHelperText>Token beind sent as reward (ERC-20)</FormHelperText>
+        <Input
+         value={rewardTokenAddress}
+         onChange={(e) => setRewardTokenAddress(e.target.value)}
+         placeholder="Address"
+         size="md"
+         type="string"
+         borderColor="gray.400"
+        />
+       </FormControl>
 
-     <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
-      <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
-       Contract Decimals
-      </FormLabel>
-      <Input
-       value={contractDecimals}
-       onChange={(e) => setContractDecimals(parseFloat(e.target.value))}
-       placeholder="18"
-       size="md"
-       type="number"
-       borderColor="gray.400"
-      />
-     </FormControl>
+       <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
+        <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+         Contract Decimals
+        </FormLabel>
+        <Input
+         value={contractDecimals}
+         onChange={(e) => setContractDecimals(parseFloat(e.target.value))}
+         placeholder="18"
+         size="md"
+         type="number"
+         borderColor="gray.400"
+        />
+       </FormControl>
 
-     <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
-      <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
-       Reward Referrer
-      </FormLabel>
-      <FormHelperText>Amount of the token you provided</FormHelperText>
-      <Input
-       value={rewardReferrer}
-       onChange={(e) => setRewardReferrer(e.target.value)}
-       placeholder="0.05"
-       size="md"
-       type="number"
-       borderColor="gray.400"
-      />
-     </FormControl>
+       <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
+        <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+         Reward Referrer
+        </FormLabel>
+        <FormHelperText>Amount of the token you provided</FormHelperText>
+        <Input
+         value={rewardReferrer}
+         onChange={(e) => setRewardReferrer(e.target.value)}
+         placeholder="0.05"
+         size="md"
+         type="number"
+         borderColor="gray.400"
+        />
+       </FormControl>
 
-     <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
-      <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
-       Reward Referee
-      </FormLabel>
-      <Input
-       value={rewardReferee}
-       onChange={(e) => setRewardReferee(e.target.value)}
-       placeholder="0.05"
-       size="md"
-       type="number"
-       borderColor="gray.400"
-      />
-     </FormControl>
-     <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
-      <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
-       Minimum Campaign Token Balance
-      </FormLabel>
-      <Input
-       value={minCampaignTokenBalance}
-       onChange={(e) => setMinCampaignTokenBalance(e.target.value)}
-       placeholder="0.05"
-       size="md"
-       type="number"
-       borderColor="gray.400"
-      />
-     </FormControl>
+       <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
+        <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+         Reward Referee
+        </FormLabel>
+        <Input
+         value={rewardReferee}
+         onChange={(e) => setRewardReferee(e.target.value)}
+         placeholder="0.05"
+         size="md"
+         type="number"
+         borderColor="gray.400"
+        />
+       </FormControl>
+       <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
+        <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+         Minimum Campaign Token Balance
+        </FormLabel>
+        <Input
+         value={minCampaignTokenBalance}
+         onChange={(e) => setMinCampaignTokenBalance(e.target.value)}
+         placeholder="0.05"
+         size="md"
+         type="number"
+         borderColor="gray.400"
+        />
+       </FormControl>
 
-     <Box display="flex" justifyContent="center" mt={5}>
-      <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
-       <Button
-        backgroundColor="purple.300"
-        variant="gradient"
-        borderRadius="10px"
-        border={'0.5px solid #312E2A'}
-        boxShadow={'2.8px 3.8px 0px 0px #312E2A'}
-        py={2}
-        px={12}
-        fontFamily="sans-serif"
-        color="white"
-        type="submit"
-        isLoading={isLoading}
-        onClick={handleSubmit}
-        disabled={writeLoading || isContractLoading}>
-        {writeLoading || isContractLoading ? 'Loading...' : 'Create'}
-       </Button>
-      </motion.div>
-     </Box>
-    </form>
+       <Box display="flex" justifyContent="center" mt={5}>
+        <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+         <Button
+          backgroundColor="purple.300"
+          variant="gradient"
+          borderRadius="10px"
+          border={'0.5px solid #312E2A'}
+          boxShadow={'2.8px 3.8px 0px 0px #312E2A'}
+          py={2}
+          px={12}
+          fontFamily="sans-serif"
+          color="white"
+          type="submit"
+          isLoading={isLoading}
+          onClick={handleSubmit}
+          disabled={writeLoading || isContractLoading}>
+          {writeLoading || isContractLoading ? 'Loading...' : 'Create'}
+         </Button>
+        </motion.div>
+       </Box>
+      </form>
+     )}
+    </div>
    </Box>
   </Container>
  )
