@@ -137,7 +137,7 @@ const CreateCampaign = () => {
      }}>
      {writeSuccess ? (
       // TODO: Add campaign ref to the link
-      <SuccessComponent link={'http://localhost:3000/createlink'} data={data} message={`Successfully created campaign ${randActionId}!`} />
+      <SuccessComponent link={'/createlink'} data={data} message={`Successfully created campaign ${randActionId}!`} />
      ) : (
       <form>
        <Heading textAlign="center">Create Campaign</Heading>
