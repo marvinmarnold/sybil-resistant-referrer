@@ -70,15 +70,17 @@ const CreateCampaign = () => {
  const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault()
   try {
+   const worldId = networks[chainId].worldId
    setArgs([
+    worldId,
     campaignContractAddress,
     rewardTokenAddress,
     bigIntMaxReferalsperReferee,
     bigIntRewardReferer,
     bigIntRewardReferee,
     bigIntMinCampaignTokenBalance,
-    '1234',
-    1234,
+    '7777',
+    parseUnits('7777', contractDecimals),
    ])
    await write?.()
   } catch (error) {

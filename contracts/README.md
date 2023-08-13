@@ -8,7 +8,7 @@ forge create src/CampaignFactory.sol:CampaignFactory \
     --private-key 0xOWNER \
     --rpc-url https://opt-goerli.g.alchemy.com/v2/7idjAuh5bHGIoE95AvxwPaFZblFUgyIq
 
--> Deployed to: 0xF59bF99c8676c72fA0d23695fcAb8a0365C3B948
+-> Deployed to: 0xf2761B5e177261fb3Ead3b7B992a11Fce8592898
 
 # Deploy campaign token as ERC-20
 forge create src/MockERC20Token.sol:MockToken20 \
@@ -32,7 +32,7 @@ forge create src/MockERC20Token.sol:MockToken20 \
 cast send \
     --private-key 0xOWNER \
     --rpc-url https://opt-goerli.g.alchemy.com/v2/7idjAuh5bHGIoE95AvxwPaFZblFUgyIq \
-    0xF59bF99c8676c72fA0d23695fcAb8a0365C3B948 "addCampaign(address,address,uint256,uint256,uint256,uint256, string)" \
+    0xf2761B5e177261fb3Ead3b7B992a11Fce8592898 "addCampaign(address,address,uint256,uint256,uint256,uint256, string)" \
     0x352801EcDE99171F346de6033094e47D6b4AcB33 0x1d4396c22Ea22c371742A3A9d61e8a3E0AcCCFD0 3 100 200 1 campaign7
 
 -> transactionHash         0x55059d76df011122a8397cac776eac2753ba8f7777528e1e9def8de3413c4ea3
