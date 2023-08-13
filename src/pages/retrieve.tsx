@@ -23,17 +23,17 @@ const CreateLink: NextPage = () => {
  const toast = useToast()
  const router = useRouter()
 
- const [campaignId, setCampaignId] = useState<any>(null)
- const [campaignAddy, setCampaignAddy] = useState<any>(null)
- const [ref, setRef] = useState<any>(null)
+ const [campaignId, setCampaignId] = useState<any>("")
+ const [campaignAddy, setCampaignAddy] = useState<any>("")
+ const [ref, setRef] = useState<any>("")
  const [isLoading, setIsLoading] = useState(false)
  const [isSubmitting, setIsSubmitting] = useState(false)
  const [args, setArgs] = useState<any[]>([])
  const [hash, setHash] = useState<Hash>()
 
  const [proof, setProof] = useState<BigInt[]>([])
- const [nullifier, setNullifier] = useState<BigInt | undefined>()
- const [root, setRoot] = useState<BigInt | undefined>()
+ const [nullifier, setNullifier] = useState<BigInt>(BigInt(0))
+ const [root, setRoot] = useState<BigInt>(BigInt(0))
 
  const { address = '0x...' } = account
 
