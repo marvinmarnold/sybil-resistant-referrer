@@ -73,10 +73,10 @@ export default function Home() {
        </Heading>
        <h3
         style={{ fontSize: '22px', width: '650px', marginTop: '300px', position: 'absolute', left: '150px', fontFamily: 'Dm Sans', color: 'gray' }}>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis, ad sapiente.
+        Create onchain referral campaigns that can&apos;t be gamed by bots
        </h3>
 
-       <Button
+       {/* <Button
         backgroundColor="purple.300"
         variant="gradient"
         borderRadius="0px"
@@ -88,7 +88,7 @@ export default function Home() {
         color="white"
         style={{ marginTop: '380px', position: 'absolute', left: '150px' }}>
         Get Started
-       </Button>
+       </Button> */}
       </Flex>
 
       <Flex w="1420px" borderTop="2px solid black" position="absolute" left="50px" top="560px" h="150px" justifyContent="center">
@@ -115,7 +115,7 @@ export default function Home() {
          </h2>
         </LinkComponent>
         <p style={{ fontFamily: 'Dm Sans', display: 'flex', justifyContent: 'center', margin: '10px', color: 'gray' }}>
-         Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, molestias ut. Nam exercitationem molestias ipsam cupiditate corrupti.
+         If you need to grow the adoption of your protocol, use Refer to onboard and reward new users.
         </p>
        </Flex>
        <Flex
@@ -143,10 +143,10 @@ export default function Home() {
          </h2>
         </LinkComponent>
         <p style={{ fontFamily: 'Dm Sans', display: 'flex', justifyContent: 'center', margin: '10px', color: 'gray' }}>
-         Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, molestias ut. Nam exercitationem molestias ipsam cupiditate corrupti.
+         For users of protocols that want to earn rewards by spreading the word.
         </p>
        </Flex>
-       <Flex
+       {/* <Flex
         w="30%"
         h="150px"
         borderTop="2px solid black"
@@ -171,7 +171,7 @@ export default function Home() {
         <p style={{ fontFamily: 'Dm Sans', display: 'flex', justifyContent: 'center', margin: '10px', color: 'gray' }}>
          Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, molestias ut. Nam exercitationem molestias ipsam cupiditate corrupti.
         </p>
-       </Flex>
+       </Flex> */}
       </Flex>
      </motion.section>
 
@@ -194,8 +194,8 @@ export default function Home() {
         <Heading as="h3" fontSize="40px" fontFamily="Dm Sans">
          Step 01
         </Heading>
-        <Heading as="h3" fontSize="40px" fontFamily="Dm Sans">
-         Creating a Campaign
+        <Heading as="h3" fontSize="20px" fontFamily="Dm Sans">
+         Protocol team creates a Campaign to reward adoption
         </Heading>
        </Box>
        <Box>
@@ -216,8 +216,8 @@ export default function Home() {
         <Heading as="h3" fontSize="40px" fontFamily="Dm Sans">
          Step 02
         </Heading>
-        <Heading as="h3" fontSize="40px" fontFamily="Dm Sans">
-         Generating Referrals
+        <Heading as="h3" fontSize="20px" fontFamily="Dm Sans">
+         Referrer users generate referrals and share the link
         </Heading>
        </Box>
        <Box>
@@ -238,8 +238,8 @@ export default function Home() {
         <Heading as="h3" fontSize="40px" fontFamily="Dm Sans">
          Step 03
         </Heading>
-        <Heading as="h3" fontSize="40px" fontFamily="Dm Sans">
-         Emmiting an Action
+        <Heading as="h3" fontSize="20px" fontFamily="Dm Sans">
+         Referral users take action and claim rewards <br /> for them and the referrer who shared a link.
         </Heading>
        </Box>
        <Box>
