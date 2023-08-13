@@ -8,20 +8,19 @@ import "./IWorldID.sol";
 //@notice A Referral Campaign Factory Contract, all referral campaign will be depolyed using this contract
 contract CampaignFactory {
 
-    //@dev Events
-   event CampaignCreated(address indexed,address);
+    //@dev Events owner, campaign, campaignTokenContract, rewardTokenContract, maxReferralsPerReferrer
+    //@dev rewardReferrer, rewardReferee, minCampaignTokenBalance, actionId
+
+   event CampaignCreated(address indexed, address, address, address, uint256, uint256, uint256, uint256, string);
     
     //@dev Referral Campaign Implementation
     address immutable referralCampaign;
 
-    //@dev WorldID Address Base
-    IWorldID worldID = IWorldID(0x515f06B36E6D3b707eAecBdeD18d8B384944c87f);
-
     //@dev Worldcoin Developer portal App ID , TO be updated
-    string appID="app_staging_27f3e5996cfe801b96d47df2ffa35053";
+    string appID = "app_staging_27f3e5996cfe801b96d47df2ffa35053";
 
     //@dev Campaign struct with campiagn address and token address
-    struct Campaign{
+    struct Campaign {
         address campaignAddress;
         address manager;
         address campaignTokenContract;
@@ -42,6 +41,7 @@ contract CampaignFactory {
     //@dev Create a referral campaign
     //@params actionId will the campaign ID
     function addCampaign(        
+        address worldAddress, 
         address _campaignTokenContract, 
         address _rewardTokenContract, 
         uint256 _maxReferralsPerReferrer, 
@@ -51,6 +51,10 @@ contract CampaignFactory {
         string memory _actionId) public payable returns (address) {
         // Make a clone contract
         address clone = Clones.clone(referralCampaign);
+        
+        //@dev WorldID Address Base
+        IWorldID worldID = IWorldID(worldAddress);
+
         ReferralCampaign(clone).initialize(msg.sender, 
             _campaignTokenContract, 
             _rewardTokenContract, 
@@ -61,7 +65,7 @@ contract CampaignFactory {
             worldID,
             appID,
             _actionId
-            );
+        );
 
         // Emit an event containing the new campaign information
         Campaign memory campaign = Campaign(clone, msg.sender, 
@@ -73,7 +77,7 @@ contract CampaignFactory {
             _minCampaignTokenBalance);
 
         campaignsForManager[msg.sender].push(campaign);
-        emit CampaignCreated(msg.sender, clone);
+        emit CampaignCreated(msg.sender, clone, _campaignTokenContract, _rewardTokenContract, _maxReferralsPerReferrer, _rewardReferrer, _rewardReferee, _minCampaignTokenBalance, _actionId);
         return clone;
     }
 
