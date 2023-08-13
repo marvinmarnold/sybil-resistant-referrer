@@ -1,7 +1,8 @@
 type CampaignCreated @entity(immutable: true) {
   id: Bytes!
-  param0: Bytes! # address
-  param1: Bytes! # address
+  owner: Bytes! # address
+  campaign: Bytes! # address
+  actionId: BigInt! # uint256
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!

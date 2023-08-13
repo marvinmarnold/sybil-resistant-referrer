@@ -3,7 +3,7 @@ import { Box, Menu, MenuButton, MenuList, MenuItem, Button, useTheme } from '@ch
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { request, gql } from 'graphql-request'
 import { useState, useEffect } from 'react'
-
+import { v4 as uuidv4 } from 'uuid'
 import { CampaignType } from 'types/index'
 import { networks } from 'utils/network'
 
@@ -12,9 +12,9 @@ const query = gql`
  {
   campaignCreateds {
    id
-   param0
-   param1
-   blockTimestamp
+   owner
+   campaign
+   actionId
   }
  }
 `
@@ -22,7 +22,7 @@ const query = gql`
 const CampaignsMenu = ({ selectedCampaign, setSelectedCampaign, isActive }: any) => {
  const network = useNetwork()
  const [currentEndpoint, setCurrentEndpoint] = useState('')
- const [campaigns, setCampaigns] = useState<CampaignType[] | []>([])
+ const [campaigns, setCampaigns] = useState<CampaignType[]>([])
 
  const chainId: number = network.chain?.id ?? 5
 
@@ -34,8 +34,11 @@ const CampaignsMenu = ({ selectedCampaign, setSelectedCampaign, isActive }: any)
  useEffect(() => {
   ;(async () => {
    try {
-    const resp: any = await request(currentEndpoint, query)
-    setCampaigns(resp?.campaignCreateds)
+    if (currentEndpoint.length > 0) {
+     const resp: any = await request(currentEndpoint, query)
+     console.log('🚀 ~ file: CampaignsMenu.tsx:39 ~ ; ~ resp?.campaignCreateds:', resp?.campaignCreateds)
+     setCampaigns(resp?.campaignCreateds)
+    }
    } catch (error) {
     console.error(error)
    }
@@ -48,12 +51,12 @@ const CampaignsMenu = ({ selectedCampaign, setSelectedCampaign, isActive }: any)
     {({ isOpen }) => (
      <>
       <MenuButton as={Button} rightIcon={<ChevronDownIcon />} borderRadius="md" disabled={!isActive}>
-       {selectedCampaign?.id ? selectedCampaign?.param0 : 'Select Campaign'}
+       {selectedCampaign?.id ? selectedCampaign?.actionId : 'Select Campaign'}
       </MenuButton>
       <MenuList border="none" boxShadow="sm" borderRadius="md" mt={1} zIndex={1}>
        {campaigns.map((campaign: any, idx: number) => (
-        <MenuItem key={campaign.id} onClick={() => setSelectedCampaign(campaign)}>
-         Campaign #{idx} - {campaign.param0.slice(0, 10)}...{campaign.param0.slice(-10)}
+        <MenuItem key={uuidv4()} onClick={() => setSelectedCampaign(campaign)}>
+         Campaign #{idx} - {campaign.actionId}
         </MenuItem>
        ))}
       </MenuList>

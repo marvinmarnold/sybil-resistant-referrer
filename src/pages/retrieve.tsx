@@ -23,16 +23,17 @@ const CreateLink: NextPage = () => {
  const toast = useToast()
  const router = useRouter()
 
- const [campaignId, setCampaignId] = useState<any>(null)
- const [campaignAddy, setCampaignAddy] = useState<any>(null)
- const [ref, setRef] = useState<any>(null)
+ const [campaignId, setCampaignId] = useState<any>('')
+ const [campaignAddy, setCampaignAddy] = useState<any>('')
+ const [ref, setRef] = useState<any>('')
  const [isLoading, setIsLoading] = useState(false)
+ const [isSubmitting, setIsSubmitting] = useState(false)
  const [args, setArgs] = useState<any[]>([])
  const [hash, setHash] = useState<Hash>()
 
  const [proof, setProof] = useState<BigInt[]>([])
- const [nullifier, setNullifier] = useState<BigInt | undefined>()
- const [root, setRoot] = useState<BigInt | undefined>()
+ const [nullifier, setNullifier] = useState<BigInt>(BigInt(0))
+ const [root, setRoot] = useState<BigInt>(BigInt(0))
 
  const { address = '0x...' } = account
 
@@ -59,13 +60,18 @@ const CreateLink: NextPage = () => {
   error: prepareError,
   isError: isPrepareError,
  } = usePrepareContractWrite({
-  ...referralCampaignContract,
+  enabled: isSubmitting,
+  abi: referralCampaignContract.abi,
   functionName: 'acceptReferral',
   address: campaignAddy,
   args,
  })
 
  const { data, error, isError, write } = useContractWrite(config)
+ const execute = () => {
+  setIsSubmitting(true)
+  write && write()
+ }
 
  const { isLoading: isContractLoading, isSuccess } = useWaitForTransaction({
   hash: data?.hash,
@@ -86,14 +92,16 @@ const CreateLink: NextPage = () => {
  }, [isSuccess, data])
 
  useEffect(() => {
-  setIsLoading(false)
-  toast({
-   title: 'Error',
-   description: 'There was an error',
-   status: 'error',
-   duration: 9000,
-   isClosable: true,
-  })
+  if (isSubmitting) {
+   setIsLoading(false)
+   toast({
+    title: 'Error',
+    description: 'There was an error',
+    status: 'error',
+    duration: 9000,
+    isClosable: true,
+   })
+  }
  }, [isError])
 
  const claimRewardTxn = async () => {
@@ -103,7 +111,7 @@ const CreateLink: NextPage = () => {
    //   address _referrer, address signal, uint256 root, uint256 nullifierHash, uint256[8] calldata proof
    // FIXME: the second is the address of the claimer or the campaignId?
    setArgs([ref, address, root, nullifier, proof])
-   write?.()
+   execute()
    setHash(hash)
 
    setIsLoading(false)
@@ -155,9 +163,7 @@ const CreateLink: NextPage = () => {
       Claim Referral Rewards
      </h2>
 
-     <Text textAlign="center">
-      Campaign: {campaignId?.slice(0, 10)}...{campaignId?.slice(-10)}
-     </Text>
+     <Text textAlign="center">Campaign: {campaignId}</Text>
 
      <Box display="flex" justifyContent="center" mt={5}>
       {!isSuccess && (

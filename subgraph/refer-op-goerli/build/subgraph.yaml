@@ -6,9 +6,9 @@ dataSources:
     name: CampaignFactory
     network: optimism-goerli
     source:
-      address: "0x973C162Aa524f8162BD7E0D62F4144E953d692c4"
+      address: "0xf2761B5e177261fb3Ead3b7B992a11Fce8592898"
       abi: CampaignFactory
-      startBlock: 13192326
+      startBlock: 13233626
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -19,6 +19,6 @@ dataSources:
         - name: CampaignFactory
           file: CampaignFactory/abis/CampaignFactory.json
       eventHandlers:
-        - event: CampaignCreated(indexed address,address)
+        - event: CampaignCreated(indexed address,indexed address,indexed uint256)
           handler: handleCampaignCreated
       file: CampaignFactory/CampaignFactory.wasm

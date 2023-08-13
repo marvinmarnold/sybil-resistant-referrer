@@ -24,15 +24,20 @@ const CreateLink: NextPage = () => {
  const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
  const toast = useToast()
  const publicClient = usePublicClient()
-
- const [selectedCampaign, setSelectedCampaign] = useState<null | CampaignType>(null)
+ const [hasSubmitted, setHasSubmitted] = useState(false)
+ const [selectedCampaign, setSelectedCampaign] = useState<CampaignType>({
+  id: '',
+  owner: '0x',
+  campaign: '0x',
+  actionId: '',
+ })
  const [link, setLink] = useState('')
- const [args, setArgs] = useState<any[]>([])
+ const [args, setArgs] = useState<any[]>(['0xf2761B5e177261fb3Ead3b7B992a11Fce8592898', 0, 0, [0, 0, 0, 0, 0, 0, 0, 0]])
  const [isLoading, setIsLoading] = useState(false)
 
  const [proof, setProof] = useState<BigInt[]>([])
- const [nullifier, setNullifier] = useState<BigInt | undefined>()
- const [root, setRoot] = useState<BigInt | undefined>()
+ const [nullifier, setNullifier] = useState<BigInt>(BigInt(0))
+ const [root, setRoot] = useState<BigInt>(BigInt(0))
 
  const [hash, setHash] = useState<Hash>()
  const [receipt, setReceipt] = useState<TransactionReceipt>()
@@ -47,41 +52,51 @@ const CreateLink: NextPage = () => {
   error: prepareError,
   isError: isPrepareError,
  } = usePrepareContractWrite({
-  ...referralCampaignContract,
+  enabled: hasSubmitted,
+  abi: referralCampaignContract.abi,
   functionName: 'addReferrer',
-  address: selectedCampaign?.param0,
+
+  //   address: "0x8fa7b813f246e0dd7cbb04437487fb113912224a", // 1112
+  //   address: "0xa364f00198854cd1c0a24e2c502bc39d8aa29a22", // 1113
+  // address: "0xd6917c944be9f91fc4c90521c789f7028cbe66ba", // 1332721324098588
+  address: selectedCampaign.campaign,
   args,
  })
 
  const { data, error, isError, write } = useContractWrite(config)
-
+ const execute = () => {
+  setHasSubmitted(true)
+  !!write && write()
+ }
  const { isLoading: isContractLoading, isSuccess } = useWaitForTransaction({
   hash: data?.hash,
  })
 
  useEffect(() => {
-  setIsLoading(false)
-  toast({
-   title: 'Error',
-   description: 'There was an error',
-   status: 'error',
-   duration: 9000,
-   isClosable: true,
-  })
+  if (hasSubmitted) {
+   setIsLoading(false)
+   toast({
+    title: 'Error',
+    description: 'There was an error',
+    status: 'error',
+    duration: 9000,
+    isClosable: true,
+   })
+  }
  }, [isError])
 
  useEffect(() => {
-  ;(async () => {
-   if (hash) {
+  if (hash) {
+   ;(async () => {
     const receipt = await publicClient.waitForTransactionReceipt({ hash })
     setReceipt(receipt)
-   }
-  })()
+   })()
+  }
  }, [hash, publicClient])
 
  useEffect(() => {
   if (isSuccess) {
-   const url = `${window.location.host}/retrieve?campaignId=${selectedCampaign?.id}&campaignAddy=${selectedCampaign?.param0}&ref=${address}`
+   const url = `${window.location.host}/retrieve?campaignId=${selectedCampaign?.actionId}&campaignAddy=${selectedCampaign?.campaign}&ref=${address}`
    setLink(url)
 
    toast({
@@ -100,10 +115,11 @@ const CreateLink: NextPage = () => {
    if (!selectedCampaign || !account) return
 
    setArgs([address, root, nullifier, proof])
-   write?.()
+   execute()
    setHash(hash)
    setIsLoading(false)
   } catch (error) {
+   console.error(error)
    toast({
     title: 'Error',
     description: 'There was an error',
@@ -176,8 +192,8 @@ const CreateLink: NextPage = () => {
          </motion.div>
         ) : (
          <Box>
-          {selectedCampaign?.id && (
-           <Worldcoin proof={proof} setProof={setProof} setNullifier={setNullifier} setRoot={setRoot} action={selectedCampaign?.id} />
+          {selectedCampaign?.id.length > 0 && (
+           <Worldcoin proof={proof} setProof={setProof} setNullifier={setNullifier} setRoot={setRoot} action={selectedCampaign?.actionId} />
           )}
          </Box>
         )}

@@ -18,7 +18,7 @@ contract CampaignFactory {
     address immutable referralCampaign;
 
     //@dev Worldcoin Developer portal App ID , TO be updated
-    string appID = "app_staging_27f3e5996cfe801b96d47df2ffa35053";
+    string appID = "app_staging_f76857baa94ac9ef1ec53f86bbecccba";
 
     //@dev Campaign struct with campiagn address and token address
     struct Campaign {

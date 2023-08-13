@@ -1,0 +1,33 @@
+specVersion: 0.0.5
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum
+    name: ReferralCampaign
+    network: optimism-goerli
+    source:
+      address: "0xf2761B5e177261fb3Ead3b7B992a11Fce8592898"
+      abi: ReferralCampaign
+      startBlock: 13233626
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - AcceptedReferral
+        - Initialized
+        - OwnershipTransferred
+        - ReferrerAdded
+      abis:
+        - name: ReferralCampaign
+          file: ReferralCampaign/abis/ReferralCampaign.json
+      eventHandlers:
+        - event: AcceptedReferral(indexed address,address)
+          handler: handleAcceptedReferral
+        - event: Initialized(uint8)
+          handler: handleInitialized
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: ReferrerAdded(address)
+          handler: handleReferrerAdded
+      file: ReferralCampaign/ReferralCampaign.wasm

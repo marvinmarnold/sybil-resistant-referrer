@@ -53,7 +53,8 @@ const SuccessComponent = ({ link, data, message = '' }: { link: string | null; d
 
    <Box margin="5">
     <Button variant="link">
-     <a href={`https://etherscan.io/tx/${data?.hash}`}>
+     {/* <a href={`https://etherscan.io/tx/${data?.hash}`}> */}
+     <a target="_blank" href={`https://goerli-optimism.etherscan.io/tx/${data?.hash}#eventlog`}>
       Check txn
       <Icon as={FiExternalLink} />
      </a>

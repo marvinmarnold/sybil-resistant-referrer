@@ -11,6 +11,12 @@ import Container from 'components/layout/Container'
 import SuccessComponent from 'components/layout/SuccessComponent'
 import { networks } from 'utils/network'
 
+function randomIntFromInterval(min: number, max: number) {
+ // min and max included
+ return Math.floor(Math.random() * (max - min + 1) + min)
+}
+const randActionId = randomIntFromInterval(1, 9999999999999999)
+
 const CreateCampaign = () => {
  const toast = useToast()
  const { colorMode } = useColorMode()
@@ -22,11 +28,12 @@ const CreateCampaign = () => {
  const [rewardReferrer, setRewardReferrer] = useState<string>('')
  const [rewardReferee, setRewardReferee] = useState<string>('')
  const [contractDecimals, setContractDecimals] = useState<number>(10)
- const [args, setArgs] = useState<any[]>([])
- const [minCampaignTokenBalance, setMinCampaignTokenBalance] = useState<string>()
- const [returnedData, setReturnedData] = useState<any>()
+ const [args, setArgs] = useState<any[]>(['', '', '', 0, 0, 0, 0, '', 0])
+ const [minCampaignTokenBalance, setMinCampaignTokenBalance] = useState<string>('')
+ const [returnedData, setReturnedData] = useState<any>('')
  const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
  const [isLoading, setIsLoading] = useState<boolean>(false)
+ const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
  const { address } = useAccount()
  const actionid = uuidv4()
@@ -39,7 +46,8 @@ const CreateCampaign = () => {
  const chainId: number = network.chain?.id ?? 5
 
  const { config, error, isError } = usePrepareContractWrite({
-  ...CampaignFactory,
+  abi: CampaignFactory.abi,
+  enabled: isSubmitting,
   functionName: 'addCampaign',
   //   FIXME: Add depending on the chain
   address: networks[chainId].factoryContract,
@@ -51,6 +59,29 @@ const CreateCampaign = () => {
  const { isLoading: isContractLoading, isSuccess: writeSuccess } = useWaitForTransaction({
   hash: data?.hash,
  })
+ const worldId = networks[chainId].worldId
+
+ useEffect(() => {
+  setArgs([
+   worldId,
+   campaignContractAddress,
+   rewardTokenAddress,
+   bigIntMaxReferalsperReferee,
+   bigIntRewardReferer,
+   bigIntRewardReferee,
+   bigIntMinCampaignTokenBalance,
+   randActionId.toString(),
+   randActionId,
+  ])
+ }, [
+  worldId,
+  campaignContractAddress,
+  rewardTokenAddress,
+  bigIntMaxReferalsperReferee,
+  bigIntRewardReferer,
+  bigIntRewardReferee,
+  bigIntMinCampaignTokenBalance,
+ ])
 
  useEffect(() => {
   if (writeSuccess) {
@@ -70,15 +101,9 @@ const CreateCampaign = () => {
  const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault()
   try {
-   setArgs([
-    campaignContractAddress,
-    rewardTokenAddress,
-    bigIntMaxReferalsperReferee,
-    bigIntRewardReferer,
-    bigIntRewardReferee,
-    bigIntMinCampaignTokenBalance,
-    actionid,
-   ])
+   console.log('Sending TX')
+   console.log(args)
+   setIsSubmitting(true)
    await write?.()
   } catch (error) {
    toast({
@@ -112,7 +137,7 @@ const CreateCampaign = () => {
      }}>
      {writeSuccess ? (
       // TODO: Add campaign ref to the link
-      <SuccessComponent link={'http://localhost:3000/createlink'} data={data} message="Successfully created!" />
+      <SuccessComponent link={'/createlink'} data={data} message={`Successfully created campaign ${randActionId}!`} />
      ) : (
       <form>
        <Heading textAlign="center">Create Campaign</Heading>
