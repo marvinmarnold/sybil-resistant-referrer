@@ -19,11 +19,6 @@ export interface networkType {
 }
 
 export const networks: networkType = {
- 5: {
-  factoryContract: process.env.NEXT_PUBLIC_CAMPAIGN_FACTORY_ADDR_ETH_GOERLI as `0x${string}`,
-  factorySubgraph: '',
-  worldId: '0x11cA3127182f7583EfC416a8771BD4d11Fae4334',
- },
  420: {
   factoryContract: process.env.NEXT_PUBLIC_CAMPAIGN_FACTORY_ADDR_OP_GOERLI as `0x${string}`,
   factorySubgraph: 'https://api.studio.thegraph.com/query/51076/sybil-resistant/version/latest',
@@ -31,8 +26,8 @@ export const networks: networkType = {
  },
  84531: {
   factoryContract: process.env.NEXT_PUBLIC_CAMPAIGN_FACTORY_ADDR_BASE_GOERLI as `0x${string}`,
-  factorySubgraph: '',
-  worldId: '0x78ec127a3716d447f4575e9c834d452e397ee9e1',
+  factorySubgraph: 'https://api.studio.thegraph.com/query/18941/refer-base-testnet/version/latest',
+  worldId: '0xCe7d9aE54199a4f847DfD168d929a286D72BE953',
  },
  919: {
   factoryContract: process.env.NEXT_PUBLIC_CAMPAIGN_FACTORY_ADDR_ZORA_TESTNET as `0x${string}`,
@@ -41,7 +36,7 @@ export const networks: networkType = {
  },
  999: {
   factoryContract: process.env.NEXT_PUBLIC_CAMPAIGN_FACTORY_ADDR_MODE_TESTNET as `0x${string}`,
-  factorySubgraph: '',
+  factorySubgraph: '0x5816c73FE88a53b1286d6761F470865bA871f968',
   worldId: '0x',
  },
 }

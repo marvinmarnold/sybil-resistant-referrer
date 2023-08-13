@@ -75,7 +75,7 @@ export default function Home() {
         style={{ fontSize: '22px', width: '650px', marginTop: '320px', position: 'absolute', left: '150px', fontFamily: 'Dm Sans', color: 'gray' }}>
         Legitimize Referrals, Drive Adoption, Reward People.
        </h3>
-       <LinkComponent href="/CreateCampaign">
+       {/* <LinkComponent href="/CreateCampaign">
         <Button
          backgroundColor="purple.300"
          variant="gradient"
@@ -89,7 +89,7 @@ export default function Home() {
          style={{ marginTop: '380px', position: 'absolute', left: '150px' }}>
          Get Started
         </Button>
-       </LinkComponent>
+       </LinkComponent> */}
       </Flex>
 
       <Flex w="1420px" borderTop="2px solid black" position="absolute" left="50px" top="560px" h="150px" justifyContent="center">
@@ -147,7 +147,7 @@ export default function Home() {
          Generate Referrals, Expand Possibilities.
         </p>
        </Flex>
-       <Flex
+       {/* <Flex
         w="30%"
         h="150px"
         borderTop="2px solid black"
@@ -172,7 +172,7 @@ export default function Home() {
         <p style={{ fontFamily: 'Dm Sans', display: 'flex', justifyContent: 'center', margin: '20px', color: 'gray' }}>
          Maximize Referral Impact Through Action.
         </p>
-       </Flex>
+       </Flex> */}
       </Flex>
      </motion.section>
 
