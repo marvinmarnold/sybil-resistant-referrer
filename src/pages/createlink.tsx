@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react'
-import { Box, Button, Icon, useToast, Text, useBreakpointValue, useColorMode, Heading, useTheme } from '@chakra-ui/react'
+import { Box, Button, useToast, useBreakpointValue, useColorMode, Heading, useTheme } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
 import type { NextPage } from 'next'
 import { useAccount, usePublicClient, usePrepareContractWrite, useContractWrite, useWaitForTransaction } from 'wagmi'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { FiCopy, FiExternalLink } from 'react-icons/fi'
 import { Hash, TransactionReceipt, stringify } from 'viem'
 import 'viem/window'
 
@@ -29,11 +27,12 @@ const CreateLink: NextPage = () => {
 
  const [selectedCampaign, setSelectedCampaign] = useState<null | CampaignType>(null)
  const [link, setLink] = useState('')
+ const [args, setArgs] = useState<any[]>([])
  const [isLoading, setIsLoading] = useState(false)
 
- const [proof, setProof] = useState<string[]>([])
- const [nullifier, setNullifier] = useState<string | null>(null)
- const [root, setRoot] = useState<string | null>(null)
+ const [proof, setProof] = useState<BigInt[]>([])
+ const [nullifier, setNullifier] = useState<BigInt | undefined>()
+ const [root, setRoot] = useState<BigInt | undefined>()
 
  const [hash, setHash] = useState<Hash>()
  const [receipt, setReceipt] = useState<TransactionReceipt>()
@@ -43,15 +42,6 @@ const CreateLink: NextPage = () => {
  //  TODO: Add history on Atom
  const history = []
 
- const successCopy = () => {
-  toast({
-   title: 'Link Copied',
-   status: 'success',
-   duration: 9000,
-   isClosable: true,
-  })
- }
-
  const {
   config,
   error: prepareError,
@@ -60,8 +50,7 @@ const CreateLink: NextPage = () => {
   ...referralCampaignContract,
   functionName: 'addReferrer',
   address: selectedCampaign?.param0,
-  //  address signal, uint256 root, uint256 nullifierHash, uint256[8] calldata proof
-  args: [address, root, nullifier, proof],
+  args,
  })
 
  const { data, error, isError, write } = useContractWrite(config)
@@ -90,16 +79,29 @@ const CreateLink: NextPage = () => {
   })()
  }, [hash, publicClient])
 
+ useEffect(() => {
+  if (isSuccess) {
+   const url = `${window.location.host}/retrieve?campaignId=${selectedCampaign?.id}&campaignAddy=${selectedCampaign?.param0}&ref=${address}`
+   setLink(url)
+
+   toast({
+    title: 'Success',
+    description: 'Transaction submited successfully',
+    status: 'success',
+    duration: 9000,
+    isClosable: true,
+   })
+  }
+ }, [isSuccess, data])
+
  const registerOnchain = async () => {
   try {
    setIsLoading(true)
    if (!selectedCampaign || !account) return
 
+   setArgs([address, root, nullifier, proof])
    write?.()
    setHash(hash)
-   const url = `${window.location.host}/retrieve?campaignId=${selectedCampaign?.id}&campaignAddy=${selectedCampaign?.param0}&ref=${address}`
-   setLink(url)
-
    setIsLoading(false)
   } catch (error) {
    toast({

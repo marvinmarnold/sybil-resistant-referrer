@@ -1,5 +1,9 @@
 [
-  { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
   {
     "anonymous": false,
     "inputs": [
@@ -50,16 +54,31 @@
         "internalType": "uint256",
         "name": "_minCampaignTokenBalance",
         "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_actionId",
+        "type": "string"
       }
     ],
     "name": "addCampaign",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "payable",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_manager", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_manager",
+        "type": "address"
+      }
     ],
     "name": "getCampaigns",
     "outputs": [

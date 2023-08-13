@@ -127,6 +127,10 @@ export class AddCampaignCall__Inputs {
   get _minCampaignTokenBalance(): BigInt {
     return this._call.inputValues[5].value.toBigInt();
   }
+
+  get _actionId(): string {
+    return this._call.inputValues[6].value.toString();
+  }
 }
 
 export class AddCampaignCall__Outputs {

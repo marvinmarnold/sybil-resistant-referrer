@@ -1,18 +1,20 @@
-import { Box, Button, FormControl, FormLabel, Input, useBreakpointValue, useColorMode, useToast, FormHelperText } from '@chakra-ui/react'
+import { Box, Button, FormControl, Heading, FormLabel, Input, useBreakpointValue, useColorMode, useToast, FormHelperText } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { uuid } from 'uuidv4'
-import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
+import { v4 as uuidv4 } from 'uuid'
+import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction, useNetwork } from 'wagmi'
 import { parseUnits } from 'viem'
 
 import CampaignFactory from '../../contracts/out/CampaignFactory.sol/CampaignFactory.json'
 import Background from 'components/Background'
 import Container from 'components/layout/Container'
 import SuccessComponent from 'components/layout/SuccessComponent'
+import { networks } from 'utils/network'
 
 const CreateCampaign = () => {
  const toast = useToast()
  const { colorMode } = useColorMode()
+ const network = useNetwork()
 
  const [campaignContractAddress, setCampaignContractAddress] = useState('')
  const [rewardTokenAddress, setRewardTokenAddress] = useState('')
@@ -20,24 +22,27 @@ const CreateCampaign = () => {
  const [rewardReferrer, setRewardReferrer] = useState<string>('')
  const [rewardReferee, setRewardReferee] = useState<string>('')
  const [contractDecimals, setContractDecimals] = useState<number>(10)
- const [args, setArg] = useState<any[]>([])
+ const [args, setArgs] = useState<any[]>([])
  const [minCampaignTokenBalance, setMinCampaignTokenBalance] = useState<string>()
  const [returnedData, setReturnedData] = useState<any>()
  const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
  const [isLoading, setIsLoading] = useState<boolean>(false)
 
  const { address } = useAccount()
- const actionid = uuid()
+ const actionid = uuidv4()
 
  const bigIntMaxReferalsperReferee = maxReferalsperReferee ? parseUnits(maxReferalsperReferee, contractDecimals) : 0
  const bigIntRewardReferer = rewardReferrer ? parseUnits(rewardReferrer, contractDecimals) : 0
  const bigIntRewardReferee = rewardReferee ? parseUnits(rewardReferee, contractDecimals) : 0
  const bigIntMinCampaignTokenBalance = minCampaignTokenBalance ? parseUnits(minCampaignTokenBalance, contractDecimals) : 0
 
- const { config, error, isError, isSuccess } = usePrepareContractWrite({
+ const chainId: number = network.chain?.id ?? 5
+
+ const { config, error, isError } = usePrepareContractWrite({
   ...CampaignFactory,
   functionName: 'addCampaign',
-  address: process.env.NEXT_PUBLIC_CAMPAIGN_FACTORY_ADDR_OP as `0x${string}`,
+  //   FIXME: Add depending on the chain
+  address: networks[chainId].factoryContract,
   args,
  })
 
@@ -65,7 +70,7 @@ const CreateCampaign = () => {
  const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault()
   try {
-   setArg([
+   setArgs([
     campaignContractAddress,
     rewardTokenAddress,
     bigIntMaxReferalsperReferee,
@@ -105,20 +110,12 @@ const CreateCampaign = () => {
       borderRadius: '40px',
       border: '1px solid rgba(179, 186, 209, 0.5)',
      }}>
-     {isSuccess ? (
+     {writeSuccess ? (
       // TODO: Add campaign ref to the link
-      <SuccessComponent link={'http://localhost:3000/createlink'} data={data} message="Successfully created a campaign!" />
+      <SuccessComponent link={'http://localhost:3000/createlink'} data={data} message="Successfully created!" />
      ) : (
       <form>
-       <h2
-        style={{
-         textAlign: 'center',
-         fontWeight: 'bold',
-         fontSize: '1.5rem',
-         fontFamily: 'sans-serif',
-        }}>
-        Create Campaign
-       </h2>
+       <Heading textAlign="center">Create Campaign</Heading>
 
        <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
         <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>

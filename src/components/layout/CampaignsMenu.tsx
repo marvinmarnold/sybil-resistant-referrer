@@ -1,10 +1,11 @@
-import { Chain, useNetwork, useSwitchNetwork } from 'wagmi'
+import { useNetwork } from 'wagmi'
 import { Box, Menu, MenuButton, MenuList, MenuItem, Button, useTheme } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { request, gql } from 'graphql-request'
 import { useState, useEffect } from 'react'
 
 import { CampaignType } from 'types/index'
+import { networks } from 'utils/network'
 
 // param0 is the contract address
 const query = gql`
@@ -19,16 +20,16 @@ const query = gql`
 `
 
 const CampaignsMenu = ({ selectedCampaign, setSelectedCampaign, isActive }: any) => {
- const { chain } = useNetwork()
- const theme = useTheme()
+ const network = useNetwork()
  const [currentEndpoint, setCurrentEndpoint] = useState('')
  const [campaigns, setCampaigns] = useState<CampaignType[] | []>([])
 
+ const chainId: number = network.chain?.id ?? 5
+
  useEffect(() => {
-  // TODO: Change depending on the chain
-  const endpoint = 'https://api.studio.thegraph.com/query/18941/refer-optimism-goerli/version/latest'
+  const endpoint = networks[chainId].factorySubgraph
   setCurrentEndpoint(endpoint)
- }, [chain])
+ }, [chainId])
 
  useEffect(() => {
   ;(async () => {
@@ -42,7 +43,7 @@ const CampaignsMenu = ({ selectedCampaign, setSelectedCampaign, isActive }: any)
  }, [currentEndpoint])
 
  return (
-  <Box margin={10}>
+  <Box margin={10} textAlign="center">
    <Menu>
     {({ isOpen }) => (
      <>
@@ -50,9 +51,9 @@ const CampaignsMenu = ({ selectedCampaign, setSelectedCampaign, isActive }: any)
        {selectedCampaign?.id ? selectedCampaign?.param0 : 'Select Campaign'}
       </MenuButton>
       <MenuList border="none" boxShadow="sm" borderRadius="md" mt={1} zIndex={1}>
-       {campaigns.map((campaign: any) => (
+       {campaigns.map((campaign: any, idx: number) => (
         <MenuItem key={campaign.id} onClick={() => setSelectedCampaign(campaign)}>
-         {campaign.param0}
+         Campaign #{idx} - {campaign.param0.slice(0, 10)}...{campaign.param0.slice(-10)}
         </MenuItem>
        ))}
       </MenuList>
