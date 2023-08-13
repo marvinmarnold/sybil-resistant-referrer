@@ -8,23 +8,17 @@ dataSources:
     source:
       address: "0xf2761B5e177261fb3Ead3b7B992a11Fce8592898"
       abi: CampaignFactory
-      startBlock: 13232404
+      startBlock: 13233626
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - CampaignCreated
-        - CampaignTagged
-        - CampaignWorking
       abis:
         - name: CampaignFactory
           file: ./abis/CampaignFactory.json
       eventHandlers:
         - event: CampaignCreated(indexed address,indexed address,indexed uint256)
           handler: handleCampaignCreated
-        - event: CampaignTagged(indexed address,string)
-          handler: handleCampaignTagged
-        - event: CampaignWorking(indexed address,address)
-          handler: handleCampaignWorking
       file: ./src/campaign-factory.ts

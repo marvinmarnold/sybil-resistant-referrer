@@ -7,21 +7,3 @@ type CampaignCreated @entity(immutable: true) {
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
-
-type CampaignTagged @entity(immutable: true) {
-  id: Bytes!
-  param0: Bytes! # address
-  param1: String! # string
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type CampaignWorking @entity(immutable: true) {
-  id: Bytes!
-  param0: Bytes! # address
-  param1: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}

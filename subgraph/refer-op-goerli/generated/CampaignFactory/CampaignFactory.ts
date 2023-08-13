@@ -36,50 +36,6 @@ export class CampaignCreated__Params {
   }
 }
 
-export class CampaignTagged extends ethereum.Event {
-  get params(): CampaignTagged__Params {
-    return new CampaignTagged__Params(this);
-  }
-}
-
-export class CampaignTagged__Params {
-  _event: CampaignTagged;
-
-  constructor(event: CampaignTagged) {
-    this._event = event;
-  }
-
-  get param0(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get param1(): string {
-    return this._event.parameters[1].value.toString();
-  }
-}
-
-export class CampaignWorking extends ethereum.Event {
-  get params(): CampaignWorking__Params {
-    return new CampaignWorking__Params(this);
-  }
-}
-
-export class CampaignWorking__Params {
-  _event: CampaignWorking;
-
-  constructor(event: CampaignWorking) {
-    this._event = event;
-  }
-
-  get param0(): Address {
-    return this._event.parameters[0].value.toAddress();
-  }
-
-  get param1(): Address {
-    return this._event.parameters[1].value.toAddress();
-  }
-}
-
 export class CampaignFactory extends ethereum.SmartContract {
   static bind(address: Address): CampaignFactory {
     return new CampaignFactory("CampaignFactory", address);
