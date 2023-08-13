@@ -101,7 +101,7 @@ export default function Home() {
         flexDirection="column"
         justifyContent="center"
         alignItems="center">
-        <LinkComponent href="CreateCampaign">
+        <LinkComponent href="/CreateCampaign">
          <h2
           style={{
            fontFamily: 'Dm Sans',
@@ -129,7 +129,7 @@ export default function Home() {
         flexDirection="column"
         justifyContent="center"
         alignItems="center">
-        <LinkComponent href="createlink">
+        <LinkComponent href="/createlink">
          <h2
           style={{
            fontFamily: 'Dm Sans',

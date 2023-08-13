@@ -1,8 +1,0 @@
-{
-  "optimism-goerli": {
-    "CampaignFactory": {
-      "address": "0xBfb8395FC0FE59f46A7557275782268ce0aE8146",
-      "startBlock": 13106210
-    }
-  }
-}

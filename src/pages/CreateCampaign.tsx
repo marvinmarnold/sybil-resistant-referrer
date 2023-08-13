@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormLabel, Input, useBreakpointValue, useColorMode, useToast, FormHelperText } from '@chakra-ui/react'
+import { Box, Button, FormControl, Heading, FormLabel, Input, useBreakpointValue, useColorMode, useToast, FormHelperText } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { v4 as uuidv4 } from 'uuid'
@@ -22,7 +22,7 @@ const CreateCampaign = () => {
  const [rewardReferrer, setRewardReferrer] = useState<string>('')
  const [rewardReferee, setRewardReferee] = useState<string>('')
  const [contractDecimals, setContractDecimals] = useState<number>(10)
- const [args, setArg] = useState<any[]>([])
+ const [args, setArgs] = useState<any[]>([])
  const [minCampaignTokenBalance, setMinCampaignTokenBalance] = useState<string>()
  const [returnedData, setReturnedData] = useState<any>()
  const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
@@ -70,7 +70,7 @@ const CreateCampaign = () => {
  const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault()
   try {
-   setArg([
+   setArgs([
     campaignContractAddress,
     rewardTokenAddress,
     bigIntMaxReferalsperReferee,
@@ -112,18 +112,10 @@ const CreateCampaign = () => {
      }}>
      {writeSuccess ? (
       // TODO: Add campaign ref to the link
-      <SuccessComponent link={'http://localhost:3000/createlink'} data={data} message="Successfully created a campaign!" />
+      <SuccessComponent link={'http://localhost:3000/createlink'} data={data} message="Successfully created!" />
      ) : (
       <form>
-       <h2
-        style={{
-         textAlign: 'center',
-         fontWeight: 'bold',
-         fontSize: '1.5rem',
-         fontFamily: 'sans-serif',
-        }}>
-        Create Campaign
-       </h2>
+       <Heading textAlign="center">Create Campaign</Heading>
 
        <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
         <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>

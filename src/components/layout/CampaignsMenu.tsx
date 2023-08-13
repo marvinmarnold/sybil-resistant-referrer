@@ -21,7 +21,6 @@ const query = gql`
 
 const CampaignsMenu = ({ selectedCampaign, setSelectedCampaign, isActive }: any) => {
  const network = useNetwork()
- const theme = useTheme()
  const [currentEndpoint, setCurrentEndpoint] = useState('')
  const [campaigns, setCampaigns] = useState<CampaignType[] | []>([])
 
@@ -44,7 +43,7 @@ const CampaignsMenu = ({ selectedCampaign, setSelectedCampaign, isActive }: any)
  }, [currentEndpoint])
 
  return (
-  <Box margin={10}>
+  <Box margin={10} textAlign="center">
    <Menu>
     {({ isOpen }) => (
      <>
@@ -52,9 +51,9 @@ const CampaignsMenu = ({ selectedCampaign, setSelectedCampaign, isActive }: any)
        {selectedCampaign?.id ? selectedCampaign?.param0 : 'Select Campaign'}
       </MenuButton>
       <MenuList border="none" boxShadow="sm" borderRadius="md" mt={1} zIndex={1}>
-       {campaigns.map((campaign: any) => (
+       {campaigns.map((campaign: any, idx: number) => (
         <MenuItem key={campaign.id} onClick={() => setSelectedCampaign(campaign)}>
-         {campaign.param0}
+         Campaign #{idx} - {campaign.param0.slice(0, 10)}...{campaign.param0.slice(-10)}
         </MenuItem>
        ))}
       </MenuList>

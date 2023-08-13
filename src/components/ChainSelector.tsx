@@ -1,10 +1,9 @@
-import { Badge, Code, ListItem, Text, UnorderedList, useColorModeValue, Button, Icon, forwardRef } from '@chakra-ui/react'
-import { Chain, useNetwork, useSwitchNetwork, useBlockNumber } from 'wagmi'
-import { Menu, MenuButton, MenuList, MenuItem, MenuItemOption, MenuGroup, MenuOptionGroup, MenuDivider } from '@chakra-ui/react'
+import { useColorModeValue, Button, Icon } from '@chakra-ui/react'
+import { Chain, useNetwork, useSwitchNetwork } from 'wagmi'
+import { Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react'
 
-import { messageAddress, messageConfig, readMessage } from 'abis'
+import { messageAddress, messageConfig } from 'abis'
 import { ETH_CHAINS } from 'utils/config'
-import { LinkComponent } from 'components/layout/LinkComponent'
 import { FiChevronDown } from 'react-icons/fi'
 import { BsFillCircleFill } from 'react-icons/bs'
 BsFillCircleFill
@@ -14,7 +13,6 @@ import { THEME_COLOR_SCHEME } from 'utils/config'
 
 const ChainSelector = () => {
  const network = useNetwork()
- console.log('🚀 ~ file: ChainSelector.tsx:17 ~ network:', network)
  const explorerUrl = network.chain?.blockExplorers?.default.url
  const bgColor = useColorModeValue(`${THEME_COLOR_SCHEME}.50`, `${THEME_COLOR_SCHEME}.800`)
  const { switchNetwork } = useSwitchNetwork()
@@ -32,7 +30,6 @@ const ChainSelector = () => {
     const address = (messageAddress as any)[i]
     const explorerUrl = chain?.blockExplorers?.default.url
 
-    console.log('🚀 ~ file: ChainSelector.tsx:50 ~ {ETH_CHAINS.map ~ chain:', chain)
     return (
      <Menu key={i}>
       {({ isOpen }) => (

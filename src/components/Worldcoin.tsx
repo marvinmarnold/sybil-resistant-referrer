@@ -6,16 +6,13 @@ import { BigNumber } from 'ethers'
 import { decode } from '@/../../lib/wld'
 import { CredentialType, IDKitWidget, ISuccessResult } from '@worldcoin/idkit'
 import { useAccount } from 'wagmi'
-import { useRecoilState, useSetRecoilState } from 'recoil'
 import { FiExternalLink } from 'react-icons/fi'
 
-import { merkleRootAtom, nullifierAtom, proofAtom } from 'recoil/worldcoin'
-
 type WorldTypes = {
- proof: string[]
- setProof: React.Dispatch<React.SetStateAction<string[]>>
- setNullifier: React.Dispatch<React.SetStateAction<string | null>>
- setRoot: React.Dispatch<React.SetStateAction<string | null>>
+ proof: BigInt[]
+ setProof: React.Dispatch<React.SetStateAction<BigInt[]>>
+ setNullifier: React.Dispatch<React.SetStateAction<BigInt | undefined>>
+ setRoot: React.Dispatch<React.SetStateAction<BigInt | undefined>>
  action: string
 }
 
@@ -33,17 +30,17 @@ const Worldcoin = ({ proof, setProof, setNullifier, setRoot, action }: WorldType
   console.log('Got Worldcoin response')
 
   const merkleRoot = decode<BigNumber>('uint256', success.merkle_root).toBigInt()
-  setRoot(merkleRoot.toString())
+  setRoot(merkleRoot)
 
   const nullifier = decode<BigNumber>('uint256', success.nullifier_hash).toBigInt()
-  setNullifier(nullifier.toString())
+  setNullifier(nullifier)
 
   const tempProof = decode<[BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber]>('uint256[8]', success.proof).map(
    (n) => n.toBigInt()
   ) as [bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint]
 
-  const convertedProof = tempProof.map((value) => value.toString())
-  setProof(convertedProof) // Convert BigInt values to strings to be accepted by localStorage
+  //   const convertedProof = tempProof.map((value) => value.toString())
+  setProof(tempProof) // Convert BigInt values to strings to be accepted by localStorage
   setWcResult(success)
  }
 
@@ -67,11 +64,11 @@ const Worldcoin = ({ proof, setProof, setNullifier, setRoot, action }: WorldType
    credential_types={[CredentialType.Orb, CredentialType.Phone]}
    app_id={process.env.NEXT_PUBLIC_APP_ID!}>
    {({ open }) => (
-    <Box>
-     <Text>Verify with World Id 🌐</Text>
+    <Box textAlign="center" margin={10}>
+     <Text margin={3}>Verify with World Id 🌐</Text>
      <Button onClick={open}>I&apos;m a human 👋</Button>
 
-     <Text>or</Text>
+     <Text margin={5}>or</Text>
      {/* // Don't show page if there's no WorldId connected  */}
      {proof?.length === 0 && (
       <Box>
