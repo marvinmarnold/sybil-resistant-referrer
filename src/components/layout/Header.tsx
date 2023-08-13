@@ -26,9 +26,8 @@ export function Header(props: Props) {
    <Spacer />
    <Flex alignItems="center" gap={4}>
     <PassportScore />
+    <ChainSelector />
     <Web3Button icon="hide" label="Connect Wallet" />
-    {/* TODO: Add chain selector */}
-    {/* <ChainSelector /> */}
     {/* <ThemeSwitcher /> */}
    </Flex>
   </Flex>

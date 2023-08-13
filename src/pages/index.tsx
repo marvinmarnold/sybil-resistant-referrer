@@ -72,23 +72,24 @@ export default function Home() {
         Sybil Resistant <span style={{ color: '#A45EE5' }}>Referrer</span>
        </Heading>
        <h3
-        style={{ fontSize: '22px', width: '650px', marginTop: '300px', position: 'absolute', left: '150px', fontFamily: 'Dm Sans', color: 'gray' }}>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis, ad sapiente.
+        style={{ fontSize: '22px', width: '650px', marginTop: '320px', position: 'absolute', left: '150px', fontFamily: 'Dm Sans', color: 'gray' }}>
+        Legitimize Referrals, Drive Adoption, Reward People.
        </h3>
-
-       <Button
-        backgroundColor="purple.300"
-        variant="gradient"
-        borderRadius="0px"
-        border={'0.5px solid #312E2A'}
-        boxShadow={'2.8px 3.8px 0px 0px #312E2A'}
-        py={2}
-        px={28}
-        fontFamily="Dm Sans"
-        color="white"
-        style={{ marginTop: '380px', position: 'absolute', left: '150px' }}>
-        Get Started
-       </Button>
+       <LinkComponent href="/CreateCampaign">
+        <Button
+         backgroundColor="purple.300"
+         variant="gradient"
+         borderRadius="0px"
+         border={'0.5px solid #312E2A'}
+         boxShadow={'2.8px 3.8px 0px 0px #312E2A'}
+         py={2}
+         px={28}
+         fontFamily="Dm Sans"
+         color="white"
+         style={{ marginTop: '380px', position: 'absolute', left: '150px' }}>
+         Get Started
+        </Button>
+       </LinkComponent>
       </Flex>
 
       <Flex w="1420px" borderTop="2px solid black" position="absolute" left="50px" top="560px" h="150px" justifyContent="center">
@@ -101,7 +102,7 @@ export default function Home() {
         flexDirection="column"
         justifyContent="center"
         alignItems="center">
-        <LinkComponent href="CreateCampaign">
+        <LinkComponent href="/CreateCampaign">
          <h2
           style={{
            fontFamily: 'Dm Sans',
@@ -114,8 +115,8 @@ export default function Home() {
           Create campaign-&gt;{' '}
          </h2>
         </LinkComponent>
-        <p style={{ fontFamily: 'Dm Sans', display: 'flex', justifyContent: 'center', margin: '10px', color: 'gray' }}>
-         Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, molestias ut. Nam exercitationem molestias ipsam cupiditate corrupti.
+        <p style={{ fontFamily: 'Dm Sans', display: 'flex', justifyContent: 'center', margin: '20px', color: 'gray', textAlign: 'center' }}>
+         Craft Compelling Campaigns with Ease.
         </p>
        </Flex>
        <Flex
@@ -129,7 +130,7 @@ export default function Home() {
         flexDirection="column"
         justifyContent="center"
         alignItems="center">
-        <LinkComponent href="createlink">
+        <LinkComponent href="/createlink">
          <h2
           style={{
            fontFamily: 'Dm Sans',
@@ -142,8 +143,8 @@ export default function Home() {
           Generate Referrals-&gt;
          </h2>
         </LinkComponent>
-        <p style={{ fontFamily: 'Dm Sans', display: 'flex', justifyContent: 'center', margin: '10px', color: 'gray' }}>
-         Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, molestias ut. Nam exercitationem molestias ipsam cupiditate corrupti.
+        <p style={{ fontFamily: 'Dm Sans', display: 'flex', justifyContent: 'center', margin: '20px', color: 'gray' }}>
+         Generate Referrals, Expand Possibilities.
         </p>
        </Flex>
        <Flex
@@ -168,8 +169,8 @@ export default function Home() {
           Take Actions-&gt;{' '}
          </h2>
         </LinkComponent>
-        <p style={{ fontFamily: 'Dm Sans', display: 'flex', justifyContent: 'center', margin: '10px', color: 'gray' }}>
-         Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, molestias ut. Nam exercitationem molestias ipsam cupiditate corrupti.
+        <p style={{ fontFamily: 'Dm Sans', display: 'flex', justifyContent: 'center', margin: '20px', color: 'gray' }}>
+         Maximize Referral Impact Through Action.
         </p>
        </Flex>
       </Flex>
@@ -199,7 +200,7 @@ export default function Home() {
         </Heading>
        </Box>
        <Box>
-        <Image src="/1.png" alt="Create a Campaign" width={650} height={550} priority />
+        <Image src="/create.png" alt="Create a Campaign" width={650} height={550} priority />
        </Box>
       </Flex>
       <Flex
@@ -221,7 +222,7 @@ export default function Home() {
         </Heading>
        </Box>
        <Box>
-        <Image src="/2.png" alt="Create a Campaign" width={650} height={550} priority />
+        <Image src="/link.png" alt="Create a Campaign" width={650} height={550} priority />
        </Box>
       </Flex>
       <Flex
@@ -243,7 +244,7 @@ export default function Home() {
         </Heading>
        </Box>
        <Box>
-        <Image src="/2.png" alt="Create a Campaign" width={650} height={550} priority />
+        <Image src="/3.png" alt="Create a Campaign" width={650} height={550} priority />
        </Box>
       </Flex>
      </motion.section>

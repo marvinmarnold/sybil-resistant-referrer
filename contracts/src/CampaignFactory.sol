@@ -13,14 +13,12 @@ contract CampaignFactory {
 
 //    event CampaignCreated(address indexed, address, address, address, uint256, uint256, uint256, uint256, string);
    event CampaignCreated(address indexed owner, address indexed campaign, uint256 indexed actionId);
-   event CampaignTagged(address indexed, string);
-   event CampaignWorking(address indexed, address);
     
     //@dev Referral Campaign Implementation
     address immutable referralCampaign;
 
     //@dev Worldcoin Developer portal App ID , TO be updated
-    string appID = "app_staging_27f3e5996cfe801b96d47df2ffa35053";
+    string appID = "app_staging_f76857baa94ac9ef1ec53f86bbecccba";
 
     //@dev Campaign struct with campiagn address and token address
     struct Campaign {
@@ -84,8 +82,6 @@ contract CampaignFactory {
         campaignsForManager[msg.sender].push(campaign);
         // emit CampaignCreated(msg.sender, clone, _campaignTokenContract, _rewardTokenContract, _maxReferralsPerReferrer, _rewardReferrer, _rewardReferee, _minCampaignTokenBalance, _actionId);
         emit CampaignCreated(msg.sender, clone, _actionIdStr);
-        emit CampaignTagged(msg.sender, _actionId);
-        emit CampaignWorking(msg.sender, clone);
         return clone;
     }
 

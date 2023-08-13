@@ -1,0 +1,24 @@
+specVersion: 0.0.5
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum
+    name: CampaignFactory
+    network: optimism-goerli
+    source:
+      address: "0xf2761B5e177261fb3Ead3b7B992a11Fce8592898"
+      abi: CampaignFactory
+      startBlock: 13233626
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CampaignCreated
+      abis:
+        - name: CampaignFactory
+          file: CampaignFactory/abis/CampaignFactory.json
+      eventHandlers:
+        - event: CampaignCreated(indexed address,indexed address,indexed uint256)
+          handler: handleCampaignCreated
+      file: CampaignFactory/CampaignFactory.wasm

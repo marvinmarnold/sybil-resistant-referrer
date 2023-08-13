@@ -1,18 +1,26 @@
-import { Box, Button, FormControl, FormLabel, Input, useBreakpointValue, useColorMode, useToast, FormHelperText, Heading } from '@chakra-ui/react'
+import { Box, Button, FormControl, Heading, FormLabel, Input, useBreakpointValue, useColorMode, useToast, FormHelperText } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { uuid } from 'uuidv4'
-import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
+import { v4 as uuidv4 } from 'uuid'
+import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction, useNetwork } from 'wagmi'
 import { parseUnits } from 'viem'
 import CampaignFactory from '../../contracts/out/CampaignFactory.sol/CampaignFactory.json'
 import Background from 'components/Background'
 import Container from 'components/layout/Container'
 import SuccessComponent from 'components/layout/SuccessComponent'
+import { networks } from 'utils/network'
+
+function randomIntFromInterval(min: number, max: number) {
+ // min and max included
+ return Math.floor(Math.random() * (max - min + 1) + min)
+}
+const randActionId = randomIntFromInterval(1, 9999999999999999)
 
 const CreateCampaign = () => {
  const { isConnected } = useAccount()
  const toast = useToast()
  const { colorMode } = useColorMode()
+ const network = useNetwork()
 
  const [campaignContractAddress, setCampaignContractAddress] = useState('')
  const [rewardTokenAddress, setRewardTokenAddress] = useState('')
@@ -20,24 +28,29 @@ const CreateCampaign = () => {
  const [rewardReferrer, setRewardReferrer] = useState<string>('')
  const [rewardReferee, setRewardReferee] = useState<string>('')
  const [contractDecimals, setContractDecimals] = useState<number>(10)
- const [args, setArg] = useState<any[]>([])
- const [minCampaignTokenBalance, setMinCampaignTokenBalance] = useState<string>()
- const [returnedData, setReturnedData] = useState<any>()
+ const [args, setArgs] = useState<any[]>(['', '', '', 0, 0, 0, 0, '', 0])
+ const [minCampaignTokenBalance, setMinCampaignTokenBalance] = useState<string>('')
+ const [returnedData, setReturnedData] = useState<any>('')
  const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
  const [isLoading, setIsLoading] = useState<boolean>(false)
+ const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
  const { address } = useAccount()
- const actionid = uuid()
+ const actionid = uuidv4()
 
  const bigIntMaxReferalsperReferee = maxReferalsperReferee ? parseUnits(maxReferalsperReferee, contractDecimals) : 0
  const bigIntRewardReferer = rewardReferrer ? parseUnits(rewardReferrer, contractDecimals) : 0
  const bigIntRewardReferee = rewardReferee ? parseUnits(rewardReferee, contractDecimals) : 0
  const bigIntMinCampaignTokenBalance = minCampaignTokenBalance ? parseUnits(minCampaignTokenBalance, contractDecimals) : 0
 
- const { config, error, isError, isSuccess } = usePrepareContractWrite({
-  ...CampaignFactory,
+ const chainId: number = network.chain?.id ?? 5
+
+ const { config, error, isError } = usePrepareContractWrite({
+  abi: CampaignFactory.abi,
+  enabled: isSubmitting,
   functionName: 'addCampaign',
-  address: process.env.NEXT_PUBLIC_CAMPAIGN_FACTORY_ADDR_OP as `0x${string}`,
+  //   FIXME: Add depending on the chain
+  address: networks[chainId].factoryContract,
   args,
  })
 
@@ -46,6 +59,29 @@ const CreateCampaign = () => {
  const { isLoading: isContractLoading, isSuccess: writeSuccess } = useWaitForTransaction({
   hash: data?.hash,
  })
+ const worldId = networks[chainId].worldId
+
+ useEffect(() => {
+  setArgs([
+   worldId,
+   campaignContractAddress,
+   rewardTokenAddress,
+   bigIntMaxReferalsperReferee,
+   bigIntRewardReferer,
+   bigIntRewardReferee,
+   bigIntMinCampaignTokenBalance,
+   randActionId.toString(),
+   randActionId,
+  ])
+ }, [
+  worldId,
+  campaignContractAddress,
+  rewardTokenAddress,
+  bigIntMaxReferalsperReferee,
+  bigIntRewardReferer,
+  bigIntRewardReferee,
+  bigIntMinCampaignTokenBalance,
+ ])
 
  useEffect(() => {
   if (writeSuccess) {
@@ -65,15 +101,9 @@ const CreateCampaign = () => {
  const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault()
   try {
-   setArg([
-    campaignContractAddress,
-    rewardTokenAddress,
-    bigIntMaxReferalsperReferee,
-    bigIntRewardReferer,
-    bigIntRewardReferee,
-    bigIntMinCampaignTokenBalance,
-    actionid,
-   ])
+   console.log('Sending TX')
+   console.log(args)
+   setIsSubmitting(true)
    await write?.()
   } catch (error) {
    toast({
@@ -90,18 +120,19 @@ const CreateCampaign = () => {
  return (
   <Container>
    <Background />
-   {!isConnected && (
-    <Heading as="h2" fontSize="40px" w="650px" mt="-100px" paddingLeft="50px" fontFamily="Dm Sans">
-     Please connect your wallet!
-    </Heading>
-   )}
-   {isConnected && (
-    <Box position="absolute" top="64px" display="flex" justifyContent="center">
+
+   <Box position="absolute" top="64px" display="flex" justifyContent="center">
+    {!isConnected && (
+     <Heading textAlign="center" justifyContent="center" marginTop="60%">
+      Please Connect Your Wallet!
+     </Heading>
+    )}
+    {isConnected && (
      <div
       style={{
        color: 'gray.400',
        fontFamily: 'Montserrat',
-       padding: '30px',
+       padding: '28px',
        height: 'fit',
        width: formWidth,
        backgroundColor: colorMode === 'dark' ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.7)',
@@ -110,20 +141,14 @@ const CreateCampaign = () => {
        borderRadius: '40px',
        border: '1px solid rgba(179, 186, 209, 0.5)',
       }}>
-      {isSuccess ? (
+      {writeSuccess ? (
        // TODO: Add campaign ref to the link
-       <SuccessComponent link={'http://localhost:3000/createlink'} data={data} message="Successfully created a campaign!" />
+       <SuccessComponent link={'/createlink'} data={data} message={`Successfully created campaign ${randActionId}!`} />
       ) : (
        <form>
-        <h2
-         style={{
-          textAlign: 'center',
-          fontWeight: 'bold',
-          fontSize: '1.5rem',
-          fontFamily: 'Dm Sans',
-         }}>
+        <Heading as="h2" fontSize="32px" fontFamily="Dm Sans" textAlign="center">
          Create Campaign
-        </h2>
+        </Heading>
 
         <div style={{ display: 'flex', gap: '20px' }}>
          <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
@@ -261,8 +286,8 @@ const CreateCampaign = () => {
        </form>
       )}
      </div>
-    </Box>
-   )}
+    )}
+   </Box>
   </Container>
  )
 }

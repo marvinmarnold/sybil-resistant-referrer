@@ -3,15 +3,14 @@ import { Box, Button, Icon, useToast, Text, useBreakpointValue, useColorMode, He
 import { motion } from 'framer-motion'
 
 import type { NextPage } from 'next'
-import { useAccount, usePublicClient, usePrepareContractWrite, useContractWrite, useWaitForTransaction } from 'wagmi'
-import { FiExternalLink } from 'react-icons/fi'
+import { useAccount, usePrepareContractWrite, useContractWrite, useWaitForTransaction } from 'wagmi'
 import { Hash } from 'viem'
 import 'viem/window'
 import { useRouter } from 'next/router'
 
 import Container from 'components/layout/Container'
-import CampaignsMenu from 'components/layout/CampaignsMenu'
 import History from 'components/layout/History'
+import SuccessComponent from 'components/layout/SuccessComponent'
 import Background from 'components/Background'
 import Worldcoin from 'components/Worldcoin'
 import referralCampaignContract from '../../contracts/out/ReferralCampaign.sol/ReferralCampaign.json'
@@ -19,24 +18,22 @@ import referralCampaignContract from '../../contracts/out/ReferralCampaign.sol/R
 const CreateLink: NextPage = () => {
  // TODO: Fetch proof from shared state
  const account = useAccount()
- const theme = useTheme()
  const { colorMode } = useColorMode()
  const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
  const toast = useToast()
- const publicClient = usePublicClient()
  const router = useRouter()
 
- const [campaignId, setCampaignId] = useState<any>(null)
- const [campaignAddy, setCampaignAddy] = useState<any>(null)
- const [ref, setRef] = useState<any>(null)
-
- const [link, setLink] = useState('')
+ const [campaignId, setCampaignId] = useState<any>('')
+ const [campaignAddy, setCampaignAddy] = useState<any>('')
+ const [ref, setRef] = useState<any>('')
  const [isLoading, setIsLoading] = useState(false)
-
- const [proof, setProof] = useState<string[]>([])
- const [nullifier, setNullifier] = useState<string | null>(null)
- const [root, setRoot] = useState<string | null>(null)
+ const [isSubmitting, setIsSubmitting] = useState(false)
+ const [args, setArgs] = useState<any[]>([])
  const [hash, setHash] = useState<Hash>()
+
+ const [proof, setProof] = useState<BigInt[]>([])
+ const [nullifier, setNullifier] = useState<BigInt>(BigInt(0))
+ const [root, setRoot] = useState<BigInt>(BigInt(0))
 
  const { address = '0x...' } = account
 
@@ -63,37 +60,58 @@ const CreateLink: NextPage = () => {
   error: prepareError,
   isError: isPrepareError,
  } = usePrepareContractWrite({
-  ...referralCampaignContract,
+  enabled: isSubmitting,
+  abi: referralCampaignContract.abi,
   functionName: 'acceptReferral',
   address: campaignAddy,
-  //   address _referrer, address signal, uint256 root, uint256 nullifierHash, uint256[8] calldata proof
-  // FIXME: the second is the address of the claimer or the campaignId?
-  args: [ref, address, root, nullifier, proof],
+  args,
  })
 
  const { data, error, isError, write } = useContractWrite(config)
+ const execute = () => {
+  setIsSubmitting(true)
+  write && write()
+ }
 
  const { isLoading: isContractLoading, isSuccess } = useWaitForTransaction({
   hash: data?.hash,
  })
 
  useEffect(() => {
-  setIsLoading(false)
-  toast({
-   title: 'Error',
-   description: 'There was an error',
-   status: 'error',
-   duration: 9000,
-   isClosable: true,
-  })
+  if (isSuccess) {
+   console.log('Returned Data', data)
+
+   toast({
+    title: 'Success',
+    description: 'Transaction submited successfully',
+    status: 'success',
+    duration: 9000,
+    isClosable: true,
+   })
+  }
+ }, [isSuccess, data])
+
+ useEffect(() => {
+  if (isSubmitting) {
+   setIsLoading(false)
+   toast({
+    title: 'Error',
+    description: 'There was an error',
+    status: 'error',
+    duration: 9000,
+    isClosable: true,
+   })
+  }
  }, [isError])
 
  const claimRewardTxn = async () => {
   try {
    setIsLoading(true)
    if (!campaignId || !account) return
-
-   write?.()
+   //   address _referrer, address signal, uint256 root, uint256 nullifierHash, uint256[8] calldata proof
+   // FIXME: the second is the address of the claimer or the campaignId?
+   setArgs([ref, address, root, nullifier, proof])
+   execute()
    setHash(hash)
 
    setIsLoading(false)
@@ -145,7 +163,9 @@ const CreateLink: NextPage = () => {
       Claim Referral Rewards
      </h2>
 
-     <Text>Campaign {campaignId}</Text>
+     <Text textAlign="center" fontFamily="Dm Sans">
+      Campaign: {campaignId}
+     </Text>
 
      <Box display="flex" justifyContent="center" mt={5}>
       {!isSuccess && (
@@ -161,7 +181,7 @@ const CreateLink: NextPage = () => {
            boxShadow={'2.8px 3.8px 0px 0px #312E2A'}
            py={2}
            px={12}
-           fontFamily="sans-serif"
+           fontFamily="Dm Sans"
            color="white"
            type="submit"
            isLoading={isLoading || isContractLoading}
@@ -174,19 +194,7 @@ const CreateLink: NextPage = () => {
       )}
      </Box>
 
-     {isSuccess && (
-      <Box margin={10}>
-       <div>
-        Successfully claimed reward!
-        <Button variant="outline">
-         <a href={`https://etherscan.io/tx/${data?.hash}`}>
-          Check txn
-          <Icon as={FiExternalLink} />
-         </a>
-        </Button>
-       </div>
-      </Box>
-     )}
+     {isSuccess && <SuccessComponent link={null} data={data} message="Successful claim!" />}
      {/* DEBUG ONLY */}
      {/* {(isPrepareError || isError) && <div>Error: {(prepareError || error)?.message}</div>} */}
     </div>
