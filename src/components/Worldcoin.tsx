@@ -28,20 +28,20 @@ const Worldcoin = ({ proof, setProof, setNullifier, setRoot, action }: WorldType
  const onSuccess = (success: ISuccessResult) => {
   if (!success) return
   console.log('Got Worldcoin response')
-  let output = address + " "
+  let output = address + ' '
 
   const merkleRoot = decode<BigNumber>('uint256', success.merkle_root).toBigInt()
   setRoot(merkleRoot)
-  output += merkleRoot.toString() + " "
+  output += merkleRoot.toString() + ' '
 
   const nullifier = decode<BigNumber>('uint256', success.nullifier_hash).toBigInt()
   setNullifier(nullifier)
-  output += nullifier.toString() + " \"["
+  output += nullifier.toString() + ' "['
 
   const tempProof = decode<[BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber]>('uint256[8]', success.proof).map(
    (n) => n.toBigInt()
   ) as [bigint, bigint, bigint, bigint, bigint, bigint, bigint, bigint]
-  output += tempProof.toString() + "]\""
+  output += tempProof.toString() + ']"'
   console.log(output)
   //   const convertedProof = tempProof.map((value) => value.toString())
   setProof(tempProof) // Convert BigInt values to strings to be accepted by localStorage
@@ -59,15 +59,15 @@ const Worldcoin = ({ proof, setProof, setNullifier, setRoot, action }: WorldType
    </Box>
   )
 
-  console.log("Rendering QR")
-  console.log(action)
-  console.log(address)
-  console.log(process.env.NEXT_PUBLIC_APP_ID)
+ console.log('Rendering QR')
+ console.log(action)
+ console.log(address)
+ console.log(process.env.NEXT_PUBLIC_APP_ID)
 
  // Verify with Worldcoin
  return (
   <IDKitWidget
-  //  action="1115"
+   //  action="1115"
    action={action}
    onSuccess={onSuccess}
    signal={address}

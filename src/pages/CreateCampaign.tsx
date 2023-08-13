@@ -11,9 +11,10 @@ import Container from 'components/layout/Container'
 import SuccessComponent from 'components/layout/SuccessComponent'
 import { networks } from 'utils/network'
 
-function randomIntFromInterval(min: number, max: number) { // min and max included 
-    return Math.floor(Math.random() * (max - min + 1) + min)
-  }
+function randomIntFromInterval(min: number, max: number) {
+ // min and max included
+ return Math.floor(Math.random() * (max - min + 1) + min)
+}
 const randActionId = randomIntFromInterval(1, 9999999999999999)
 
 const CreateCampaign = () => {
@@ -27,9 +28,9 @@ const CreateCampaign = () => {
  const [rewardReferrer, setRewardReferrer] = useState<string>('')
  const [rewardReferee, setRewardReferee] = useState<string>('')
  const [contractDecimals, setContractDecimals] = useState<number>(10)
- const [args, setArgs] = useState<any[]>(["", "", "", 0, 0, 0, 0, "", 0])
- const [minCampaignTokenBalance, setMinCampaignTokenBalance] = useState<string>("")
- const [returnedData, setReturnedData] = useState<any>("")
+ const [args, setArgs] = useState<any[]>(['', '', '', 0, 0, 0, 0, '', 0])
+ const [minCampaignTokenBalance, setMinCampaignTokenBalance] = useState<string>('')
+ const [returnedData, setReturnedData] = useState<any>('')
  const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
  const [isLoading, setIsLoading] = useState<boolean>(false)
  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
@@ -61,24 +62,26 @@ const CreateCampaign = () => {
  const worldId = networks[chainId].worldId
 
  useEffect(() => {
-    setArgs([
-        worldId,
-        campaignContractAddress,
-        rewardTokenAddress,
-        bigIntMaxReferalsperReferee,
-        bigIntRewardReferer,
-        bigIntRewardReferee,
-        bigIntMinCampaignTokenBalance,
-        randActionId.toString(),
-        randActionId,
-       ])
- }, [worldId,
-    campaignContractAddress,
-    rewardTokenAddress,
-    bigIntMaxReferalsperReferee,
-    bigIntRewardReferer,
-    bigIntRewardReferee,
-    bigIntMinCampaignTokenBalance])
+  setArgs([
+   worldId,
+   campaignContractAddress,
+   rewardTokenAddress,
+   bigIntMaxReferalsperReferee,
+   bigIntRewardReferer,
+   bigIntRewardReferee,
+   bigIntMinCampaignTokenBalance,
+   randActionId.toString(),
+   randActionId,
+  ])
+ }, [
+  worldId,
+  campaignContractAddress,
+  rewardTokenAddress,
+  bigIntMaxReferalsperReferee,
+  bigIntRewardReferer,
+  bigIntRewardReferee,
+  bigIntMinCampaignTokenBalance,
+ ])
 
  useEffect(() => {
   if (writeSuccess) {
@@ -98,9 +101,9 @@ const CreateCampaign = () => {
  const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault()
   try {
-    console.log("Sending TX")
-    console.log(args)
-    setIsSubmitting(true)
+   console.log('Sending TX')
+   console.log(args)
+   setIsSubmitting(true)
    await write?.()
   } catch (error) {
    toast({

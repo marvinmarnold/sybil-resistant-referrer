@@ -24,15 +24,15 @@ const CreateLink: NextPage = () => {
  const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
  const toast = useToast()
  const publicClient = usePublicClient()
-const [hasSubmitted, setHasSubmitted] = useState(false);
+ const [hasSubmitted, setHasSubmitted] = useState(false)
  const [selectedCampaign, setSelectedCampaign] = useState<CampaignType>({
-    id: "",
-    owner: "0x",
-    campaign: "0x",
-    actionId: ""
-   })
+  id: '',
+  owner: '0x',
+  campaign: '0x',
+  actionId: '',
+ })
  const [link, setLink] = useState('')
- const [args, setArgs] = useState<any[]>(["0xf2761B5e177261fb3Ead3b7B992a11Fce8592898", 0,0,[0,0,0,0,0,0,0,0]])
+ const [args, setArgs] = useState<any[]>(['0xf2761B5e177261fb3Ead3b7B992a11Fce8592898', 0, 0, [0, 0, 0, 0, 0, 0, 0, 0]])
  const [isLoading, setIsLoading] = useState(false)
 
  const [proof, setProof] = useState<BigInt[]>([])
@@ -52,13 +52,12 @@ const [hasSubmitted, setHasSubmitted] = useState(false);
   error: prepareError,
   isError: isPrepareError,
  } = usePrepareContractWrite({
-    enabled: hasSubmitted,
+  enabled: hasSubmitted,
   abi: referralCampaignContract.abi,
   functionName: 'addReferrer',
 
-
-//   address: "0x8fa7b813f246e0dd7cbb04437487fb113912224a", // 1112
-//   address: "0xa364f00198854cd1c0a24e2c502bc39d8aa29a22", // 1113
+  //   address: "0x8fa7b813f246e0dd7cbb04437487fb113912224a", // 1112
+  //   address: "0xa364f00198854cd1c0a24e2c502bc39d8aa29a22", // 1113
   // address: "0xd6917c944be9f91fc4c90521c789f7028cbe66ba", // 1332721324098588
   address: selectedCampaign.campaign,
   args,
@@ -66,35 +65,34 @@ const [hasSubmitted, setHasSubmitted] = useState(false);
 
  const { data, error, isError, write } = useContractWrite(config)
  const execute = () => {
-    setHasSubmitted(true)
-    !!write && write()
+  setHasSubmitted(true)
+  !!write && write()
  }
  const { isLoading: isContractLoading, isSuccess } = useWaitForTransaction({
   hash: data?.hash,
  })
 
  useEffect(() => {
-    if (hasSubmitted) {
-        setIsLoading(false)
-        toast({
-         title: 'Error',
-         description: 'There was an error',
-         status: 'error',
-         duration: 9000,
-         isClosable: true,
-        })
-    }
-
+  if (hasSubmitted) {
+   setIsLoading(false)
+   toast({
+    title: 'Error',
+    description: 'There was an error',
+    status: 'error',
+    duration: 9000,
+    isClosable: true,
+   })
+  }
  }, [isError])
 
  useEffect(() => {
-    if (hash) {
-        ;(async () => {
+  if (hash) {
+   ;(async () => {
     const receipt = await publicClient.waitForTransactionReceipt({ hash })
     setReceipt(receipt)
-  })()
-}
-}, [hash, publicClient])
+   })()
+  }
+ }, [hash, publicClient])
 
  useEffect(() => {
   if (isSuccess) {
@@ -121,7 +119,7 @@ const [hasSubmitted, setHasSubmitted] = useState(false);
    setHash(hash)
    setIsLoading(false)
   } catch (error) {
-    console.error(error)
+   console.error(error)
    toast({
     title: 'Error',
     description: 'There was an error',
