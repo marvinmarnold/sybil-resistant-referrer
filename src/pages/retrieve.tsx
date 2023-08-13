@@ -163,7 +163,9 @@ const CreateLink: NextPage = () => {
       Claim Referral Rewards
      </h2>
 
-     <Text textAlign="center">Campaign: {campaignId}</Text>
+     <Text textAlign="center" fontFamily="Dm Sans">
+      Campaign: {campaignId}
+     </Text>
 
      <Box display="flex" justifyContent="center" mt={5}>
       {!isSuccess && (
@@ -179,7 +181,7 @@ const CreateLink: NextPage = () => {
            boxShadow={'2.8px 3.8px 0px 0px #312E2A'}
            py={2}
            px={12}
-           fontFamily="sans-serif"
+           fontFamily="Dm Sans"
            color="white"
            type="submit"
            isLoading={isLoading || isContractLoading}

@@ -74,16 +74,31 @@ const Worldcoin = ({ proof, setProof, setNullifier, setRoot, action }: WorldType
    credential_types={[CredentialType.Orb, CredentialType.Phone]}
    app_id={process.env.NEXT_PUBLIC_APP_ID!}>
    {({ open }) => (
-    <Box textAlign="center" margin={10}>
-     <Text margin={3}>Verify with World Id 🌐</Text>
-     <Button onClick={open}>I&apos;m a human 👋</Button>
+    <Box textAlign="center" margin={4}>
+     <Text fontFamily="Dm Sans" margin={3}>
+      Verify with World Id 🌐
+     </Text>
+     <Button
+      backgroundColor="purple.300"
+      variant="gradient"
+      border={'0.5px solid #312E2A'}
+      boxShadow={'2.8px 3.8px 0px 0px #312E2A'}
+      py={2}
+      px={36}
+      fontFamily="Dm Sans"
+      color="white"
+      onClick={open}>
+      I&apos;m a human 👋
+     </Button>
 
-     <Text margin={5}>or</Text>
+     <Text fontFamily="Dm Sans" margin={5}>
+      or
+     </Text>
      {/* // Don't show page if there's no WorldId connected  */}
      {proof?.length === 0 && (
       <Box>
        <Link href="https://worldcoin.org/download-app" isExternal>
-        <Button variant="outline">
+        <Button variant="outline" border={'0.5px solid #312E2A'} boxShadow={'2.8px 3.8px 0px 0px #312E2A'} py={2} px={24} fontFamily="Dm Sans">
          Download Worldcoin App
          <Icon as={FiExternalLink} mx="2px" />
         </Button>

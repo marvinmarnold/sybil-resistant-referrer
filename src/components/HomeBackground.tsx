@@ -36,8 +36,8 @@ const HomeBackground = () => {
      backgroundColor="blue.300"
      style={{ width: '450px', height: '450px', animationDelay: '0s', zIndex: '-1' }}></Blob>
     <Blob
-     bottom="-200px"
-     left="330px"
+     bottom="-220px"
+     left="265px"
      backgroundColor="yellow.300"
      style={{ width: '750px', height: '750px', animationDelay: '4s', zIndex: '-1' }}></Blob>
    </Box>

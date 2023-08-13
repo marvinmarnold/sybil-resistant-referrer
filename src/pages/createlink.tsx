@@ -43,7 +43,7 @@ const CreateLink: NextPage = () => {
  const [receipt, setReceipt] = useState<TransactionReceipt>()
 
  const { address = '0x...' } = account
-
+ const { isConnected } = useAccount()
  //  TODO: Add history on Atom
  const history = []
 
@@ -141,71 +141,76 @@ const CreateLink: NextPage = () => {
  return (
   <Container>
    <Background />
-
-   <Box display="flex" justifyContent="center">
-    <div
-     style={{
-      color: 'gray.400',
-      fontFamily: 'Montserrat',
-      padding: '36px',
-      margin: '10px',
-      height: 'fit',
-      width: formWidth,
-      backgroundColor: colorMode === 'dark' ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.7)',
-      boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      backdropFilter: 'blur(70px)',
-      borderRadius: '40px',
-      border: '1px solid rgba(179, 186, 209, 0.5)',
-     }}>
-     <h2
+   {!isConnected && (
+    <Heading textAlign="center" justifyContent="center" mb={40}>
+     Please Connect Your Wallet!
+    </Heading>
+   )}
+   {isConnected && (
+    <Box display="flex" mb={20} justifyContent="center">
+     <div
       style={{
-       textAlign: 'center',
-       fontWeight: 'bold',
-       fontSize: '1.5rem',
-       fontFamily: 'sans-serif',
+       color: 'gray.400',
+       fontFamily: 'Montserrat',
+       padding: '36px',
+       margin: '10px',
+       height: 'fit',
+       width: formWidth,
+       backgroundColor: colorMode === 'dark' ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.7)',
+       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+       backdropFilter: 'blur(70px)',
+       borderRadius: '40px',
+       border: '1px solid rgba(179, 186, 209, 0.5)',
       }}>
-      Create Referral Link
-     </h2>
+      <h2
+       style={{
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: '1.5rem',
+        fontFamily: 'Dm Sans',
+       }}>
+       Create Referral Link
+      </h2>
 
-     <CampaignsMenu selectedCampaign={selectedCampaign} setSelectedCampaign={setSelectedCampaign} isActive={proof?.length === 0} />
+      <CampaignsMenu selectedCampaign={selectedCampaign} setSelectedCampaign={setSelectedCampaign} isActive={proof?.length === 0} />
 
-     <Box display="flex" justifyContent="center" mt={5}>
-      {!link && (
-       <Box>
-        {proof?.length > 0 ? (
-         <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
-          <Button
-           backgroundColor="purple.300"
-           variant="gradient"
-           borderRadius="10px"
-           border={'0.5px solid #312E2A'}
-           boxShadow={'2.8px 3.8px 0px 0px #312E2A'}
-           py={2}
-           px={12}
-           fontFamily="sans-serif"
-           color="white"
-           type="submit"
-           isLoading={isLoading || isContractLoading}
-           onClick={registerOnchain}>
-           Create
-          </Button>
-         </motion.div>
-        ) : (
-         <Box>
-          {selectedCampaign?.id.length > 0 && (
-           <Worldcoin proof={proof} setProof={setProof} setNullifier={setNullifier} setRoot={setRoot} action={selectedCampaign?.actionId} />
-          )}
-         </Box>
-        )}
-       </Box>
-      )}
-     </Box>
+      <Box display="flex" justifyContent="center" mt={5}>
+       {!link && (
+        <Box>
+         {proof?.length > 0 ? (
+          <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+           <Button
+            backgroundColor="purple.300"
+            variant="gradient"
+            border={'0.5px solid #312E2A'}
+            boxShadow={'2.8px 3.8px 0px 0px #312E2A'}
+            py={2}
+            px={28}
+            fontFamily="Dm Sans"
+            color="white"
+            type="submit"
+            isLoading={isLoading || isContractLoading}
+            onClick={registerOnchain}>
+            Create
+           </Button>
+          </motion.div>
+         ) : (
+          <Box>
+           {selectedCampaign?.id.length > 0 && (
+            <Worldcoin proof={proof} setProof={setProof} setNullifier={setNullifier} setRoot={setRoot} action={selectedCampaign?.actionId} />
+           )}
+          </Box>
+         )}
+        </Box>
+       )}
+      </Box>
 
-     {isSuccess && <SuccessComponent link={link} data={data} message="Successfully created referral link!" />}
-     {/* DEBUG ONLY */}
-     {/* {(isPrepareError || isError) && <div>Error: {(prepareError || error)?.message}</div>} */}
-    </div>
-   </Box>
+      {isSuccess && <SuccessComponent link={link} data={data} message="Successfully created referral link!" />}
+      {/* DEBUG ONLY */}
+      {/* {(isPrepareError || isError) && <div>Error: {(prepareError || error)?.message}</div>} */}
+     </div>
+    </Box>
+   )}
 
    {history.length > 0 && <History />}
   </Container>
