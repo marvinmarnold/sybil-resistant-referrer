@@ -11,7 +11,8 @@ contract CampaignFactory {
     //@dev Events owner, campaign, campaignTokenContract, rewardTokenContract, maxReferralsPerReferrer
     //@dev rewardReferrer, rewardReferee, minCampaignTokenBalance, actionId
 
-   event CampaignCreated(address indexed, address, address, address, uint256, uint256, uint256, uint256, string);
+//    event CampaignCreated(address indexed, address, address, address, uint256, uint256, uint256, uint256, string);
+   event CampaignCreated(address indexed owner, address indexed campaign, uint256 indexed actionId);
    event CampaignTagged(address indexed, string);
    event CampaignWorking(address indexed, address);
     
@@ -50,7 +51,9 @@ contract CampaignFactory {
         uint256 _rewardReferrer, 
         uint256 _rewardReferee, 
         uint256 _minCampaignTokenBalance,
-        string memory _actionId) public payable returns (address) {
+        string memory _actionId,
+        uint256 _actionIdStr
+        ) public payable returns (address) {
         // Make a clone contract
         address clone = Clones.clone(referralCampaign);
         
@@ -79,7 +82,8 @@ contract CampaignFactory {
             _minCampaignTokenBalance);
 
         campaignsForManager[msg.sender].push(campaign);
-        emit CampaignCreated(msg.sender, clone, _campaignTokenContract, _rewardTokenContract, _maxReferralsPerReferrer, _rewardReferrer, _rewardReferee, _minCampaignTokenBalance, _actionId);
+        // emit CampaignCreated(msg.sender, clone, _campaignTokenContract, _rewardTokenContract, _maxReferralsPerReferrer, _rewardReferrer, _rewardReferee, _minCampaignTokenBalance, _actionId);
+        emit CampaignCreated(msg.sender, clone, _actionIdStr);
         emit CampaignTagged(msg.sender, _actionId);
         emit CampaignWorking(msg.sender, clone);
         return clone;
