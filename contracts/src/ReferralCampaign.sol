@@ -111,7 +111,7 @@ contract ReferralCampaign is Ownable,Initializable {
 	/// @dev Feel free to rename this method however you want! We've used `claim`, `verify` or `execute` in the past.
 	function verifyAndExecute(address signal, uint256 root, uint256 nullifierHash, uint256[8] calldata proof) public {
 		// First, we make sure this person hasn't done this before
-		// if (nullifierHashes[nullifierHash]) revert InvalidNullifier();
+		if (nullifierHashes[nullifierHash]) revert InvalidNullifier();
 
 		// We now verify the provided proof is valid and the user is verified by World ID
 		worldId.verifyProof(
@@ -129,11 +129,11 @@ contract ReferralCampaign is Ownable,Initializable {
 
 
     //@dev Function to add a Referrer
-    function addReferrer(uint256 root, uint256 nullifierHash, uint256[8] calldata proof) public {
+    function addReferrer(address signal, uint256 root, uint256 nullifierHash, uint256[8] calldata proof) public {
         //@dev Instead of require, verification to be done by worldcoin
         require(numReferralsByReferrer[msg.sender] == 0, "Referrer already registered.");
 
-        // verifyAndExecute(signal, root, nullifierHash, proof);
+        verifyAndExecute(signal, root, nullifierHash, proof);
 
         // @dev Initiating the referrer to one to distinguish between already registered with no referees from the ones who have not registered.
         numReferralsByReferrer[msg.sender] = 1;
@@ -164,4 +164,3 @@ contract ReferralCampaign is Ownable,Initializable {
         emit AcceptedReferral(referee ,_referrer);
     }
 }
-

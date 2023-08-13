@@ -36,8 +36,8 @@ export default function Home() {
    const SIMPLE_ACCOUNT_FACTORY_ADDRESS = '0x9406Cc6185a346906296840746125a0E44976454'
 
 //    const to = "0xf436bed043c70aa05504dcc59f3a6d0c04292012" // campaign contract
-   const to = "0x9AB36BCc526171122D49791830582fF492174147" // hello
-   const nonce = ethers.utils.hexlify(25)
+   const to = "0x8fA7b813F246E0dD7cBb04437487Fb113912224a" // hello
+   const nonce = ethers.utils.hexlify(26)
 
    const provider = new ethers.providers.StaticJsonRpcProvider('https://goerli.base.org')
 //    const provider = new ethers.providers.StaticJsonRpcProvider('https://opt-goerli.g.alchemy.com/v2/7idjAuh5bHGIoE95AvxwPaFZblFUgyIq')
@@ -86,7 +86,7 @@ useEffect(() => {
          const hello = new ethers.Contract(to , helloContract.abi, provider )
          const campaign = new ethers.Contract(to, referContract.abi, provider)
 
-         const helloData = hello.interface.encodeFunctionData("hello", [87890,[54678464]])
+        //  const helloData = hello.interface.encodeFunctionData("hello", [87890, [54678464]])
         //  const approveData = campaign.interface.encodeFunctionData("addReferrer", ["0x1635b64e3f897C4E3E5bA9972ea4618ee682dADE",
         //   BigInt("21033963174941457782922200444364895243291178687747582951200320446857594710317"),
         //   BigInt("11197256130552780423647462499766514131943554556267140709624204800136661905091"),
@@ -98,22 +98,27 @@ useEffect(() => {
         //   BigInt("17582944230261939073470126541163983703191815763795340649464737345819003074296"),
         //   BigInt("5578899543229011314717793420472162585116070876979674960400093661624683406302"),
         //   BigInt("9184534315235110797784484995916470123198846103938453030453927477196447890779")]])
-        const approveData = campaign.interface.encodeFunctionData("addReferrer", ["0x1635b64e3f897C4E3E5bA9972ea4618ee682dADE",
-        453,
+        // const approveData = campaign.interface.encodeFunctionData("addReferrer", ["0x1635b64e3f897C4E3E5bA9972ea4618ee682dADE",
+        // 453,
+        // 763456,
+        // [87907890,
+        // 234523452,
+        // 6234523,
+        // 23452346,
+        // 236234,
+        // 236234,
+        // 234623456,
+        // 234634563456]])
+        const hello2Data = hello.interface.encodeFunctionData("hello2", [453,
         763456,
-        [87907890,
-        234523452,
-        6234523,
-        23452346,
-        236234,
-        236234,
-        234623456,
-        234634563456]])
+        [87907890]])
+
+        const data = hello2Data
+
         console.log("Calculated sender address:", senderAddress)
-        console.log("ApproveData: ", approveData)
-        console.log("helloData: ", helloData)
+        // console.log("ApproveData: ", approveData)
         const value = 0
-        const data = helloData
+        console.log("data: ", data)
         
         const simpleAccount = SimpleAccount__factory.connect(
             senderAddress,
