@@ -6,6 +6,7 @@ pragma abicoder v2;
 import "./lzApp/NonblockingLzApp.sol";
 import "./IERC20Or721.sol";
 
+//Base 0xFeC9AD52dA5eCC6e7b18225Ec517F57276BFBFdF
 
 
 /// @title A LayerZero example sending a cross chain message from a source chain to a destination chain to increment a counter
@@ -13,9 +14,24 @@ contract OmniCounter is NonblockingLzApp {
     uint public tokenBalance;
 
     constructor(address _lzEndpoint) NonblockingLzApp(_lzEndpoint) {}
+   
+    mapping(bytes32 => uint) userToToken;
+    event RecievedMessage(address,address,uint,uint16);
+    function _nonblockingLzReceive(uint16 _srcChainId, bytes memory, uint64, bytes memory _payload) internal override {
+        address _user;
+        address _tokenAddress;
+        uint _tokenBalance;
+        (_user,_tokenAddress,_tokenBalance)=abi.decode(_payload,(address,address,uint));
+        
+        // emit RecievedMessage(_user,_tokenAddress,_tokenBalance,_srcChainId);
+        bytes32 crossHash = keccak256(abi.encodePacked(_user, _tokenAddress, _srcChainId));
+        //Instead of storing here verify and transfer rewards
+        userToToken[crossHash]=_tokenBalance;
+    }
 
-    function _nonblockingLzReceive(uint16, bytes memory, uint64, bytes memory _payload) internal override {
-        tokenBalance=abi.decode(_payload,(uint));
+    function getBalance (address _user,address _tokenAddress,uint16 _srcChainId) public view returns(uint){
+        bytes32 crossHash = keccak256(abi.encodePacked(_user, _tokenAddress, _srcChainId));
+        return userToToken[crossHash];
     }
 
     function estimateFee(uint16 _dstChainId, bool _useZro, bytes calldata _adapterParams,address _tokenAddress) public view returns (uint nativeFee, uint zroFee) {

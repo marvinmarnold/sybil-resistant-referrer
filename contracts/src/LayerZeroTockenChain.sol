@@ -6,7 +6,7 @@ pragma abicoder v2;
 import "./lzApp/NonblockingLzApp.sol";
 import "./IERC20Or721.sol";
 
-
+//Sepolia 0x45D57a8E7E0546e59B17C03f4C03ab3383690605
 
 /// @title A LayerZero example sending a cross chain message from a source chain to a destination chain to increment a counter
 contract OmniCounter is NonblockingLzApp {
@@ -15,22 +15,22 @@ contract OmniCounter is NonblockingLzApp {
 
     constructor(address _lzEndpoint) NonblockingLzApp(_lzEndpoint) {}
 
-    function _nonblockingLzReceive(uint16 _srcChainId, bytes memory, uint64, bytes memory _payload) internal override {
+    function _nonblockingLzReceive(uint16, bytes memory, uint64, bytes memory _payload) internal override {
         (address _referee,address _token)=abi.decode(_payload,(address,address));
         tokenBalance = IERC20Or721(_token).balanceOf(_referee);
         // bytes memory _payloadNew = abi.encode(_tokenBalance);
         // _lzSend(_srcChainId, _payloadNew, payable(msg.sender), address(0x0), bytes(""), msg.value);
     }
 
-    function estimateFee(uint16 _dstChainId, bool _useZro, bytes calldata _adapterParams) public view returns (uint nativeFee, uint zroFee) {
-        uint _tokenBalance = IERC20Or721(0x477f6fBbEB9D7BE6926a591b173d05dAdf9ED022).balanceOf(msg.sender);
-        bytes memory _payload = abi.encode(_tokenBalance);
+    function estimateFee(uint16 _dstChainId, bool _useZro, bytes calldata _adapterParams,address _tokenAddress) public view returns (uint nativeFee, uint zroFee) {
+        uint _tokenBalance = IERC20Or721(_tokenAddress).balanceOf(msg.sender);
+        bytes memory _payload = abi.encode(msg.sender,_tokenAddress,_tokenBalance);
         return lzEndpoint.estimateFees(_dstChainId, address(this), _payload, _useZro, _adapterParams);
     }
 
-    function send(uint16 _dstChainId) public payable {
-        uint _tokenBalance = IERC20Or721(0x477f6fBbEB9D7BE6926a591b173d05dAdf9ED022).balanceOf(msg.sender);
-        bytes memory _payload = abi.encode(_tokenBalance);
+    function send(uint16 _dstChainId,address _tokenAddress) public payable {
+        uint _tokenBalance = IERC20Or721(_tokenAddress).balanceOf(msg.sender);
+        bytes memory _payload = abi.encode(msg.sender,_tokenAddress,_tokenBalance);
         _lzSend(_dstChainId, _payload, payable(msg.sender), address(0x0), bytes(""), msg.value);
     }
 
