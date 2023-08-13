@@ -77,7 +77,8 @@ const CreateCampaign = () => {
     bigIntRewardReferer,
     bigIntRewardReferee,
     bigIntMinCampaignTokenBalance,
-    actionid,
+    '1234',
+    1234,
    ])
    await write?.()
   } catch (error) {

@@ -6,7 +6,7 @@ import {
   beforeAll,
   afterAll
 } from "matchstick-as/assembly/index"
-import { Address } from "@graphprotocol/graph-ts"
+import { Address, BigInt } from "@graphprotocol/graph-ts"
 import { CampaignCreated } from "../generated/schema"
 import { CampaignCreated as CampaignCreatedEvent } from "../generated/CampaignFactory/CampaignFactory"
 import { handleCampaignCreated } from "../src/campaign-factory"
@@ -17,13 +17,16 @@ import { createCampaignCreatedEvent } from "./campaign-factory-utils"
 
 describe("Describe entity assertions", () => {
   beforeAll(() => {
-    let param0 = Address.fromString(
+    let owner = Address.fromString("0x0000000000000000000000000000000000000001")
+    let campaign = Address.fromString(
       "0x0000000000000000000000000000000000000001"
     )
-    let param1 = Address.fromString(
-      "0x0000000000000000000000000000000000000001"
+    let actionId = BigInt.fromI32(234)
+    let newCampaignCreatedEvent = createCampaignCreatedEvent(
+      owner,
+      campaign,
+      actionId
     )
-    let newCampaignCreatedEvent = createCampaignCreatedEvent(param0, param1)
     handleCampaignCreated(newCampaignCreatedEvent)
   })
 
@@ -41,14 +44,20 @@ describe("Describe entity assertions", () => {
     assert.fieldEquals(
       "CampaignCreated",
       "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "param0",
+      "owner",
       "0x0000000000000000000000000000000000000001"
     )
     assert.fieldEquals(
       "CampaignCreated",
       "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "param1",
+      "campaign",
       "0x0000000000000000000000000000000000000001"
+    )
+    assert.fieldEquals(
+      "CampaignCreated",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
+      "actionId",
+      "234"
     )
 
     // More assert options:

@@ -10,6 +10,50 @@
       {
         "indexed": true,
         "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "campaign",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "actionId",
+        "type": "uint256"
+      }
+    ],
+    "name": "CampaignCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "name": "CampaignTagged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
         "name": "",
         "type": "address"
       },
@@ -20,11 +64,16 @@
         "type": "address"
       }
     ],
-    "name": "CampaignCreated",
+    "name": "CampaignWorking",
     "type": "event"
   },
   {
     "inputs": [
+      {
+        "internalType": "address",
+        "name": "worldAddress",
+        "type": "address"
+      },
       {
         "internalType": "address",
         "name": "_campaignTokenContract",
@@ -59,6 +108,11 @@
         "internalType": "string",
         "name": "_actionId",
         "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_actionIdStr",
+        "type": "uint256"
       }
     ],
     "name": "addCampaign",

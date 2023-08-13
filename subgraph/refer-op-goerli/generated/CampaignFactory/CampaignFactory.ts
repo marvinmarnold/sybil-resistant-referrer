@@ -23,6 +23,54 @@ export class CampaignCreated__Params {
     this._event = event;
   }
 
+  get owner(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get campaign(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get actionId(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+}
+
+export class CampaignTagged extends ethereum.Event {
+  get params(): CampaignTagged__Params {
+    return new CampaignTagged__Params(this);
+  }
+}
+
+export class CampaignTagged__Params {
+  _event: CampaignTagged;
+
+  constructor(event: CampaignTagged) {
+    this._event = event;
+  }
+
+  get param0(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get param1(): string {
+    return this._event.parameters[1].value.toString();
+  }
+}
+
+export class CampaignWorking extends ethereum.Event {
+  get params(): CampaignWorking__Params {
+    return new CampaignWorking__Params(this);
+  }
+}
+
+export class CampaignWorking__Params {
+  _event: CampaignWorking;
+
+  constructor(event: CampaignWorking) {
+    this._event = event;
+  }
+
   get param0(): Address {
     return this._event.parameters[0].value.toAddress();
   }
@@ -104,32 +152,40 @@ export class AddCampaignCall__Inputs {
     this._call = call;
   }
 
-  get _campaignTokenContract(): Address {
+  get worldAddress(): Address {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get _rewardTokenContract(): Address {
+  get _campaignTokenContract(): Address {
     return this._call.inputValues[1].value.toAddress();
   }
 
-  get _maxReferralsPerReferrer(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
+  get _rewardTokenContract(): Address {
+    return this._call.inputValues[2].value.toAddress();
   }
 
-  get _rewardReferrer(): BigInt {
+  get _maxReferralsPerReferrer(): BigInt {
     return this._call.inputValues[3].value.toBigInt();
   }
 
-  get _rewardReferee(): BigInt {
+  get _rewardReferrer(): BigInt {
     return this._call.inputValues[4].value.toBigInt();
   }
 
-  get _minCampaignTokenBalance(): BigInt {
+  get _rewardReferee(): BigInt {
     return this._call.inputValues[5].value.toBigInt();
   }
 
+  get _minCampaignTokenBalance(): BigInt {
+    return this._call.inputValues[6].value.toBigInt();
+  }
+
   get _actionId(): string {
-    return this._call.inputValues[6].value.toString();
+    return this._call.inputValues[7].value.toString();
+  }
+
+  get _actionIdStr(): BigInt {
+    return this._call.inputValues[8].value.toBigInt();
   }
 }
 
