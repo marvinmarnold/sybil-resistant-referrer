@@ -144,7 +144,7 @@ const CreateLink: NextPage = () => {
        textAlign: 'center',
        fontWeight: 'bold',
        fontSize: '1.5rem',
-       fontFamily: 'sans-serif',
+       fontFamily: 'Dm Sans',
       }}>
       Create Referral Link
      </h2>

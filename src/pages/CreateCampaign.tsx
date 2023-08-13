@@ -1,16 +1,16 @@
-import { Box, Button, FormControl, FormLabel, Input, useBreakpointValue, useColorMode, useToast, FormHelperText } from '@chakra-ui/react'
+import { Box, Button, FormControl, FormLabel, Input, useBreakpointValue, useColorMode, useToast, FormHelperText, Heading } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { uuid } from 'uuidv4'
 import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 import { parseUnits } from 'viem'
-
 import CampaignFactory from '../../contracts/out/CampaignFactory.sol/CampaignFactory.json'
 import Background from 'components/Background'
 import Container from 'components/layout/Container'
 import SuccessComponent from 'components/layout/SuccessComponent'
 
 const CreateCampaign = () => {
+    const{isConnected}=useAccount()
  const toast = useToast()
  const { colorMode } = useColorMode()
 
@@ -90,13 +90,13 @@ const CreateCampaign = () => {
  return (
   <Container>
    <Background />
-
-   <Box position="absolute" top={24} display="flex" justifyContent="center">
+   {!isConnected && <Heading as="h2" fontSize="40px" w="650px" mt="-100px" paddingLeft="50px" fontFamily="Dm Sans">Please connect your wallet!</Heading>}
+   {isConnected && <Box position="absolute" top="64px" display="flex" justifyContent="center">
     <div
      style={{
       color: 'gray.400',
       fontFamily: 'Montserrat',
-      padding: '36px',
+      padding: '30px',
       height: 'fit',
       width: formWidth,
       backgroundColor: colorMode === 'dark' ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.7)',
@@ -115,16 +115,16 @@ const CreateCampaign = () => {
          textAlign: 'center',
          fontWeight: 'bold',
          fontSize: '1.5rem',
-         fontFamily: 'sans-serif',
+         fontFamily: 'Dm Sans',
         }}>
         Create Campaign
        </h2>
 
-       <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
-        <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+       <div style={{display:"flex",gap:"20px"}}><FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
+        <FormLabel fontWeight="bold" fontFamily={'Dm Sans'}>
          Campaign Contract Address
         </FormLabel>
-        <FormHelperText>The contract people have to interact with</FormHelperText>
+        <FormHelperText fontFamily={'Dm Sans'} fontSize="13px">The contract people have to interact with</FormHelperText>
         <Input
          value={campaignContractAddress}
          onChange={(e) => setCampaignContractAddress(e.target.value)}
@@ -135,12 +135,26 @@ const CreateCampaign = () => {
          borderColor="gray.400"
         />
        </FormControl>
+       <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
+        <FormLabel fontWeight="bold" fontFamily={'Dm Sans'}>
+         Reward Token Address
+        </FormLabel>
+        <FormHelperText fontFamily={'Dm Sans'} fontSize="13px">Token beind sent as reward (ERC-20)</FormHelperText>
+        <Input
+         value={rewardTokenAddress}
+         onChange={(e) => setRewardTokenAddress(e.target.value)}
+         placeholder="Address"
+         size="md"
+         type="string"
+         borderColor="gray.400"
+        />
+       </FormControl></div>
 
        <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
-        <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+        <FormLabel fontWeight="bold" fontFamily={'Dm Sans'}>
          Max Referrals per Referer
         </FormLabel>
-        <FormHelperText>Number of times a person can get rewarded by sharing referrals on this campaign</FormHelperText>
+        <FormHelperText fontFamily={'Dm Sans'} fontSize="13px">Number of times a person can get rewarded by sharing referrals on this campaign</FormHelperText>
         <Input
          value={maxReferalsperReferee}
          onChange={(e) => setMaxReferralsPerReferee(e.target.value)}
@@ -151,23 +165,10 @@ const CreateCampaign = () => {
         />
        </FormControl>
 
-       <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
-        <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
-         Reward Token Address
-        </FormLabel>
-        <FormHelperText>Token beind sent as reward (ERC-20)</FormHelperText>
-        <Input
-         value={rewardTokenAddress}
-         onChange={(e) => setRewardTokenAddress(e.target.value)}
-         placeholder="Address"
-         size="md"
-         type="string"
-         borderColor="gray.400"
-        />
-       </FormControl>
+       
 
        <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
-        <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+        <FormLabel fontWeight="bold" fontFamily={'Dm Sans'}>
          Contract Decimals
         </FormLabel>
         <Input
@@ -180,11 +181,11 @@ const CreateCampaign = () => {
         />
        </FormControl>
 
-       <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
-        <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+       <div style={{display:"flex", gap:"20px"}}><FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
+        <FormLabel fontWeight="bold" fontFamily={'Dm Sans'}>
          Reward Referrer
         </FormLabel>
-        <FormHelperText>Amount of the token you provided</FormHelperText>
+        <FormHelperText fontFamily={'Dm Sans'} fontSize="13px">Amount of the token you provided</FormHelperText>
         <Input
          value={rewardReferrer}
          onChange={(e) => setRewardReferrer(e.target.value)}
@@ -196,7 +197,7 @@ const CreateCampaign = () => {
        </FormControl>
 
        <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
-        <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+        <FormLabel fontWeight="bold" fontFamily={'Dm Sans'}>
          Reward Referee
         </FormLabel>
         <Input
@@ -204,12 +205,13 @@ const CreateCampaign = () => {
          onChange={(e) => setRewardReferee(e.target.value)}
          placeholder="0.05"
          size="md"
+         mt="15px"
          type="number"
          borderColor="gray.400"
         />
-       </FormControl>
+       </FormControl></div>
        <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
-        <FormLabel fontWeight="bold" fontFamily={'sans-serif'}>
+        <FormLabel fontWeight="bold" fontFamily={'Dm Sans'}>
          Minimum Campaign Token Balance
         </FormLabel>
         <Input
@@ -227,12 +229,12 @@ const CreateCampaign = () => {
          <Button
           backgroundColor="purple.300"
           variant="gradient"
-          borderRadius="10px"
+          
           border={'0.5px solid #312E2A'}
           boxShadow={'2.8px 3.8px 0px 0px #312E2A'}
           py={2}
-          px={12}
-          fontFamily="sans-serif"
+          px={28}
+          fontFamily="Dm Sans"
           color="white"
           type="submit"
           isLoading={isLoading}
@@ -245,7 +247,7 @@ const CreateCampaign = () => {
       </form>
      )}
     </div>
-   </Box>
+   </Box>}
   </Container>
  )
 }
