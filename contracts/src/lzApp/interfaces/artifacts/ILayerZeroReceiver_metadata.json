@@ -1,0 +1,74 @@
+{
+	"compiler": {
+		"version": "0.8.19+commit.7dd6d404"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_srcChainId",
+						"type": "uint16"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_srcAddress",
+						"type": "bytes"
+					},
+					{
+						"internalType": "uint64",
+						"name": "_nonce",
+						"type": "uint64"
+					},
+					{
+						"internalType": "bytes",
+						"name": "_payload",
+						"type": "bytes"
+					}
+				],
+				"name": "lzReceive",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"lzApp/interfaces/ILayerZeroReciever.sol": "ILayerZeroReceiver"
+		},
+		"evmVersion": "paris",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"lzApp/interfaces/ILayerZeroReciever.sol": {
+			"keccak256": "0x341c502147595b21648b31057afba28cf844f2e4e7dc6af35cd01040297dcc92",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://950293e720bfeeccb0fc0ab13c6b30d948f6ec86d950845528902791097e8eb6",
+				"dweb:/ipfs/QmawQeoAwBVWccZueF1o6ndRcjxJAvFaovjpfwomM6HHqS"
+			]
+		}
+	},
+	"version": 1
+}
