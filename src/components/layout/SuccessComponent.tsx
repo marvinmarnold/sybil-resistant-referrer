@@ -16,7 +16,7 @@ const SuccessComponent = ({ link, data, message = '' }: { link: string | null; d
  }
 
  return (
-  <Box margin={10} textAlign="center">
+  <Box margin={10} top="64px" textAlign="center">
    <Heading textAlign="center" margin={5}>
     {message}
    </Heading>
