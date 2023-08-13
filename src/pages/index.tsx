@@ -1,4 +1,4 @@
-import { Text, Button, Box, Heading, AbsoluteCenter, Flex, background, Img } from '@chakra-ui/react'
+import { Text, Box, Heading, Flex } from '@chakra-ui/react'
 import { Head } from 'components/layout/Head'
 import { LinkComponent } from 'components/layout/LinkComponent'
 import styled from '@emotion/styled'
