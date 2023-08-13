@@ -15,7 +15,7 @@ contract CampaignFactory {
     address immutable referralCampaign;
 
     //@dev WorldID Address Base
-    IWorldID worldID = IWorldID(0x515f06B36E6D3b707eAecBdeD18d8B384944c87f);
+    IWorldID worldID = IWorldID(0x78eC127A3716D447F4575E9c834d452E397EE9E1);
 
     //@dev Worldcoin Developer portal App ID , TO be updated
     string appID="app_staging_27f3e5996cfe801b96d47df2ffa35053";

@@ -1,0 +1,187 @@
+{
+    "compiler": {
+      "version": "0.8.19+commit.7dd6d404"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address",
+              "indexed": true
+            }
+          ],
+          "type": "event",
+          "name": "OwnershipTransferred",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "",
+              "type": "string",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "Welcomed",
+          "anonymous": false
+        },
+        {
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "hello",
+          "outputs": [
+            {
+              "internalType": "string",
+              "name": "",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "val",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "hellov"
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "owner",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "renounceOwnership"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "transferOwnership"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "owner()": {
+            "details": "Returns the address of the current owner."
+          },
+          "renounceOwnership()": {
+            "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+          },
+          "transferOwnership(address)": {
+            "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        "@openzeppelin/=node_modules/@openzeppelin/",
+        "solmate/=node_modules/solmate/src/",
+        "src/=src/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 10000
+      },
+      "metadata": {
+        "bytecodeHash": "none"
+      },
+      "compilationTarget": {
+        "src/TestCampaign.sol": "TestCampaign"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "node_modules/@openzeppelin/contracts/access/Ownable.sol": {
+        "keccak256": "0xba43b97fba0d32eb4254f6a5a297b39a19a247082a02d6e69349e071e2946218",
+        "urls": [
+          "bzz-raw://fc980984badf3984b6303b377711220e067722bbd6a135b24669ff5069ef9f32",
+          "dweb:/ipfs/QmPHXMSXj99XjSVM21YsY6aNtLLjLVXDbyN76J5HQYvvrz"
+        ],
+        "license": "MIT"
+      },
+      "node_modules/@openzeppelin/contracts/proxy/utils/Initializable.sol": {
+        "keccak256": "0x3d6069be9b4c01fb81840fb9c2c4dc58dd6a6a4aafaa2c6837de8699574d84c6",
+        "urls": [
+          "bzz-raw://720d6bb56ea0c4ef781c0bd65c5bd0541f5a46100163b2587170f97658d2deed",
+          "dweb:/ipfs/QmTS2biLVPrv8CeeXCaKmkFxonMiRvc1LxiYBRYDAJHQUS"
+        ],
+        "license": "MIT"
+      },
+      "node_modules/@openzeppelin/contracts/utils/Address.sol": {
+        "keccak256": "0x006dd67219697fe68d7fbfdea512e7c4cb64a43565ed86171d67e844982da6fa",
+        "urls": [
+          "bzz-raw://2455248c8ddd9cc6a7af76a13973cddf222072427e7b0e2a7d1aff345145e931",
+          "dweb:/ipfs/QmfYjnjRbWqYpuxurqveE6HtzsY1Xx323J428AKQgtBJZm"
+        ],
+        "license": "MIT"
+      },
+      "node_modules/@openzeppelin/contracts/utils/Context.sol": {
+        "keccak256": "0xe2e337e6dde9ef6b680e07338c493ebea1b5fd09b43424112868e9cc1706bca7",
+        "urls": [
+          "bzz-raw://6df0ddf21ce9f58271bdfaa85cde98b200ef242a05a3f85c2bc10a8294800a92",
+          "dweb:/ipfs/QmRK2Y5Yc6BK7tGKkgsgn3aJEQGi5aakeSPZvS65PV8Xp3"
+        ],
+        "license": "MIT"
+      },
+      "src/IWorldID.sol": {
+        "keccak256": "0x36f5a08a9f832575e2f555b8cc26b787cd135db3f32f45b02e31fc693ddf333c",
+        "urls": [
+          "bzz-raw://92193ca73c09b3df48d1b73d88df223d23aba7f6435816730fc4730ec93b597c",
+          "dweb:/ipfs/QmPsFZyQHa58LQC29JaEpXqi8N2XNCc7CYcaYKEga4v1ic"
+        ],
+        "license": "MIT"
+      },
+      "src/TestCampaign.sol": {
+        "keccak256": "0x3321b40bbd15f152556fe42ff3811733849632dc9b0302db8ac3763b9c704a56",
+        "urls": [
+          "bzz-raw://1206c7f1b3516e94cd4aa9519211cd351a37e408a693a557066e51ee5e3393fa",
+          "dweb:/ipfs/QmVWNQZCgm8LbzNtHip4SrmNYed2Dh49CHWYaeYsWSndj7"
+        ],
+        "license": "MIT"
+      }
+    },
+    "version": 1
+  }
