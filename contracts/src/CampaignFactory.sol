@@ -13,8 +13,6 @@ contract CampaignFactory {
 
 //    event CampaignCreated(address indexed, address, address, address, uint256, uint256, uint256, uint256, string);
    event CampaignCreated(address indexed owner, address indexed campaign, uint256 indexed actionId);
-   event CampaignTagged(address indexed, string);
-   event CampaignWorking(address indexed, address);
     
     //@dev Referral Campaign Implementation
     address immutable referralCampaign;
@@ -84,8 +82,6 @@ contract CampaignFactory {
         campaignsForManager[msg.sender].push(campaign);
         // emit CampaignCreated(msg.sender, clone, _campaignTokenContract, _rewardTokenContract, _maxReferralsPerReferrer, _rewardReferrer, _rewardReferee, _minCampaignTokenBalance, _actionId);
         emit CampaignCreated(msg.sender, clone, _actionIdStr);
-        emit CampaignTagged(msg.sender, _actionId);
-        emit CampaignWorking(msg.sender, clone);
         return clone;
     }
 
