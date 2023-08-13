@@ -9,7 +9,7 @@ import "./IERC20Or721.sol";
 //Sepolia 0x45D57a8E7E0546e59B17C03f4C03ab3383690605
 
 /// @title A LayerZero example sending a cross chain message from a source chain to a destination chain to increment a counter
-contract OmniCounter is NonblockingLzApp {
+contract CampaignChainContract is NonblockingLzApp {
     address public campaignToken;
     uint public tokenBalance;
 
