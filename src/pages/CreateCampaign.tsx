@@ -32,6 +32,7 @@ const CreateCampaign = () => {
  const [returnedData, setReturnedData] = useState<any>("")
  const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
  const [isLoading, setIsLoading] = useState<boolean>(false)
+ const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
  const { address } = useAccount()
  const actionid = uuidv4()
@@ -45,7 +46,7 @@ const CreateCampaign = () => {
 
  const { config, error, isError } = usePrepareContractWrite({
   abi: CampaignFactory.abi,
-  enabled: isLoading,
+  enabled: isSubmitting,
   functionName: 'addCampaign',
   //   FIXME: Add depending on the chain
   address: networks[chainId].factoryContract,
@@ -96,10 +97,10 @@ const CreateCampaign = () => {
 
  const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault()
-  setIsLoading(true)
   try {
     console.log("Sending TX")
     console.log(args)
+    setIsSubmitting(true)
    await write?.()
   } catch (error) {
    toast({
@@ -133,7 +134,7 @@ const CreateCampaign = () => {
      }}>
      {writeSuccess ? (
       // TODO: Add campaign ref to the link
-      <SuccessComponent link={'http://localhost:3000/createlink'} data={data} campaign={randActionId} message={`Successfully created campaign ${randActionId}!`} />
+      <SuccessComponent link={'http://localhost:3000/createlink'} data={data} message={`Successfully created campaign ${randActionId}!`} />
      ) : (
       <form>
        <Heading textAlign="center">Create Campaign</Heading>

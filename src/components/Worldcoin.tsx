@@ -67,7 +67,7 @@ const Worldcoin = ({ proof, setProof, setNullifier, setRoot, action }: WorldType
  // Verify with Worldcoin
  return (
   <IDKitWidget
-//    action="1113"
+  //  action="1115"
    action={action}
    onSuccess={onSuccess}
    signal={address}
