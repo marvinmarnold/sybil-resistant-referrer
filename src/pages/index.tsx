@@ -96,7 +96,7 @@ export default function Home() {
        <Flex
         w="30%"
         h="150px"
-        borderTop="2px solid black"
+        borderTop="0.1px solid black"
         borderRight="2px solid black"
         borderTopRightRadius="50px"
         flexDirection="column"
@@ -123,10 +123,8 @@ export default function Home() {
         w="30%"
         h="150px"
         borderLeft="2px solid black"
-        borderTop="2px solid black"
-        borderRight="2px solid black"
+        borderTop="0.1px solid black"
         borderTopLeftRadius="50px"
-        borderTopRightRadius="50px"
         flexDirection="column"
         justifyContent="center"
         alignItems="center">
