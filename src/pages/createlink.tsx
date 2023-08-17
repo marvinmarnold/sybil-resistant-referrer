@@ -108,7 +108,8 @@ const CreateLink: NextPage = () => {
 
  useEffect(() => {
   if (wasTxSuccessful) {
-   const url = `${window.location.host}/retrieve?campaignId=${selectedCampaign?.actionId}&campaignAddy=${selectedCampaign?.campaign}&ref=${address}`
+   const protocol = window.location.host === 'localhost:3000' ? 'http' : 'https'
+   const url = `${protocol}://${window.location.host}/retrieve?campaignId=${selectedCampaign?.actionId}&campaignAddy=${selectedCampaign?.campaign}&ref=${address}`
    setLink(url)
 
    toast({

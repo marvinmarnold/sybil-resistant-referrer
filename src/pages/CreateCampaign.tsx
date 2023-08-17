@@ -166,10 +166,10 @@ const CreateCampaign = () => {
         <div style={{ display: 'flex', gap: '20px' }}>
          <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
           <FormLabel fontWeight="bold" fontFamily={'Dm Sans'}>
-           Campaign Contract Address
+           Campaign Token Address
           </FormLabel>
           <FormHelperText fontFamily={'Dm Sans'} fontSize="13px">
-           The contract people have to interact with
+           The NFT you are promoting
           </FormHelperText>
           <Input
            value={campaignContractAddress}
@@ -186,7 +186,7 @@ const CreateCampaign = () => {
            Reward Token Address
           </FormLabel>
           <FormHelperText fontFamily={'Dm Sans'} fontSize="13px">
-           Token beind sent as reward (ERC-20)
+           Bounty token like USDC
           </FormHelperText>
           <Input
            value={rewardTokenAddress}
@@ -233,10 +233,10 @@ const CreateCampaign = () => {
         <div style={{ display: 'flex', gap: '20px' }}>
          <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
           <FormLabel fontWeight="bold" fontFamily={'Dm Sans'}>
-           Reward Referrer
+           Referrer Reward
           </FormLabel>
           <FormHelperText fontFamily={'Dm Sans'} fontSize="13px">
-           Amount of the token you provided
+           Amount of Reward Token to referrer after friend confirms
           </FormHelperText>
           <Input
            value={rewardReferrer}
@@ -250,14 +250,16 @@ const CreateCampaign = () => {
 
          <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
           <FormLabel fontWeight="bold" fontFamily={'Dm Sans'}>
-           Reward Referee
+           Friend Reward
           </FormLabel>
+          <FormHelperText fontFamily={'Dm Sans'} fontSize="13px">
+           Amount of Reward Token to friend after confirmation
+          </FormHelperText>
           <Input
            value={rewardReferee}
            onChange={(e) => setRewardReferee(e.target.value)}
            placeholder="0.05"
            size="md"
-           mt="15px"
            type="number"
            borderColor="gray.400"
           />
@@ -267,6 +269,9 @@ const CreateCampaign = () => {
          <FormLabel fontWeight="bold" fontFamily={'Dm Sans'}>
           Minimum Campaign Token Balance
          </FormLabel>
+         <FormHelperText fontFamily={'Dm Sans'} fontSize="13px">
+          Amount of Campaign Token required for eligibility
+         </FormHelperText>
          <Input
           value={minCampaignTokenBalance}
           onChange={(e) => setMinCampaignTokenBalance(e.target.value)}
