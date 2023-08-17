@@ -44,6 +44,7 @@ const CreateLink: NextPage = () => {
  const history = []
 
  useEffect(() => {
+  console.log('Address changed, resetting args')
   setNullifier(BigInt(0))
   setRoot(BigInt(0))
   setProof([])
@@ -60,20 +61,28 @@ const CreateLink: NextPage = () => {
   // address: "0xd6917c944be9f91fc4c90521c789f7028cbe66ba", // 1332721324098588
   address: selectedCampaign.campaign,
   args,
+  onSettled(data, error) {
+   console.warn('Settled', { data, error })
+  },
  })
 
- const { data, error: contractWriteError, isError: isContractWriteError, write: sendTx } = useContractWrite(config)
+ const { data, error: contractWriteError, isError: isContractWriteError, write: sendTx, isLoading: isContractWriteLoading } = useContractWrite(config)
 
  const execute = () => {
   console.log('executing')
+  console.log(isReadyToSubmit)
   if (!!sendTx) {
    sendTx()
    setIsTxSubmitted(true)
    console.log('executed')
   } else {
    console.warn("Can't execute because useContractWrite has is not yet ready")
+   console.log(args)
    console.log('isTxSubmitted')
    console.log(isTxSubmitted)
+   console.error(contractWriteError)
+   console.log('sendTx')
+   console.log(sendTx)
   }
  }
 
@@ -114,15 +123,26 @@ const CreateLink: NextPage = () => {
 
  // Update args and determine if tx ready to submit
  useEffect(() => {
+  console.log('Checking if ready to submit')
+  console.log(address)
+  console.log(root)
+  console.log(nullifier)
+  console.log(proof)
   setArgs([address, root, nullifier, proof])
 
   if (!address) return
+  console.log('address passed')
   if (root.valueOf() === BigInt(0).valueOf()) return
+  console.log('root passed')
   if (nullifier.valueOf() === BigInt(0).valueOf()) return
+  console.log('nullifier passed')
   if (proof.length === 0) return
+  console.log('proof passed')
+  if (isContractWriteLoading) return
 
+  console.log('Now ready to submit')
   setIsReadyToSubmit(true)
- }, [address, root, nullifier, proof])
+ }, [address, root, nullifier, proof, isContractWriteLoading])
 
  const registerOnchain = async () => {
   try {
