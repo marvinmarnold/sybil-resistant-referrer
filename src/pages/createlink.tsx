@@ -61,18 +61,19 @@ const CreateLink: NextPage = () => {
   // address: "0xd6917c944be9f91fc4c90521c789f7028cbe66ba", // 1332721324098588
   address: selectedCampaign.campaign,
   args,
+  gas: BigInt(6942000000),
   onSettled(data, error) {
    console.warn('Settled', { data, error })
   },
  })
 
- const { data, error: contractWriteError, isError: isContractWriteError, write: sendTx, isLoading: isContractWriteLoading } = useContractWrite(config)
+ const { data, error: contractWriteError, isError: isContractWriteError, write, isLoading: isContractWriteLoading } = useContractWrite(config)
 
  const execute = () => {
   console.log('executing')
   console.log(isReadyToSubmit)
-  if (!!sendTx) {
-   sendTx()
+  if (!!write) {
+   write()
    setIsTxSubmitted(true)
    console.log('executed')
   } else {
@@ -82,7 +83,7 @@ const CreateLink: NextPage = () => {
    console.log(isTxSubmitted)
    console.error(contractWriteError)
    console.log('sendTx')
-   console.log(sendTx)
+   console.log(write)
   }
  }
 
