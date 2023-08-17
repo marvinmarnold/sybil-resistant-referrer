@@ -1,13 +1,23 @@
-import { Box, Button, Heading, useToast, Text } from '@chakra-ui/react'
+import { Box, Button, Heading, Text, useToast } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import React, { useEffect, useState } from 'react'
-import { Address } from "viem"
+import { Address } from 'viem'
 import { useContractWrite, useNetwork, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 import ERC20Contract from '../../contracts/out/ERC20.sol/ERC20.json'
 
 import SuccessComponent from 'components/layout/SuccessComponent'
 
-const ApproveCampaign = ({ campaignAddress, txnData, rewardTokenAddress }: {campaignAddress: string, txnData: any, rewardTokenAddress: string}) => {
+const ApproveCampaign = ({
+ campaignAddress,
+ txnData,
+ rewardTokenAddress,
+ actionId,
+}: {
+ campaignAddress: `0x${string}` | undefined
+ txnData: any
+ rewardTokenAddress: string
+ actionId: string
+}) => {
  const toast = useToast()
  const network = useNetwork()
  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
@@ -67,50 +77,52 @@ const ApproveCampaign = ({ campaignAddress, txnData, rewardTokenAddress }: {camp
 
  return (
   <Box>
-      <Heading as="h2" fontSize="32px" fontFamily="Dm Sans" textAlign="center">
-        Create Campaign
-      </Heading>
-      {!writeSuccess && 
-<>
-      <Text as="h5" fontSize="xl" marginY={10}>
-        You need to approve the campaign contract 
-        <br />
-        to distribute awards on your behalf.
-      </Text>
+   <Heading as="h2" fontSize="32px" fontFamily="Dm Sans" textAlign="center">
+    Create Campaign
+   </Heading>
+   {!writeSuccess && (
+    <>
+     <Text as="h5" fontSize="xl" marginY={10}>
+      You need to approve the campaign contract
+      <br />
+      to distribute awards on your behalf.
+     </Text>
 
      <Box display="flex" justifyContent="center" mt={5}>
-        <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
-        <Button
-          backgroundColor="purple.300"
-          variant="gradient"
-          border={'0.5px solid #312E2A'}
-          boxShadow={'2.8px 3.8px 0px 0px #312E2A'}
-          py={2}
-          px={28}
-          fontFamily="Dm Sans"
-          color="white"
-          type="submit"
-          isLoading={isSubmitting}
-          onClick={handleSubmit}
-          disabled={writeLoading || isContractLoading}>
-          {writeLoading || isContractLoading ? 'Loading...' : 'Approve'}
-        </Button>
-        </motion.div>
-      </Box>
-      </>
-      }
+      <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+       <Button
+        backgroundColor="purple.300"
+        variant="gradient"
+        border={'0.5px solid #312E2A'}
+        boxShadow={'2.8px 3.8px 0px 0px #312E2A'}
+        py={2}
+        px={28}
+        fontFamily="Dm Sans"
+        color="white"
+        type="submit"
+        isLoading={isSubmitting}
+        onClick={handleSubmit}
+        disabled={writeLoading || isContractLoading}>
+        {writeLoading || isContractLoading ? 'Loading...' : 'Approve'}
+       </Button>
+      </motion.div>
+     </Box>
+    </>
+   )}
 
-        {/* TODO: Add campaign ref to the link */}
-        {writeSuccess && (
-      <Box display="flex" justifyContent="center" mt={5}>
-          <SuccessComponent
-          link={null}
-          data={data ? data : txnData}
-          message={`Successfully ${data ? "approved the campaign" : "created a new campaign"}`}
-          subtitle=" "
-          />
-          </Box>
-        )}
+   {/* TODO: Add campaign ref to the link */}
+   {writeSuccess && (
+    <Box display="flex" justifyContent="center" mt={5}>
+     <SuccessComponent
+      link={`${window.location.host === 'localhost:3000' ? 'http' : 'https'}://${
+       window.location.host
+      }/createlink?campaignAddress=${campaignAddress}&actionId=${actionId}`}
+      data={data ? data : txnData}
+      message={`Successfully ${data ? 'approved the campaign' : 'created a new campaign'}`}
+      subtitle="Start sharing the link"
+     />
+    </Box>
+   )}
   </Box>
  )
 }
