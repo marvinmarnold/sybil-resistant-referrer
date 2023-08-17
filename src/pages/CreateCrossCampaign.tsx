@@ -55,8 +55,6 @@ const CreateCrossCampaign = () => {
  const [isSecondSubmitting, setSeccondIsSubmitting] = useState<boolean>(false)
  const [selectedChain, setSelectedChain] = useState<Chain | null>(null)
 
- 
- 
  const [showButton, setShowButton] = useState(false)
  const bigIntMaxReferalsperReferee = maxReferalsperReferee ? parseUnits(maxReferalsperReferee, contractDecimals) : 0
  const bigIntRewardReferer = rewardReferrer ? parseUnits(rewardReferrer, contractDecimals) : 0
@@ -71,7 +69,7 @@ const CreateCrossCampaign = () => {
 
  type Chain = (typeof chainOptions)[number]['name']
  const chainId: number = network.chain?.id ?? 5
-//  const tokenContractAddress = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID
+ //  const tokenContractAddress = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID
  const { config, error, isError } = usePrepareContractWrite({
   abi: CrossCampaignFactory.abi,
   enabled: isSubmitting,
@@ -304,6 +302,12 @@ const CreateCrossCampaign = () => {
         <Heading as="h2" fontSize="32px" fontFamily="Dm Sans" textAlign="center">
          Create Cross Campaign
         </Heading>
+
+        <h1>
+         <a target="_blank" href="https://docs.google.com/document/d/1Gym0FotIM5yJcoiAEbiIk4mdie7tpymfIsXqO_FahDs/edit?usp=sharing">
+          Follow the tutorial here.
+         </a>
+        </h1>
 
         <div style={{ display: 'flex', gap: '20px' }}>
          <FormControl isRequired style={{ width: '100%', marginTop: '20px' }}>
