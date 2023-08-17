@@ -169,7 +169,7 @@ const CreateCampaign = () => {
            Campaign Token Address
           </FormLabel>
           <FormHelperText fontFamily={'Dm Sans'} fontSize="13px">
-           The NFT you are promoting
+           The token you are promoting (McRib)
           </FormHelperText>
           <Input
            value={campaignContractAddress}
@@ -186,7 +186,7 @@ const CreateCampaign = () => {
            Reward Token Address
           </FormLabel>
           <FormHelperText fontFamily={'Dm Sans'} fontSize="13px">
-           Bounty token like USDC
+           Bounty token/incentive (USDC)
           </FormHelperText>
           <Input
            value={rewardTokenAddress}

@@ -20,7 +20,7 @@ const SuccessComponent = ({ link, data, message = '', subtitle = '' }: { link: s
    <Heading as="h3" size="lg" textAlign="center" margin={5}>
     {message}
    </Heading>
-   {link && (
+   {link ? (
     <Box>
      <Box margin={5}>
       <a href={link}>
@@ -48,6 +48,12 @@ const SuccessComponent = ({ link, data, message = '', subtitle = '' }: { link: s
        </motion.div>
       </CopyToClipboard>
      </Box>
+    </Box>
+   ) : (
+    <Box margin={5}>
+     <Heading as="h4" size="md">
+      {subtitle}
+     </Heading>
     </Box>
    )}
 
