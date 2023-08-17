@@ -10,7 +10,7 @@ import "./IERC20Or721.sol";
 
 
 /// @title A LayerZero example sending a cross chain message from a source chain to a destination chain to increment a counter
-contract BaseChainContract is NonblockingLzApp {
+contract MainChainContract is NonblockingLzApp {
     uint public tokenBalance;
 
     constructor(address _lzEndpoint) NonblockingLzApp(_lzEndpoint) {}
