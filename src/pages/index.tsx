@@ -145,6 +145,32 @@ export default function Home() {
          Generate Referrals, Expand Possibilities.
         </p>
        </Flex>
+       <Flex
+        w="30%"
+        h="150px"
+        borderLeft="2px solid black"
+        borderTop="0.1px solid black"
+        borderTopLeftRadius="50px"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center">
+        <LinkComponent href="/CreateCrossCampaign">
+         <h2
+          style={{
+           fontFamily: 'Dm Sans',
+           fontSize: '24px',
+           fontWeight: '600',
+           borderBottom: '2px solid black',
+           display: 'flex',
+           justifyContent: 'center',
+          }}>
+          Cross-chain campaigns&gt;
+         </h2>
+        </LinkComponent>
+        <p style={{ fontFamily: 'Dm Sans', display: 'flex', justifyContent: 'center', margin: '20px', color: 'gray' }}>
+         Engage users with a token on one chain and payout rewards on another.
+        </p>
+       </Flex>
        {/* <Flex
         w="30%"
         h="150px"
