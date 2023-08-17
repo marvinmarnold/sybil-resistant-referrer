@@ -12,23 +12,38 @@ import CampaignsMenu from 'components/layout/CampaignsMenu'
 import Container from 'components/layout/Container'
 import History from 'components/layout/History'
 import SuccessComponent from 'components/layout/SuccessComponent'
+import { useRouter } from 'next/router'
 import { CampaignType } from 'types/index'
+import { Address } from 'viem'
 import referralCampaignContract from '../../contracts/out/ReferralCampaign.sol/ReferralCampaign.json'
 
 const CreateLink: NextPage = () => {
  // TODO: Fetch proof from shared state
+ const router = useRouter()
+
+ const { campaignAddress, actionId } = router.query
+
  const account = useAccount()
  const theme = useTheme()
  const { colorMode } = useColorMode()
  const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
  const toast = useToast()
  const publicClient = usePublicClient()
- const [selectedCampaign, setSelectedCampaign] = useState<CampaignType>({
-  id: '',
-  owner: '0x',
-  campaign: '0x',
-  actionId: '',
- })
+ const [selectedCampaign, setSelectedCampaign] = useState<CampaignType>(
+  !!campaignAddress
+   ? {
+      id: '',
+      owner: '0x',
+      campaign: campaignAddress as Address,
+      actionId: actionId as string,
+     }
+   : {
+      id: '',
+      owner: '0x',
+      campaign: '0x',
+      actionId: '',
+     }
+ )
  const [link, setLink] = useState('')
  const [args, setArgs] = useState<any[]>([])
  const [isTxSubmitted, setIsTxSubmitted] = useState(false)
@@ -59,7 +74,7 @@ const CreateLink: NextPage = () => {
   //   address: "0x8fa7b813f246e0dd7cbb04437487fb113912224a", // 1112
   //   address: "0xa364f00198854cd1c0a24e2c502bc39d8aa29a22", // 1113
   // address: "0xd6917c944be9f91fc4c90521c789f7028cbe66ba", // 1332721324098588
-  address: selectedCampaign.campaign,
+  address: !!campaignAddress ? (campaignAddress as `0x${string}`) : selectedCampaign.campaign,
   args,
   onSettled(data, error) {
    console.warn('Settled', { data, error })
@@ -106,10 +121,13 @@ const CreateLink: NextPage = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
  }, [isContractWriteError, isTxSubmitted, contractWriteError])
 
+ const protocol = window.location.host === 'localhost:3000' ? 'http' : 'https'
+
  useEffect(() => {
   if (wasTxSuccessful) {
-   const protocol = window.location.host === 'localhost:3000' ? 'http' : 'https'
-   const url = `${protocol}://${window.location.host}/retrieve?campaignId=${selectedCampaign?.actionId}&campaignAddy=${selectedCampaign?.campaign}&ref=${address}`
+   const url = !campaignAddress
+    ? `${protocol}://${window.location.host}/retrieve?campaignId=${selectedCampaign?.actionId}&campaignAddy=${selectedCampaign?.campaign}&ref=${address}`
+    : `${protocol}://${window.location.host}/retrieve?campaignId=${actionId}&campaignAddy=${campaignAddress}&ref=${address}`
    setLink(url)
 
    toast({
@@ -213,7 +231,11 @@ const CreateLink: NextPage = () => {
        Create Referral Link
       </h2>
 
-      <CampaignsMenu selectedCampaign={selectedCampaign} setSelectedCampaign={setSelectedCampaign} isActive={proof?.length === 0} />
+      {!campaignAddress ? (
+       <CampaignsMenu selectedCampaign={selectedCampaign} setSelectedCampaign={setSelectedCampaign} isActive={proof?.length === 0} />
+      ) : (
+       <div>Campaign: {actionId}</div>
+      )}
 
       <Box display="flex" justifyContent="center" mt={5}>
        {!link && (
@@ -237,6 +259,9 @@ const CreateLink: NextPage = () => {
           </motion.div>
          ) : (
           <Box>
+           {!!campaignAddress && (
+            <Worldcoin proof={proof} setProof={setProof} setNullifier={setNullifier} setRoot={setRoot} action={actionId as string} />
+           )}
            {selectedCampaign?.id.length > 0 && (
             <Worldcoin proof={proof} setProof={setProof} setNullifier={setNullifier} setRoot={setRoot} action={selectedCampaign?.actionId} />
            )}

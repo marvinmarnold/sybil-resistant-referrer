@@ -1,4 +1,5 @@
 import { Box, Button, FormControl, FormHelperText, FormLabel, Heading, Input, useBreakpointValue, useColorMode, useToast } from '@chakra-ui/react'
+import ApproveCampaign from 'components/ApproveCampaign'
 import Background from 'components/Background'
 import Container from 'components/layout/Container'
 import { motion } from 'framer-motion'
@@ -7,8 +8,6 @@ import { networks } from 'utils/network'
 import { parseUnits } from 'viem'
 import { useAccount, useContractWrite, useNetwork, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 import CampaignFactory from '../../contracts/out/CampaignFactory.sol/CampaignFactory.json'
-import ApproveCampaign from 'components/ApproveCampaign'
-
 
 function randomIntFromInterval(min: number, max: number) {
  // min and max included
@@ -47,7 +46,11 @@ const CreateCampaign = () => {
 
  const { data, isLoading: writeLoading, isError: writeError, write } = useContractWrite(config)
 
- const { data: txnData, isLoading: isContractLoading, isSuccess: writeSuccess } = useWaitForTransaction({
+ const {
+  data: txnData,
+  isLoading: isContractLoading,
+  isSuccess: writeSuccess,
+ } = useWaitForTransaction({
   hash: data?.hash,
  })
 
@@ -101,7 +104,7 @@ const CreateCampaign = () => {
    })
   }
  }, [writeSuccess, data])
-  
+
  const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault()
   try {
@@ -147,8 +150,8 @@ const CreateCampaign = () => {
        borderRadius: '40px',
        border: '1px solid rgba(179, 186, 209, 0.5)',
       }}>
-      {(writeSuccess && txnData?.logs) ? (
-            <ApproveCampaign campaignAddress={txnData?.logs[0]?.address} txnData={data} rewardTokenAddress={rewardTokenAddress} />
+      {writeSuccess && txnData?.logs ? (
+       <ApproveCampaign campaignAddress={txnData?.logs[0]?.address} txnData={data} rewardTokenAddress={rewardTokenAddress} actionId={randActionId} />
       ) : (
        <form>
         <Heading as="h2" fontSize="32px" fontFamily="Dm Sans" textAlign="center">
