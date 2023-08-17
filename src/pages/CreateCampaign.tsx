@@ -1,14 +1,14 @@
 import { Box, Button, FormControl, FormHelperText, FormLabel, Heading, Input, useBreakpointValue, useColorMode, useToast } from '@chakra-ui/react'
 import Background from 'components/Background'
 import Container from 'components/layout/Container'
-import SuccessComponent from 'components/layout/SuccessComponent'
 import { motion } from 'framer-motion'
 import React, { useEffect, useState } from 'react'
 import { networks } from 'utils/network'
-import { v4 as uuidv4 } from 'uuid'
 import { parseUnits } from 'viem'
 import { useAccount, useContractWrite, useNetwork, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 import CampaignFactory from '../../contracts/out/CampaignFactory.sol/CampaignFactory.json'
+import ApproveCampaign from 'components/ApproveCampaign'
+
 
 function randomIntFromInterval(min: number, max: number) {
  // min and max included
@@ -35,25 +35,23 @@ const CreateCampaign = () => {
  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
  const [isReadyToSubmit, setIsReadyToSubmit] = useState(false)
 
- const { address } = useAccount()
- const actionid = uuidv4()
-
  const chainId: number = network.chain?.id ?? 5
 
  const { config, error, isError } = usePrepareContractWrite({
   abi: CampaignFactory.abi,
   enabled: isReadyToSubmit,
   functionName: 'addCampaign',
-  address: networks[chainId].factoryContract,
+  address: networks[chainId]?.factoryContract,
   args,
  })
 
  const { data, isLoading: writeLoading, isError: writeError, write } = useContractWrite(config)
 
- const { isLoading: isContractLoading, isSuccess: writeSuccess } = useWaitForTransaction({
+ const { data: txnData, isLoading: isContractLoading, isSuccess: writeSuccess } = useWaitForTransaction({
   hash: data?.hash,
  })
- const worldId = networks[chainId].worldId
+
+ const worldId = networks[chainId]?.worldId
  const bigIntMaxReferalsperReferee = maxReferalsperReferee ? parseUnits(maxReferalsperReferee, contractDecimals) : false
  const bigIntRewardReferer = rewardReferrer ? parseUnits(rewardReferrer, contractDecimals) : false
  const bigIntRewardReferee = rewardReferee ? parseUnits(rewardReferee, contractDecimals) : false
@@ -103,7 +101,7 @@ const CreateCampaign = () => {
    })
   }
  }, [writeSuccess, data])
-
+  
  const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault()
   try {
@@ -149,14 +147,8 @@ const CreateCampaign = () => {
        borderRadius: '40px',
        border: '1px solid rgba(179, 186, 209, 0.5)',
       }}>
-      {writeSuccess ? (
-       // TODO: Add campaign ref to the link
-       <SuccessComponent
-        link={'/createlink'}
-        data={data}
-        message={`Created campaign: ${randActionId}`}
-        subtitle="Give this link to people who will make referrals"
-       />
+      {(writeSuccess && txnData?.logs) ? (
+            <ApproveCampaign campaignAddress={txnData?.logs[0]?.address} txnData={data} rewardTokenAddress={rewardTokenAddress} />
       ) : (
        <form>
         <Heading as="h2" fontSize="32px" fontFamily="Dm Sans" textAlign="center">
