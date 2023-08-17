@@ -1,14 +1,14 @@
-import { Box, Button, FormControl, Heading, FormLabel, Input, useBreakpointValue, useColorMode, useToast, FormHelperText } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
-import { v4 as uuidv4 } from 'uuid'
-import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction, useNetwork } from 'wagmi'
-import { parseUnits } from 'viem'
-import CampaignFactory from '../../contracts/out/CampaignFactory.sol/CampaignFactory.json'
+import { Box, Button, FormControl, FormHelperText, FormLabel, Heading, Input, useBreakpointValue, useColorMode, useToast } from '@chakra-ui/react'
 import Background from 'components/Background'
 import Container from 'components/layout/Container'
 import SuccessComponent from 'components/layout/SuccessComponent'
+import { motion } from 'framer-motion'
+import React, { useEffect, useState } from 'react'
 import { networks } from 'utils/network'
+import { v4 as uuidv4 } from 'uuid'
+import { parseUnits } from 'viem'
+import { useAccount, useContractWrite, useNetwork, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
+import CampaignFactory from '../../contracts/out/CampaignFactory.sol/CampaignFactory.json'
 
 function randomIntFromInterval(min: number, max: number) {
  // min and max included
@@ -143,7 +143,12 @@ const CreateCampaign = () => {
       }}>
       {writeSuccess ? (
        // TODO: Add campaign ref to the link
-       <SuccessComponent link={'/createlink'} data={data} message={`Successfully created campaign ${randActionId}!`} />
+       <SuccessComponent
+        link={'/createlink'}
+        data={data}
+        message={`Created campaign: ${randActionId}`}
+        subtitle="Give this link to people who will make referrals"
+       />
       ) : (
        <form>
         <Heading as="h2" fontSize="32px" fontFamily="Dm Sans" textAlign="center">

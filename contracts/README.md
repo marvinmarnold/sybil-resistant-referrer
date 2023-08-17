@@ -1,7 +1,9 @@
 # Quickstart
+
 1. Install pre-requisites: node and foundry installed
 2. Install dependencies: `pnpm i`
 3. Deploy campaign factory, campaign token (simulating a NFT), and reward token (simulating USDC).
+
 ```
 # Deploy factory contract
 forge create src/CampaignFactory.sol:CampaignFactory \
@@ -18,7 +20,7 @@ forge create src/MockERC20Token.sol:MockToken20 \
 
 -> Deployed to: 0x352801EcDE99171F346de6033094e47D6b4AcB33
 
-# Deploy reward token as ERC-20 
+# Deploy reward token as ERC-20
 forge create src/MockERC20Token.sol:MockToken20 \
     --private-key 0xOWNER \
     --rpc-url https://opt-goerli.g.alchemy.com/v2/7idjAuh5bHGIoE95AvxwPaFZblFUgyIq \
@@ -28,22 +30,24 @@ forge create src/MockERC20Token.sol:MockToken20 \
 ```
 
 4. Create a new campaign
+
 ```
 cast send \
     --private-key 0xOWNER \
     --rpc-url https://opt-goerli.g.alchemy.com/v2/7idjAuh5bHGIoE95AvxwPaFZblFUgyIq \
-    0xf2761B5e177261fb3Ead3b7B992a11Fce8592898 "addCampaign(address,address,uint256,uint256,uint256,uint256, string)" \
-    0x352801EcDE99171F346de6033094e47D6b4AcB33 0x1d4396c22Ea22c371742A3A9d61e8a3E0AcCCFD0 3 100 200 1 campaign7
+    0xf2761B5e177261fb3Ead3b7B992a11Fce8592898 "addCampaign(address,address,uint256,uint256,uint256,uint256,string,uint256)" \
+    0x352801EcDE99171F346de6033094e47D6b4AcB33 0x1d4396c22Ea22c371742A3A9d61e8a3E0AcCCFD0 3 100 200 1 '1002' 1002
 
 -> transactionHash         0x55059d76df011122a8397cac776eac2753ba8f7777528e1e9def8de3413c4ea3
 ```
 
 5. Determine the new campaign address. There are many ways to do this. I pulled up the transaction on [OP Goerli scan](https://goerli-optimism.etherscan.io/tx/0x55059d76df011122a8397cac776eac2753ba8f7777528e1e9def8de3413c4ea3#eventlog).
-We can also check out campaigns created on The Graph's [OP Goerli playground subgraph](https://thegraph.com/studio/subgraph/refer-optimism-goerli/playground)
+   We can also check out campaigns created on The Graph's [OP Goerli playground subgraph](https://thegraph.com/studio/subgraph/refer-optimism-goerli/playground)
 
- The created contract in this case is `0x694e95ffa7819a7c67a14dfda6cd3a150e9453ad`.
+The created contract in this case is `0x694e95ffa7819a7c67a14dfda6cd3a150e9453ad`.
 
 6. Approve TOKEN contract to spend up to a campaign limit
+
 ```
 cast send \
     --private-key 0xOWNER \
@@ -53,6 +57,7 @@ cast send \
 ```
 
 7. Register as referrer (0x1635b64e3f897C4E3E5bA9972ea4618ee682dADE)
+
 ```
 cast send \
     --private-key 0xREFERER \
@@ -62,6 +67,7 @@ cast send \
 ```
 
 8. (Optional) Step 7 will fail unless the referree has enough campaign tokens. Transfer to them if necessary for success.
+
 ```
 cast send \
     --private-key 0xOWNER \
@@ -71,6 +77,7 @@ cast send \
 ```
 
 9. Claim as referree (0x414afCBd5C0Cf1babe79eF1C5d34C77Ba2F991ba)
+
 ```
  cast send \
     --private-key 0xREFERREE \
