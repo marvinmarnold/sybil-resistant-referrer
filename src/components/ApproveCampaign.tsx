@@ -114,7 +114,9 @@ const ApproveCampaign = ({
    {writeSuccess && (
     <Box display="flex" justifyContent="center" mt={5}>
      <SuccessComponent
-      link={`${window.location.host}/createlink?campaignAddress=${campaignAddress}&actionId=${actionId}`}
+      link={`${window.location.host === 'localhost:3000' ? 'http' : 'https'}://${
+       window.location.host
+      }/createlink?campaignAddress=${campaignAddress}&actionId=${actionId}`}
       data={data ? data : txnData}
       message={`Successfully ${data ? 'approved the campaign' : 'created a new campaign'}`}
       subtitle="Start sharing the link"
