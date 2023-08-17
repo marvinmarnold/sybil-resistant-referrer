@@ -61,7 +61,6 @@ const CreateLink: NextPage = () => {
   // address: "0xd6917c944be9f91fc4c90521c789f7028cbe66ba", // 1332721324098588
   address: selectedCampaign.campaign,
   args,
-  gas: BigInt(6942000000),
   onSettled(data, error) {
    console.warn('Settled', { data, error })
   },
