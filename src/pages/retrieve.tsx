@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { Hash } from 'viem'
 import 'viem/window'
 import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 
@@ -26,16 +25,14 @@ const CreateLink: NextPage = () => {
  const [campaignId, setCampaignId] = useState<any>('')
  const [campaignAddy, setCampaignAddy] = useState<any>('')
  const [ref, setRef] = useState<any>('')
- const [isLoading, setIsLoading] = useState(false)
  const [isSubmitting, setIsSubmitting] = useState(false)
  const [args, setArgs] = useState<any[]>([])
- const [hash, setHash] = useState<Hash>()
-
  const [proof, setProof] = useState<BigInt[]>([])
  const [nullifier, setNullifier] = useState<BigInt>(BigInt(0))
  const [root, setRoot] = useState<BigInt>(BigInt(0))
+ const [isReadyToSubmit, setIsReadyToSubmit] = useState(false)
 
- const { address = '0x...' } = account
+ const { address } = account
 
  useEffect(() => {
   const { ref: refParam, campaignId: campaignIdParam, campaignAddy: campaignAddyParam } = router.query
@@ -53,6 +50,30 @@ const CreateLink: NextPage = () => {
   }
  }, [router.query])
 
+ useEffect(() => {
+  console.log('Checking if ready to submit')
+  console.log(address)
+  console.log(root)
+  console.log(nullifier)
+  console.log(proof)
+  //   address _referrer, address signal, uint256 root, uint256 nullifierHash, uint256[8] calldata proof
+  // FIXME: the second is the address of the claimer or the campaignId?
+  setArgs([ref, address, root, nullifier, proof])
+
+  if (!address) return
+  console.log('address passed')
+  if (root.valueOf() === BigInt(0).valueOf()) return
+  console.log('root passed')
+  if (nullifier.valueOf() === BigInt(0).valueOf()) return
+  console.log('nullifier passed')
+  if (proof.length === 0) return
+  console.log('proof passed')
+  if (!ref) return
+
+  console.log('Now ready to submit')
+  setIsReadyToSubmit(true)
+ }, [address, root, nullifier, proof])
+
  //  TODO: Add history on Atom
  const history = []
  const {
@@ -60,7 +81,7 @@ const CreateLink: NextPage = () => {
   error: prepareError,
   isError: isPrepareError,
  } = usePrepareContractWrite({
-  enabled: isSubmitting,
+  enabled: isReadyToSubmit,
   abi: referralCampaignContract.abi,
   functionName: 'acceptReferral',
   address: campaignAddy,
@@ -69,8 +90,17 @@ const CreateLink: NextPage = () => {
 
  const { data, error, isError, write } = useContractWrite(config)
  const execute = () => {
-  setIsSubmitting(true)
-  write && write()
+  if (!!write) {
+   write()
+   setIsSubmitting(true)
+   console.log('executed')
+  } else {
+   console.warn("Can't execute because useContractWrite has is not yet ready")
+   console.log(args)
+   console.log('sendTx')
+   console.log(write)
+   setIsSubmitting(false)
+  }
  }
 
  const { isLoading: isContractLoading, isSuccess } = useWaitForTransaction({
@@ -93,7 +123,7 @@ const CreateLink: NextPage = () => {
 
  useEffect(() => {
   if (isSubmitting) {
-   setIsLoading(false)
+   setIsSubmitting(false)
    toast({
     title: 'Error',
     description: 'There was an error',
@@ -106,15 +136,9 @@ const CreateLink: NextPage = () => {
 
  const claimRewardTxn = async () => {
   try {
-   setIsLoading(true)
    if (!campaignId || !account) return
-   //   address _referrer, address signal, uint256 root, uint256 nullifierHash, uint256[8] calldata proof
-   // FIXME: the second is the address of the claimer or the campaignId?
-   setArgs([ref, address, root, nullifier, proof])
-   execute()
-   setHash(hash)
 
-   setIsLoading(false)
+   execute()
   } catch (error) {
    toast({
     title: 'Error',
@@ -123,7 +147,7 @@ const CreateLink: NextPage = () => {
     duration: 9000,
     isClosable: true,
    })
-   setIsLoading(false)
+   setIsSubmitting(false)
   }
  }
 
@@ -184,7 +208,7 @@ const CreateLink: NextPage = () => {
            fontFamily="Dm Sans"
            color="white"
            type="submit"
-           isLoading={isLoading || isContractLoading}
+           isLoading={isSubmitting || isContractLoading}
            onClick={claimRewardTxn}>
            Claim
           </Button>
