@@ -28,28 +28,22 @@ const CreateCampaign = () => {
  const [rewardReferrer, setRewardReferrer] = useState<string>('')
  const [rewardReferee, setRewardReferee] = useState<string>('')
  const [contractDecimals, setContractDecimals] = useState<number>(10)
- const [args, setArgs] = useState<any[]>(['', '', '', 0, 0, 0, 0, '', 0])
+ const [args, setArgs] = useState<any[]>([])
  const [minCampaignTokenBalance, setMinCampaignTokenBalance] = useState<string>('')
  const [returnedData, setReturnedData] = useState<any>('')
  const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
- const [isLoading, setIsLoading] = useState<boolean>(false)
  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+ const [isReadyToSubmit, setIsReadyToSubmit] = useState(false)
 
  const { address } = useAccount()
  const actionid = uuidv4()
-
- const bigIntMaxReferalsperReferee = maxReferalsperReferee ? parseUnits(maxReferalsperReferee, contractDecimals) : 0
- const bigIntRewardReferer = rewardReferrer ? parseUnits(rewardReferrer, contractDecimals) : 0
- const bigIntRewardReferee = rewardReferee ? parseUnits(rewardReferee, contractDecimals) : 0
- const bigIntMinCampaignTokenBalance = minCampaignTokenBalance ? parseUnits(minCampaignTokenBalance, contractDecimals) : 0
 
  const chainId: number = network.chain?.id ?? 5
 
  const { config, error, isError } = usePrepareContractWrite({
   abi: CampaignFactory.abi,
-  enabled: isSubmitting,
+  enabled: isReadyToSubmit,
   functionName: 'addCampaign',
-  //   FIXME: Add depending on the chain
   address: networks[chainId].factoryContract,
   args,
  })
@@ -60,6 +54,10 @@ const CreateCampaign = () => {
   hash: data?.hash,
  })
  const worldId = networks[chainId].worldId
+ const bigIntMaxReferalsperReferee = maxReferalsperReferee ? parseUnits(maxReferalsperReferee, contractDecimals) : false
+ const bigIntRewardReferer = rewardReferrer ? parseUnits(rewardReferrer, contractDecimals) : false
+ const bigIntRewardReferee = rewardReferee ? parseUnits(rewardReferee, contractDecimals) : false
+ const bigIntMinCampaignTokenBalance = minCampaignTokenBalance ? parseUnits(minCampaignTokenBalance, contractDecimals) : false
 
  useEffect(() => {
   setArgs([
@@ -73,6 +71,14 @@ const CreateCampaign = () => {
    randActionId.toString(),
    randActionId,
   ])
+  if (campaignContractAddress === '') return
+  if (rewardTokenAddress === '') return
+  if (!bigIntMaxReferalsperReferee) return
+  if (!bigIntRewardReferer) return
+  if (!bigIntRewardReferee) return
+  if (!bigIntMinCampaignTokenBalance) return
+
+  setIsReadyToSubmit(true)
  }, [
   worldId,
   campaignContractAddress,
@@ -103,8 +109,10 @@ const CreateCampaign = () => {
   try {
    console.log('Sending TX')
    console.log(args)
-   setIsSubmitting(true)
-   await write?.()
+   if (!!write) {
+    await write?.()
+    setIsSubmitting(true)
+   }
   } catch (error) {
    toast({
     title: 'Error',
@@ -113,7 +121,7 @@ const CreateCampaign = () => {
     duration: 9000,
     isClosable: true,
    })
-   setIsLoading(false)
+   setIsSubmitting(false)
   }
  }
 
@@ -281,7 +289,7 @@ const CreateCampaign = () => {
            fontFamily="Dm Sans"
            color="white"
            type="submit"
-           isLoading={isLoading}
+           isLoading={isSubmitting}
            onClick={handleSubmit}
            disabled={writeLoading || isContractLoading}>
            {writeLoading || isContractLoading ? 'Loading...' : 'Create'}
