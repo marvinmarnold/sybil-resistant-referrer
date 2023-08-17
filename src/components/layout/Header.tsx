@@ -1,10 +1,8 @@
-import React from 'react'
-import { Flex, useColorModeValue, Spacer, Heading } from '@chakra-ui/react'
+import { Flex, Heading, Spacer, useColorModeValue } from '@chakra-ui/react'
+import { Web3Button } from '@web3modal/react'
 import { SITE_NAME } from 'utils/config'
 import { LinkComponent } from './LinkComponent'
 import { PassportScore } from './PassportScore'
-import { Web3Button } from '@web3modal/react'
-import { useAccount } from 'wagmi'
 
 import ChainSelector from 'components/ChainSelector'
 

@@ -1,11 +1,11 @@
-import { useAccount, useNetwork, useSignMessage } from 'wagmi'
-import { SiweMessage } from 'siwe'
-import { useEffect, useState } from 'react'
-import { SITE_NAME } from 'utils/config'
 import { Button, ListItem, UnorderedList } from '@chakra-ui/react'
+import { HeadingComponent } from 'components/layout/HeadingComponent'
 import { LinkComponent } from 'components/layout/LinkComponent'
 import { NextSeo } from 'next-seo'
-import { HeadingComponent } from 'components/layout/HeadingComponent'
+import { useEffect, useState } from 'react'
+import { SiweMessage } from 'siwe'
+import { SITE_NAME } from 'utils/config'
+import { useAccount, useNetwork, useSignMessage } from 'wagmi'
 
 function SignInButton() {
  const [loggedInAddress, setLoggedInAddress] = useState('')

@@ -1,4 +1,4 @@
-import { Box, Button, Icon, useToast, Text, useBreakpointValue, useColorMode, Heading, useTheme } from '@chakra-ui/react'
+import { Box, useBreakpointValue, useColorMode, useTheme } from '@chakra-ui/react'
 
 const History = () => {
  const theme = useTheme()

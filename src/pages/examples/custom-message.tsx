@@ -1,11 +1,11 @@
-import { Chain, useNetwork, useSwitchNetwork } from 'wagmi'
 import { Button, Code, ListItem, Text, UnorderedList } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
-import { NextSeo } from 'next-seo'
-import { HeadingComponent } from 'components/layout/HeadingComponent'
 import { messageAddress, messageConfig, readMessage } from 'abis'
-import { ETH_CHAINS } from 'utils/config'
+import { HeadingComponent } from 'components/layout/HeadingComponent'
 import { LinkComponent } from 'components/layout/LinkComponent'
+import { NextSeo } from 'next-seo'
+import { useEffect, useState } from 'react'
+import { ETH_CHAINS } from 'utils/config'
+import { Chain, useNetwork, useSwitchNetwork } from 'wagmi'
 
 export default function MessageExample() {
  const [message, setMessage] = useState('')

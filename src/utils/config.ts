@@ -1,5 +1,5 @@
 import { ThemingProps } from '@chakra-ui/react'
-import { optimismGoerli, baseGoerli, zoraTestnet } from '@wagmi/chains'
+import { baseGoerli, optimismGoerli, zoraTestnet } from '@wagmi/chains'
 import { Chain } from '@wagmi/core'
 
 export const modeTestnet = {

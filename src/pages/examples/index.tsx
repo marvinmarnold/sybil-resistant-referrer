@@ -1,16 +1,16 @@
+import { Code, Text } from '@chakra-ui/react'
+import { CardList } from 'components/layout/CardList'
 import { Head } from 'components/layout/Head'
 import { HeadingComponent } from 'components/layout/HeadingComponent'
-import { CardList } from 'components/layout/CardList'
-import { Code, Text } from '@chakra-ui/react'
 
-import SignIcon from 'assets/icons/fingerprint.png'
 import AuthIcon from 'assets/icons/auth.png'
-import PassportIcon from 'assets/icons/passport.png'
 import CustomIcon from 'assets/icons/custom.png'
-import EtherIcon from 'assets/icons/ethereum.png'
-import TokenIcon from 'assets/icons/token.png'
-import NFTIcon from 'assets/icons/nft.png'
 import ENSIcon from 'assets/icons/ens.png'
+import EtherIcon from 'assets/icons/ethereum.png'
+import SignIcon from 'assets/icons/fingerprint.png'
+import NFTIcon from 'assets/icons/nft.png'
+import PassportIcon from 'assets/icons/passport.png'
+import TokenIcon from 'assets/icons/token.png'
 
 export const ExampleItems = [
  {

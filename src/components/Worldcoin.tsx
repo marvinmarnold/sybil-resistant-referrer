@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Button, Text, Box, Link, Icon } from '@chakra-ui/react'
-import { BigNumber } from 'ethers'
 import { decode } from '@/../../lib/wld'
+import { Box, Button, Icon, Link, Text } from '@chakra-ui/react'
 import { CredentialType, IDKitWidget, ISuccessResult } from '@worldcoin/idkit'
-import { useAccount } from 'wagmi'
+import { BigNumber } from 'ethers'
+import { useEffect, useState } from 'react'
 import { FiExternalLink } from 'react-icons/fi'
+import { useAccount } from 'wagmi'
 
 type WorldTypes = {
  proof: BigInt[]

@@ -1,7 +1,6 @@
-import React from 'react'
-import { Image, Text, Box, Card, CardBody, Flex, useColorModeValue } from '@chakra-ui/react'
-import { LinkComponent } from './LinkComponent'
+import { Box, Card, CardBody, Flex, Image, Text, useColorModeValue } from '@chakra-ui/react'
 import { HeadingComponent } from './HeadingComponent'
+import { LinkComponent } from './LinkComponent'
 
 interface ListItemType {
  title: string

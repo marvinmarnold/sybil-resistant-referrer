@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react'
-import { Box, Button, Icon, useToast, Text, useBreakpointValue, useColorMode, Heading, useTheme } from '@chakra-ui/react'
+import { Box, Button, Heading, Text, useBreakpointValue, useColorMode, useToast } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 
 import type { NextPage } from 'next'
-import { useAccount, usePrepareContractWrite, useContractWrite, useWaitForTransaction } from 'wagmi'
+import { useRouter } from 'next/router'
 import { Hash } from 'viem'
 import 'viem/window'
-import { useRouter } from 'next/router'
+import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 
+import Background from 'components/Background'
+import Worldcoin from 'components/Worldcoin'
 import Container from 'components/layout/Container'
 import History from 'components/layout/History'
 import SuccessComponent from 'components/layout/SuccessComponent'
-import Background from 'components/Background'
-import Worldcoin from 'components/Worldcoin'
 import referralCampaignContract from '../../contracts/out/ReferralCampaign.sol/ReferralCampaign.json'
 
 const CreateLink: NextPage = () => {
@@ -194,7 +194,7 @@ const CreateLink: NextPage = () => {
       )}
      </Box>
 
-     {isSuccess && <SuccessComponent link={null} data={data} message="Successful claim!" />}
+     {isSuccess && <SuccessComponent link={null} data={data} message="Successful claim!" subtitle="Check your wallet for your reward" />}
      {/* DEBUG ONLY */}
      {/* {(isPrepareError || isError) && <div>Error: {(prepareError || error)?.message}</div>} */}
     </div>

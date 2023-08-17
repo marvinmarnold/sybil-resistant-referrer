@@ -1,15 +1,12 @@
-import { useColorModeValue, Button, Icon } from '@chakra-ui/react'
+import { Button, Icon, Menu, MenuButton, MenuItem, MenuList, useColorModeValue } from '@chakra-ui/react'
 import { Chain, useNetwork, useSwitchNetwork } from 'wagmi'
-import { Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react'
 
 import { messageAddress, messageConfig } from 'abis'
-import { ETH_CHAINS } from 'utils/config'
-import { FiChevronDown } from 'react-icons/fi'
 import { BsFillCircleFill } from 'react-icons/bs'
-BsFillCircleFill
-import React from 'react'
+import { FiChevronDown } from 'react-icons/fi'
+import { ETH_CHAINS, THEME_COLOR_SCHEME } from 'utils/config'
 import { GetNetworkColor } from 'utils/network'
-import { THEME_COLOR_SCHEME } from 'utils/config'
+BsFillCircleFill
 
 const ChainSelector = () => {
  const network = useNetwork()

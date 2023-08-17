@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react'
 import { Box, Container } from '@chakra-ui/react'
+import { ReactNode } from 'react'
 import { Header } from './Header'
 // import { Footer } from './Footer'
 // import { NetworkStatus } from './NetworkStatus'
