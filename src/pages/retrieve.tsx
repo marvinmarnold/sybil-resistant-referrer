@@ -86,16 +86,20 @@ const CreateLink: NextPage = () => {
   functionName: 'acceptReferral',
   address: campaignAddy,
   args,
+  onSettled(data, error) {
+   console.warn('Settled', { data, error })
+  },
  })
 
  const { data, error, isError, write } = useContractWrite(config)
+
  const execute = () => {
   if (!!write) {
    write()
    setIsSubmitting(true)
    console.log('executed')
   } else {
-   console.warn("Can't execute because useContractWrite has is not yet ready")
+   console.warn("Can't execute because useContractWrite is not yet ready")
    console.log(args)
    console.log('sendTx')
    console.log(write)
