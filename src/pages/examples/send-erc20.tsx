@@ -1,10 +1,10 @@
-import { useAccount, useBalance, useContractWrite, usePrepareContractWrite, useWaitForTransaction, useNetwork, erc20ABI } from 'wagmi'
 import { Button, FormControl, FormLabel, Heading, Input, NumberInput, NumberInputField, Text } from '@chakra-ui/react'
-import { useState } from 'react'
-import { NextSeo } from 'next-seo'
-import { parseEther } from 'viem'
 import { LinkComponent } from 'components/layout/LinkComponent'
+import { NextSeo } from 'next-seo'
+import { useState } from 'react'
 import { useDebounce } from 'usehooks-ts'
+import { parseEther } from 'viem'
+import { erc20ABI, useAccount, useBalance, useContractWrite, useNetwork, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 
 function SendERC20() {
  const [tokenContract, setTokenContract] = useState('')

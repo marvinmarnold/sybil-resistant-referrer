@@ -1,7 +1,7 @@
-import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction, useNetwork } from 'wagmi'
-import { Button, Heading, Text, ListItem, UnorderedList } from '@chakra-ui/react'
-import { NextSeo } from 'next-seo'
+import { Button, Heading, ListItem, Text, UnorderedList } from '@chakra-ui/react'
 import { LinkComponent } from 'components/layout/LinkComponent'
+import { NextSeo } from 'next-seo'
+import { useAccount, useContractWrite, useNetwork, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 
 const MintAbi = [
  {

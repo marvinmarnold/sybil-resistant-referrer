@@ -1,4 +1,3 @@
-import React from 'react'
 import {
  Box,
  Button,
@@ -12,8 +11,8 @@ import {
  Text,
  useDisclosure,
 } from '@chakra-ui/react'
-import { FaRobot } from 'react-icons/fa'
 import { usePassportScore } from 'hooks/passport/usePassportScore'
+import { FaRobot } from 'react-icons/fa'
 import { LinkComponent } from './LinkComponent'
 
 interface Props {

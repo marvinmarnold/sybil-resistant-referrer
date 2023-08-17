@@ -1,9 +1,9 @@
-import { Box, Button, Heading, Text, Icon, useToast } from '@chakra-ui/react'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { Box, Button, Heading, Icon, useToast } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { FiCopy, FiExternalLink } from 'react-icons/fi'
 
-const SuccessComponent = ({ link, data, message = '' }: { link: string | null; data: any; message: string }) => {
+const SuccessComponent = ({ link, data, message = '', subtitle = '' }: { link: string | null; data: any; message: string; subtitle: string }) => {
  const toast = useToast()
 
  const successCopy = () => {
@@ -17,7 +17,7 @@ const SuccessComponent = ({ link, data, message = '' }: { link: string | null; d
 
  return (
   <Box margin={10} top="64px" textAlign="center">
-   <Heading textAlign="center" margin={5}>
+   <Heading as="h3" size="lg" textAlign="center" margin={5}>
     {message}
    </Heading>
    {link && (
@@ -25,7 +25,7 @@ const SuccessComponent = ({ link, data, message = '' }: { link: string | null; d
      <Box margin={5}>
       <a href={link}>
        <Heading as="h4" size="md">
-        {link.slice(0, 10)}...{link.slice(-10)}
+        {subtitle}
        </Heading>
       </a>
      </Box>

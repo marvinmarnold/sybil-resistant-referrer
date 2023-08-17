@@ -1,10 +1,10 @@
-import { useAccount, useSignMessage } from 'wagmi'
 import { Button, FormControl, FormLabel, Textarea } from '@chakra-ui/react'
+import { SignMessageArgs } from '@wagmi/core'
+import { HeadingComponent } from 'components/layout/HeadingComponent'
+import { NextSeo } from 'next-seo'
 import { useState } from 'react'
 import { verifyMessage } from 'viem'
-import { SignMessageArgs } from '@wagmi/core'
-import { NextSeo } from 'next-seo'
-import { HeadingComponent } from 'components/layout/HeadingComponent'
+import { useAccount, useSignMessage } from 'wagmi'
 
 function SignMessage() {
  const account = useAccount()

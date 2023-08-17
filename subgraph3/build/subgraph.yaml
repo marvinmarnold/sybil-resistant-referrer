@@ -6,9 +6,9 @@ dataSources:
     name: CampaignFactory
     network: optimism-goerli
     source:
-      address: "0xd91D18cb620Bf5bd76187743aFC84cDca7F7645e"
+      address: "0x94C1ffE05bfA1C1Fb2D270B1C9a3659E5730E452"
       abi: CampaignFactory
-      startBlock: 13233626
+      startBlock: 13404556
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7

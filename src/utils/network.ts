@@ -21,7 +21,7 @@ export interface networkType {
 export const networks: networkType = {
  420: {
   factoryContract: process.env.NEXT_PUBLIC_CAMPAIGN_FACTORY_ADDR_OP_GOERLI as `0x${string}`,
-  factorySubgraph: 'https://api.studio.thegraph.com/query/51076/sybil-resistant/version/latest',
+  factorySubgraph: 'https://api.studio.thegraph.com/query/51076/sybil-resistant/v0.0.5',
   worldId: '0x515f06B36E6D3b707eAecBdeD18d8B384944c87f',
  },
  84531: {

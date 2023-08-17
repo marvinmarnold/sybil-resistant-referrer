@@ -1,12 +1,12 @@
-import { useAccount } from 'wagmi'
-import { Button, Text, Card, CardBody, SimpleGrid, Image } from '@chakra-ui/react'
-import { NextSeo } from 'next-seo'
+import { Button, Card, CardBody, Image, SimpleGrid, Text } from '@chakra-ui/react'
+import { HeadingComponent } from 'components/layout/HeadingComponent'
 import { LinkComponent } from 'components/layout/LinkComponent'
 import { usePassportScore } from 'hooks/passport/usePassportScore'
-import { usePassportSubmit } from 'hooks/passport/usePassportSubmit'
 import { usePassportStamps } from 'hooks/passport/usePassportStamps'
 import { usePassportStampsIndex } from 'hooks/passport/usePassportStampsIndex'
-import { HeadingComponent } from 'components/layout/HeadingComponent'
+import { usePassportSubmit } from 'hooks/passport/usePassportSubmit'
+import { NextSeo } from 'next-seo'
+import { useAccount } from 'wagmi'
 
 export default function PassportExample() {
  const { address, isConnected } = useAccount()

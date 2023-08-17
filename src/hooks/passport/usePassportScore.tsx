@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { State } from 'types'
 import { useAccount } from 'wagmi'
 

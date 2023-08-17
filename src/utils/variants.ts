@@ -1,5 +1,3 @@
-import { Variants } from 'framer-motion'
-
 export const fadeInUp = {
  initial: {
   y: 40,

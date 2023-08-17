@@ -1,19 +1,18 @@
-import { useState, useEffect } from 'react'
-import { Box, Button, useToast, useBreakpointValue, useColorMode, Heading, useTheme } from '@chakra-ui/react'
+import { Box, Button, Heading, useBreakpointValue, useColorMode, useTheme, useToast } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 
 import type { NextPage } from 'next'
-import { useAccount, usePublicClient, usePrepareContractWrite, useContractWrite, useWaitForTransaction } from 'wagmi'
-import { Hash, TransactionReceipt, stringify } from 'viem'
 import 'viem/window'
+import { useAccount, useContractWrite, usePrepareContractWrite, usePublicClient, useWaitForTransaction } from 'wagmi'
 
-import Container from 'components/layout/Container'
+import Background from 'components/Background'
+import Worldcoin from 'components/Worldcoin'
 import CampaignsMenu from 'components/layout/CampaignsMenu'
+import Container from 'components/layout/Container'
 import History from 'components/layout/History'
 import SuccessComponent from 'components/layout/SuccessComponent'
-import Background from 'components/Background'
 import { CampaignType } from 'types/index'
-import Worldcoin from 'components/Worldcoin'
 import referralCampaignContract from '../../contracts/out/ReferralCampaign.sol/ReferralCampaign.json'
 
 const CreateLink: NextPage = () => {
@@ -24,7 +23,6 @@ const CreateLink: NextPage = () => {
  const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
  const toast = useToast()
  const publicClient = usePublicClient()
- const [hasSubmitted, setHasSubmitted] = useState(false)
  const [selectedCampaign, setSelectedCampaign] = useState<CampaignType>({
   id: '',
   owner: '0x',
@@ -32,27 +30,29 @@ const CreateLink: NextPage = () => {
   actionId: '',
  })
  const [link, setLink] = useState('')
- const [args, setArgs] = useState<any[]>(['0xf2761B5e177261fb3Ead3b7B992a11Fce8592898', 0, 0, [0, 0, 0, 0, 0, 0, 0, 0]])
- const [isLoading, setIsLoading] = useState(false)
+ const [args, setArgs] = useState<any[]>([])
+ const [isTxSubmitted, setIsTxSubmitted] = useState(false)
+ const [isReadyToSubmit, setIsReadyToSubmit] = useState(false)
 
  const [proof, setProof] = useState<BigInt[]>([])
  const [nullifier, setNullifier] = useState<BigInt>(BigInt(0))
  const [root, setRoot] = useState<BigInt>(BigInt(0))
 
- const [hash, setHash] = useState<Hash>()
- const [receipt, setReceipt] = useState<TransactionReceipt>()
-
- const { address = '0x...' } = account
+ const { address } = account
  const { isConnected } = useAccount()
  //  TODO: Add history on Atom
  const history = []
 
- const {
-  config,
-  error: prepareError,
-  isError: isPrepareError,
- } = usePrepareContractWrite({
-  enabled: hasSubmitted,
+ useEffect(() => {
+  console.log('Address changed, resetting args')
+  setNullifier(BigInt(0))
+  setRoot(BigInt(0))
+  setProof([])
+  setArgs([])
+ }, [address])
+
+ const { config } = usePrepareContractWrite({
+  enabled: isReadyToSubmit,
   abi: referralCampaignContract.abi,
   functionName: 'addReferrer',
 
@@ -61,20 +61,40 @@ const CreateLink: NextPage = () => {
   // address: "0xd6917c944be9f91fc4c90521c789f7028cbe66ba", // 1332721324098588
   address: selectedCampaign.campaign,
   args,
+  onSettled(data, error) {
+   console.warn('Settled', { data, error })
+  },
  })
 
- const { data, error, isError, write } = useContractWrite(config)
+ const { data, error: contractWriteError, isError: isContractWriteError, write, isLoading: isContractWriteLoading } = useContractWrite(config)
+
  const execute = () => {
-  setHasSubmitted(true)
-  !!write && write()
+  console.log('executing')
+  console.log(isReadyToSubmit)
+  if (!!write) {
+   write()
+   setIsTxSubmitted(true)
+   console.log('executed')
+  } else {
+   console.warn("Can't execute because useContractWrite has is not yet ready")
+   console.log(args)
+   console.log('isTxSubmitted')
+   console.log(isTxSubmitted)
+   console.error(contractWriteError)
+   console.log('sendTx')
+   console.log(write)
+  }
  }
- const { isLoading: isContractLoading, isSuccess } = useWaitForTransaction({
+
+ const { isLoading: isTransactionProcessing, isSuccess: wasTxSuccessful } = useWaitForTransaction({
+  enabled: isTxSubmitted,
   hash: data?.hash,
  })
 
  useEffect(() => {
-  if (hasSubmitted) {
-   setIsLoading(false)
+  if (isTxSubmitted && isContractWriteError) {
+   console.error(contractWriteError)
+   setIsTxSubmitted(true)
    toast({
     title: 'Error',
     description: 'There was an error',
@@ -83,19 +103,11 @@ const CreateLink: NextPage = () => {
     isClosable: true,
    })
   }
- }, [isError])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+ }, [isContractWriteError, isTxSubmitted, contractWriteError])
 
  useEffect(() => {
-  if (hash) {
-   ;(async () => {
-    const receipt = await publicClient.waitForTransactionReceipt({ hash })
-    setReceipt(receipt)
-   })()
-  }
- }, [hash, publicClient])
-
- useEffect(() => {
-  if (isSuccess) {
+  if (wasTxSuccessful) {
    const url = `${window.location.host}/retrieve?campaignId=${selectedCampaign?.actionId}&campaignAddy=${selectedCampaign?.campaign}&ref=${address}`
    setLink(url)
 
@@ -107,17 +119,45 @@ const CreateLink: NextPage = () => {
     isClosable: true,
    })
   }
- }, [isSuccess, data])
+ }, [wasTxSuccessful, data])
+
+ // Update args and determine if tx ready to submit
+ useEffect(() => {
+  console.log('Checking if ready to submit')
+  console.log(address)
+  console.log(root)
+  console.log(nullifier)
+  console.log(proof)
+  setArgs([address, root, nullifier, proof])
+
+  if (!address) return
+  console.log('address passed')
+  if (root.valueOf() === BigInt(0).valueOf()) return
+  console.log('root passed')
+  if (nullifier.valueOf() === BigInt(0).valueOf()) return
+  console.log('nullifier passed')
+  if (proof.length === 0) return
+  console.log('proof passed')
+  if (isContractWriteLoading) return
+
+  console.log('Now ready to submit')
+  setIsReadyToSubmit(true)
+ }, [address, root, nullifier, proof, isContractWriteLoading])
 
  const registerOnchain = async () => {
   try {
-   setIsLoading(true)
-   if (!selectedCampaign || !account) return
+   console.log('registerOnchain')
+   console.log(selectedCampaign)
+   console.log(account)
+   if (!selectedCampaign || !account) {
+    console.warn("Can't submit. Campaign or account not selected")
+    return
+   }
+   console.log('going to exec')
 
-   setArgs([address, root, nullifier, proof])
    execute()
-   setHash(hash)
-   setIsLoading(false)
+   //    setHash(hash)
+   //    setIsLoading(false)
   } catch (error) {
    console.error(error)
    toast({
@@ -127,7 +167,7 @@ const CreateLink: NextPage = () => {
     duration: 9000,
     isClosable: true,
    })
-   setIsLoading(false)
+   setIsTxSubmitted(false)
   }
  }
 
@@ -189,7 +229,7 @@ const CreateLink: NextPage = () => {
             fontFamily="Dm Sans"
             color="white"
             type="submit"
-            isLoading={isLoading || isContractLoading}
+            isLoading={isTxSubmitted || isTransactionProcessing}
             onClick={registerOnchain}>
             Create
            </Button>
@@ -205,7 +245,14 @@ const CreateLink: NextPage = () => {
        )}
       </Box>
 
-      {isSuccess && <SuccessComponent link={link} data={data} message="Successfully created referral link!" />}
+      {wasTxSuccessful && (
+       <SuccessComponent
+        link={link}
+        data={data}
+        message="Successfully created referral link"
+        subtitle="Share with your friends and you'll both be rewarded."
+       />
+      )}
       {/* DEBUG ONLY */}
       {/* {(isPrepareError || isError) && <div>Error: {(prepareError || error)?.message}</div>} */}
      </div>

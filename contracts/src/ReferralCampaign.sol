@@ -10,7 +10,7 @@ import { ByteHasher } from "./ByteHasher.sol";
 import { IWorldID } from "./IWorldID.sol";
 
 //@notice A Referral Campaign Contract for storing referres and their respective referees
-contract ReferralCampaign is Ownable,Initializable {
+contract ReferralCampaign is Ownable, Initializable {
     using ByteHasher for bytes;
 
     IERC20Or721 public rewardToken;

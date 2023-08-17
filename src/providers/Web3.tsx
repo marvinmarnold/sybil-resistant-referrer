@@ -1,11 +1,10 @@
+import { useColorMode, useTheme } from '@chakra-ui/react'
 import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
-import { configureChains, createConfig, WagmiConfig } from 'wagmi'
-import { publicProvider } from 'wagmi/providers/public'
-import { ETH_CHAINS, THEME_COLOR_SCHEME } from 'utils/config'
-import { useColorMode } from '@chakra-ui/react'
-import { ReactNode, useEffect, useState } from 'react'
 import { Web3Modal } from '@web3modal/react'
-import { useTheme } from '@chakra-ui/react'
+import { ReactNode, useEffect, useState } from 'react'
+import { ETH_CHAINS, THEME_COLOR_SCHEME } from 'utils/config'
+import { WagmiConfig, configureChains, createConfig } from 'wagmi'
+import { publicProvider } from 'wagmi/providers/public'
 
 interface Props {
  children: ReactNode

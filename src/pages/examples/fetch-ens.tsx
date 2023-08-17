@@ -1,8 +1,8 @@
-import { fetchEnsAddress, fetchEnsName } from '@wagmi/core'
 import { Button, FormControl, FormLabel, Input } from '@chakra-ui/react'
-import { useState } from 'react'
-import { NextSeo } from 'next-seo'
+import { fetchEnsAddress, fetchEnsName } from '@wagmi/core'
 import { HeadingComponent } from 'components/layout/HeadingComponent'
+import { NextSeo } from 'next-seo'
+import { useState } from 'react'
 
 function FetchENS() {
  let [status, setStatus] = useState<'idle' | 'fetching'>('idle')

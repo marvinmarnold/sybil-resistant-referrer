@@ -1,4 +1,4 @@
-import { Box, Text, Flex, Heading } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import styled from '@emotion/styled'
 
 const Background = () => {

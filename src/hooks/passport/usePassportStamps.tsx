@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { State, PassportStamp } from 'types'
+import { useEffect, useState } from 'react'
+import { PassportStamp, State } from 'types'
 import { useAccount } from 'wagmi'
 
 //** Fetches all the stamps that are connected to the current account. */
