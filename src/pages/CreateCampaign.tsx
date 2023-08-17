@@ -151,7 +151,12 @@ const CreateCampaign = () => {
        border: '1px solid rgba(179, 186, 209, 0.5)',
       }}>
       {writeSuccess && txnData?.logs ? (
-       <ApproveCampaign campaignAddress={txnData?.logs[0]?.address} txnData={data} rewardTokenAddress={rewardTokenAddress} actionId={randActionId} />
+       <ApproveCampaign
+        campaignAddress={txnData?.logs[0]?.address}
+        txnData={data}
+        rewardTokenAddress={rewardTokenAddress}
+        actionId={randActionId.toString()}
+       />
       ) : (
        <form>
         <Heading as="h2" fontSize="32px" fontFamily="Dm Sans" textAlign="center">
