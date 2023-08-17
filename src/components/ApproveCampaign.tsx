@@ -7,7 +7,7 @@ import ERC20Contract from '../../contracts/out/ERC20.sol/ERC20.json'
 
 import SuccessComponent from 'components/layout/SuccessComponent'
 
-const ApproveCampaign = ({ campaignAddress, txnData, rewardTokenAddress }: {campaignAddress: string, txnData: any, rewardTokenAddress: string}) => {
+const ApproveCampaign = ({ campaignAddress, txnData, rewardTokenAddress }: {campaignAddress: `0x${string}` | undefined, txnData: any, rewardTokenAddress: string}) => {
  const toast = useToast()
  const network = useNetwork()
  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
@@ -100,17 +100,17 @@ const ApproveCampaign = ({ campaignAddress, txnData, rewardTokenAddress }: {camp
       </>
       }
 
-        {/* TODO: Add campaign ref to the link */}
-        {writeSuccess && (
+      {/* TODO: Add campaign ref to the link */}
+      {writeSuccess && (
       <Box display="flex" justifyContent="center" mt={5}>
-          <SuccessComponent
-          link={null}
-          data={data ? data : txnData}
-          message={`Successfully ${data ? "approved the campaign" : "created a new campaign"}`}
-          subtitle=" "
-          />
-          </Box>
-        )}
+        <SuccessComponent
+        link={`${window.location.host}/createlink`}
+        data={data ? data : txnData}
+        message={`Successfully ${data ? "approved the campaign" : "created a new campaign"}`}
+        subtitle="Start sharing the link"
+        />
+      </Box>
+      )}
   </Box>
  )
 }
