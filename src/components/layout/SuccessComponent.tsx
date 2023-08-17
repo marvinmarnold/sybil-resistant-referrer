@@ -17,7 +17,7 @@ const SuccessComponent = ({ link, data, message = '', subtitle = '' }: { link: s
 
  return (
   <Box margin={10} top="64px" textAlign="center">
-   <Heading as="h3" size="lg" textAlign="center" margin={5}>
+   <Heading as="h3" size="xl" textAlign="center" margin={5}>
     {message}
    </Heading>
    {link && (

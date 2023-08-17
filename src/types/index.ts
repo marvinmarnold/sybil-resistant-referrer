@@ -1,3 +1,5 @@
+import { Address } from "viem"
+
 export interface State<T> {
  loading: boolean
  data?: T
@@ -48,7 +50,7 @@ export interface PassportStamp {
 
 export interface CampaignType {
  id: string
- owner: `0x${string}`
- campaign: `0x${string}`
+ owner: Address
+ campaign: Address
  actionId: string
 }

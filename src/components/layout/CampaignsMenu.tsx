@@ -27,7 +27,7 @@ const CampaignsMenu = ({ selectedCampaign, setSelectedCampaign, isActive }: any)
  const chainId: number = network.chain?.id ?? 5
 
  useEffect(() => {
-  const endpoint = networks[chainId].factorySubgraph
+  const endpoint = networks[chainId]?.factorySubgraph
   setCurrentEndpoint(endpoint)
  }, [chainId])
 
