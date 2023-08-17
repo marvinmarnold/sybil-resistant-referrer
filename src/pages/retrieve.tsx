@@ -222,7 +222,7 @@ const CreateLink: NextPage = () => {
       )}
      </Box>
 
-     {isSuccess && <SuccessComponent link={null} data={data} message="Successful claim!" subtitle="Check your wallet for your reward" />}
+     {isSuccess && <SuccessComponent link={null} data={data} message="Referral sucessfully redeemed" subtitle="Check your wallet for your reward" />}
      {/* DEBUG ONLY */}
      {/* {(isPrepareError || isError) && <div>Error: {(prepareError || error)?.message}</div>} */}
     </div>
