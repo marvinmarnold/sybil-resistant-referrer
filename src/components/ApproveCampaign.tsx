@@ -82,7 +82,7 @@ const ApproveCampaign = ({
    </Heading>
    {!writeSuccess && (
     <>
-     <Text as="h5" fontSize="xl" marginY={10}>
+     <Text as="h5" fontSize="xl" marginY={10} fontFamily="Dm Sans" textAlign="center">
       You need to approve the campaign contract
       <br />
       to distribute awards on your behalf.

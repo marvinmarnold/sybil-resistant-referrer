@@ -130,7 +130,7 @@ const CreateCampaign = () => {
   <Container>
    <Background />
 
-   <Box position="absolute" top="64px" display="flex" justifyContent="center">
+   <Box display="flex" justifyContent="center">
     {!isConnected && (
      <Heading textAlign="center" justifyContent="center" marginTop="60%">
       Please Connect Your Wallet!

@@ -17,14 +17,14 @@ const SuccessComponent = ({ link, data, message = '', subtitle = '' }: { link: s
 
  return (
   <Box margin={10} top="64px" textAlign="center">
-   <Heading as="h3" size="xl" textAlign="center" margin={5}>
+   <Heading as="h3" size="xl" textAlign="center" margin={5} fontFamily="Dm Sans">
     {message}
    </Heading>
    {link ? (
     <Box>
      <Box margin={5}>
       <a href={link}>
-       <Heading as="h4" size="md">
+       <Heading as="h4" size="md" fontFamily="Dm Sans">
         {subtitle}
        </Heading>
       </a>
@@ -40,7 +40,7 @@ const SuccessComponent = ({ link, data, message = '', subtitle = '' }: { link: s
          boxShadow={'2.8px 3.8px 0px 0px #312E2A'}
          py={2}
          px={12}
-         fontFamily="sans-serif"
+         fontFamily="Dm Sans"
          color="white"
          type="submit">
          <Icon as={FiCopy} margin="0 5px" /> Copy to clipboard
@@ -57,7 +57,7 @@ const SuccessComponent = ({ link, data, message = '', subtitle = '' }: { link: s
     </Box>
    )}
 
-   <Box margin="5">
+   <Box margin="5" fontFamily="Dm Sans">
     <Button variant="link">
      {/* <a href={`https://etherscan.io/tx/${data?.hash}`}> */}
      <a target="_blank" href={`https://goerli-optimism.etherscan.io/tx/${data?.hash}#eventlog`}>

@@ -198,7 +198,7 @@ const CreateLink: NextPage = () => {
   )
 
  return (
-  <Container>
+  <Container overflowY={'hidden'}>
    <Background />
    {!isConnected && (
     <Heading textAlign="center" justifyContent="center" mb={40}>
@@ -234,7 +234,7 @@ const CreateLink: NextPage = () => {
       {!campaignAddress ? (
        <CampaignsMenu selectedCampaign={selectedCampaign} setSelectedCampaign={setSelectedCampaign} isActive={proof?.length === 0} />
       ) : (
-       <div>Campaign: {actionId}</div>
+       <div style={{ fontFamily: 'Dm Sans', textAlign: 'center' }}>Campaign: {actionId}</div>
       )}
 
       <Box display="flex" justifyContent="center" mt={5}>
