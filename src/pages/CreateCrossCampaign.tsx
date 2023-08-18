@@ -213,7 +213,7 @@ const CreateCrossCampaign = () => {
   <Container>
    <Background />
 
-   <Box position="absolute" top="64px" display="flex" justifyContent="center">
+   <Box display="flex" justifyContent="center">
     {!isConnected && (
      <Heading textAlign="center" justifyContent="center" marginTop="60%">
       Please Connect Your Wallet!
@@ -303,9 +303,12 @@ const CreateCrossCampaign = () => {
          Create Cross Campaign
         </Heading>
 
-        <h1>
-         <a target="_blank" href="https://docs.google.com/document/d/1Gym0FotIM5yJcoiAEbiIk4mdie7tpymfIsXqO_FahDs/edit?usp=sharing">
-          Follow the tutorial here.
+        <h1 style={{ display: 'flex', justifyContent: 'center' }}>
+         <a
+          style={{ textAlign: 'center', fontFamily: 'Dm Sans' }}
+          target="_blank"
+          href="https://docs.google.com/document/d/1Gym0FotIM5yJcoiAEbiIk4mdie7tpymfIsXqO_FahDs/edit?usp=sharing">
+          Follow the tutorial here.👈
          </a>
         </h1>
 
