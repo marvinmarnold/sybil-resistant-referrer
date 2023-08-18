@@ -124,7 +124,9 @@ export default function Home() {
         h="150px"
         borderLeft="2px solid black"
         borderTop="0.1px solid black"
+        borderRight="2px solid black"
         borderTopLeftRadius="50px"
+        borderTopRightRadius="50px"
         flexDirection="column"
         justifyContent="center"
         alignItems="center">
