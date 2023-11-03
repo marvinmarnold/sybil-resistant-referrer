@@ -155,12 +155,12 @@ const CreateLink: NextPage = () => {
   }
  }
 
- if (!address)
-  return (
-   <Box>
-    <Heading margin={10}>You must log in with an Ethereum Address</Heading>
-   </Box>
-  )
+//  if (!address)
+//   return (
+//    <Box>
+//     <Heading margin={10}>You must log in with an Ethereum Address</Heading>
+//    </Box>
+//   )
 
  return (
   <Container>
@@ -198,7 +198,8 @@ const CreateLink: NextPage = () => {
      <Box display="flex" justifyContent="center" mt={5}>
       {!isSuccess && (
        <Box>
-        <Box>{campaignId && <Worldcoin proof={proof} setProof={setProof} setNullifier={setNullifier} setRoot={setRoot} action={campaignId} />}</Box>
+        {/* <Box>{campaignId && <Worldcoin proof={proof} setProof={setProof} setNullifier={setNullifier} setRoot={setRoot} action={campaignId} />}</Box> */}
+        <Box>{ <Worldcoin proof={proof} setProof={setProof} setNullifier={setNullifier} setRoot={setRoot} action={campaignId} />}</Box>
         {proof?.length > 0 && (
          <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
           <Button
