@@ -39,4 +39,16 @@ export const networks: networkType = {
   factorySubgraph: '0x5816c73FE88a53b1286d6761F470865bA871f968',
   worldId: '0x',
  },
+ //  Celo mainnet
+ 42220: {
+  factoryContract: process.env.NEXT_PUBLIC_CAMPAIGN_FACTORY_ADDR_CELOMAINNET as `0x${string}`,
+  factorySubgraph: '',
+  worldId: '0xFa00D29d378EDC57AA1006946F0fc6230a5E3288',
+ },
+ //    Celo alfajores
+ 44787: {
+  factoryContract: process.env.NEXT_PUBLIC_CAMPAIGN_FACTORY_ADDR_CELO_TESTNET as `0x${string}`,
+  factorySubgraph: '',
+  worldId: '0xFa00D29d378EDC57AA1006946F0fc6230a5E3288',
+ },
 }

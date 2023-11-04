@@ -1,5 +1,5 @@
 import { ThemingProps } from '@chakra-ui/react'
-import { baseGoerli, optimismGoerli, zoraTestnet } from '@wagmi/chains'
+import { baseGoerli, celo, celoAlfajores, optimismGoerli } from '@wagmi/chains'
 import { Chain } from '@wagmi/core'
 
 export const modeTestnet = {
@@ -34,7 +34,7 @@ export const THEME_CONFIG = {
 export const SOCIAL_TWITTER = 'refer'
 export const SOCIAL_GITHUB = 'refer'
 
-export const ETH_CHAINS = [optimismGoerli, baseGoerli, zoraTestnet, modeTestnet]
+export const ETH_CHAINS = [optimismGoerli, baseGoerli, modeTestnet, celo, celoAlfajores]
 
 export const SERVER_SESSION_SETTINGS = {
  cookieName: SITE_NAME,

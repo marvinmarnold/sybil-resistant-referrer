@@ -24,12 +24,13 @@ const CreateLink: NextPage = () => {
 
  const [campaignId, setCampaignId] = useState<any>('')
  const [campaignAddy, setCampaignAddy] = useState<any>('')
- const [ref, setRef] = useState<any>('')
+ const [ref, setRef] = useState<any>('a')
  const [isSubmitting, setIsSubmitting] = useState(false)
  const [args, setArgs] = useState<any[]>([])
- const [proof, setProof] = useState<BigInt[]>([])
- const [nullifier, setNullifier] = useState<BigInt>(BigInt(0))
- const [root, setRoot] = useState<BigInt>(BigInt(0))
+ const [proof, setProof] = useState<BigInt[]>([BigInt(1), BigInt(1), BigInt(1), BigInt(1), BigInt(1), BigInt(1), BigInt(1), BigInt(1)])
+ const [nullifier, setNullifier] = useState<BigInt>(BigInt(1))
+ const [root, setRoot] = useState<BigInt>(BigInt(1))
+
  const [isReadyToSubmit, setIsReadyToSubmit] = useState(false)
 
  const { address } = account
@@ -58,7 +59,7 @@ const CreateLink: NextPage = () => {
   console.log(proof)
   //   address _referrer, address signal, uint256 root, uint256 nullifierHash, uint256[8] calldata proof
   // FIXME: the second is the address of the claimer or the campaignId?
-  setArgs([ref, address, root, nullifier, proof])
+  setArgs([address, address, root, nullifier, proof])
 
   if (!address) return
   console.log('address passed')
@@ -75,6 +76,8 @@ const CreateLink: NextPage = () => {
  }, [address, root, nullifier, proof])
 
  //  TODO: Add history on Atom
+ console.log('isReadyToSubmit')
+ console.log(isReadyToSubmit)
  const history = []
  const {
   config,

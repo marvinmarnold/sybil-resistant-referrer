@@ -20,9 +20,11 @@ const CreateCampaign = () => {
  const toast = useToast()
  const { colorMode } = useColorMode()
  const network = useNetwork()
+ console.log('network info')
+ console.log(network)
 
- const [campaignContractAddress, setCampaignContractAddress] = useState('')
- const [rewardTokenAddress, setRewardTokenAddress] = useState('')
+ const [campaignContractAddress, setCampaignContractAddress] = useState(process.env.NEXT_PUBLIC_DEFAULT_CAMPAIGN || '')
+ const [rewardTokenAddress, setRewardTokenAddress] = useState(process.env.NEXT_PUBLIC_DEFAULT_REWARD || '')
  const [maxReferalsperReferee, setMaxReferralsPerReferee] = useState<string>('')
  const [rewardReferrer, setRewardReferrer] = useState<string>('')
  const [rewardReferee, setRewardReferee] = useState<string>('')
@@ -34,15 +36,19 @@ const CreateCampaign = () => {
  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
  const [isReadyToSubmit, setIsReadyToSubmit] = useState(false)
 
- const chainId: number = network.chain?.id ?? 5
+ const chainId: number = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID || '44787')
+ //  const chainId: number = network.chain?.id ?? 5
 
- const { config, error, isError } = usePrepareContractWrite({
+ const contractWriteParams = {
   abi: CampaignFactory.abi,
   enabled: isReadyToSubmit,
   functionName: 'addCampaign',
   address: networks[chainId]?.factoryContract,
   args,
- })
+ }
+ console.log('Writing')
+ console.log(contractWriteParams)
+ const { config, error, isError } = usePrepareContractWrite(contractWriteParams)
 
  const { data, isLoading: writeLoading, isError: writeError, write } = useContractWrite(config)
 
@@ -63,14 +69,31 @@ const CreateCampaign = () => {
  useEffect(() => {
   setArgs([
    worldId,
+   //    '0xFa00D29d378EDC57AA1006946F0fc6230a5E3288',
+
    campaignContractAddress,
+   //    '0xF194afDf50B03e69Bd7D057c1Aa9e10c9954E4C9',
+
    rewardTokenAddress,
-   bigIntMaxReferalsperReferee,
+   //    '0x874069fa1eb16d44d622f2e0ca25eea172369bc1',
+
+   //   bigIntMaxReferalsperReferee,
+   3,
+
    bigIntRewardReferer,
+   //    100000000,
+
    bigIntRewardReferee,
+   //    10000000000,
+
    bigIntMinCampaignTokenBalance,
+   //    100000000000,
+
    randActionId.toString(),
+   //    'yup',
+
    randActionId,
+   //    79,
   ])
   if (campaignContractAddress === '') return
   if (rewardTokenAddress === '') return
@@ -186,7 +209,7 @@ const CreateCampaign = () => {
            Reward Token Address
           </FormLabel>
           <FormHelperText fontFamily={'Dm Sans'} fontSize="13px">
-           Bounty token/incentive (USDC)
+           Bounty token/incentive (cUSD)
           </FormHelperText>
           <Input
            value={rewardTokenAddress}
