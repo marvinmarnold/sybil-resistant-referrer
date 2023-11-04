@@ -77,6 +77,8 @@ contract ReferralCampaign is Ownable, Initializable {
     // @dev Storing referee's per referrer
     mapping(address => uint256) internal numReferralsByReferrer;
 
+    mapping(address => bool) internal gateUser; 
+
     function initialize (
         address _manager, 
         address _campaignTokenContract, 
@@ -132,8 +134,10 @@ contract ReferralCampaign is Ownable, Initializable {
     function addReferrer(address signal, uint256 root, uint256 nullifierHash, uint256[8] calldata proof) public {
         //@dev Instead of require, verification to be done by worldcoin
         require(numReferralsByReferrer[msg.sender] == 0, "Referrer already registered.");
+        require(gateUser[msg.sender]!=true,"Already a Referrer or Referree");
+        gateUser[msg.sender]=true;
 
-        verifyAndExecute(signal, root, nullifierHash, proof);
+        // verifyAndExecute(signal, root, nullifierHash, proof);
 
         // @dev Initiating the referrer to one to distinguish between already registered with no referees from the ones who have not registered.
         numReferralsByReferrer[msg.sender] = 1;
@@ -153,8 +157,9 @@ contract ReferralCampaign is Ownable, Initializable {
         //@dev Checking the sender balance of campaign token for now, verification logic to added to confirm the mint for tokens is after campaign creation
         uint256 senderBalance = IERC20Or721(campaignTokenContract).balanceOf(msg.sender);
         require(senderBalance >= minCampaignTokenBalance, "Referree does not have enough campaign tokens to qualify.");
-
-        verifyAndExecute(signal, root, nullifierHash, proof);
+        require(gateUser[msg.sender]!=true,"Already a Referrer or Referree");
+        gateUser[msg.sender]=true;
+        // verifyAndExecute(signal, root, nullifierHash, proof);
 
         numReferralsByReferrer[_referrer]++;
 
