@@ -60,7 +60,7 @@ const SuccessComponent = ({ link, data, message = '', subtitle = '' }: { link: s
    <Box margin="5" fontFamily="Dm Sans">
     <Button variant="link">
      {/* <a href={`https://etherscan.io/tx/${data?.hash}`}> */}
-     <a target="_blank" href={`https://goerli-optimism.etherscan.io/tx/${data?.hash}#eventlog`}>
+     <a target="_blank" href={`https://alfajores.celoscan.io/tx/${data?.hash}`}>
       Check txn
       <Icon as={FiExternalLink} />
      </a>

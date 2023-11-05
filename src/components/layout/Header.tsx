@@ -3,6 +3,7 @@ import { Web3Button } from '@web3modal/react'
 import { SITE_NAME } from 'utils/config'
 import { LinkComponent } from './LinkComponent'
 import { PassportScore } from './PassportScore'
+import { ConnectMiniPay } from '../../providers/Web3'
 
 import ChainSelector from 'components/ChainSelector'
 
@@ -26,6 +27,7 @@ export function Header(props: Props) {
     <PassportScore />
     <ChainSelector />
     <Web3Button icon="hide" label="Connect Wallet" />
+    <ConnectMiniPay />
     {/* <ThemeSwitcher /> */}
    </Flex>
   </Flex>

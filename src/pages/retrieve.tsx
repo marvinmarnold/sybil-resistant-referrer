@@ -94,6 +94,9 @@ const CreateLink: NextPage = () => {
   },
  })
 
+ console.log("config");
+ console.log(config);
+ 
  const { data, error, isError, write } = useContractWrite(config)
 
  const execute = () => {
@@ -201,8 +204,9 @@ const CreateLink: NextPage = () => {
      <Box display="flex" justifyContent="center" mt={5}>
       {!isSuccess && (
        <Box>
-        <Box>{campaignId && <Worldcoin proof={proof} setProof={setProof} setNullifier={setNullifier} setRoot={setRoot} action={campaignId} />}</Box>
-        {proof?.length > 0 && (
+        {/* <Box>{campaignId && <Worldcoin proof={proof} setProof={setProof} setNullifier={setNullifier} setRoot={setRoot} action={campaignId} />}</Box> */}
+        {/* {proof?.length > 0 && ( */}
+        {(
          <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
           <Button
            backgroundColor="purple.300"
