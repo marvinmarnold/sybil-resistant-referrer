@@ -13,10 +13,11 @@ import Container from 'components/layout/Container'
 import History from 'components/layout/History'
 import SuccessComponent from 'components/layout/SuccessComponent'
 import referralCampaignContract from '../../contracts/out/ReferralCampaign.sol/ReferralCampaign.json'
+import account from './api/account'
 
 const CreateLink: NextPage = () => {
  // TODO: Fetch proof from shared state
- const account = useAccount()
+ const { address } = useAccount()
  const { colorMode } = useColorMode()
  const formWidth = useBreakpointValue({ base: '90%', md: '600px' })
  const toast = useToast()
@@ -24,7 +25,7 @@ const CreateLink: NextPage = () => {
 
  const [campaignId, setCampaignId] = useState<any>('')
  const [campaignAddy, setCampaignAddy] = useState<any>('')
- const [ref, setRef] = useState<any>('a')
+ const [ref, setRef] = useState<any>('')
  const [isSubmitting, setIsSubmitting] = useState(false)
  const [args, setArgs] = useState<any[]>([])
  const [proof, setProof] = useState<BigInt[]>([BigInt(1), BigInt(1), BigInt(1), BigInt(1), BigInt(1), BigInt(1), BigInt(1), BigInt(1)])
@@ -32,8 +33,6 @@ const CreateLink: NextPage = () => {
  const [root, setRoot] = useState<BigInt>(BigInt(1))
 
  const [isReadyToSubmit, setIsReadyToSubmit] = useState(false)
-
- const { address } = account
 
  useEffect(() => {
   const { ref: refParam, campaignId: campaignIdParam, campaignAddy: campaignAddyParam } = router.query
@@ -53,13 +52,18 @@ const CreateLink: NextPage = () => {
 
  useEffect(() => {
   console.log('Checking if ready to submit')
+  console.log(`address`)
   console.log(address)
+  console.log(`root`)
   console.log(root)
+  console.log(`nullifier`)
   console.log(nullifier)
+  console.log(`proof`)
   console.log(proof)
   //   address _referrer, address signal, uint256 root, uint256 nullifierHash, uint256[8] calldata proof
   // FIXME: the second is the address of the claimer or the campaignId?
-  setArgs([address, address, root, nullifier, proof])
+    // first is address of referrer, second is address of referree
+  setArgs([ref, address, root, nullifier, proof])
 
   if (!address) return
   console.log('address passed')
@@ -76,8 +80,7 @@ const CreateLink: NextPage = () => {
  }, [address, root, nullifier, proof])
 
  //  TODO: Add history on Atom
- console.log('isReadyToSubmit')
- console.log(isReadyToSubmit)
+ console.log(`isReadyToSubmit: ${isReadyToSubmit}`)
  const history = []
  const {
   config,
@@ -92,9 +95,25 @@ const CreateLink: NextPage = () => {
   onSettled(data, error) {
    console.warn('Settled', { data, error })
   },
- })
+ });
 
- const { data, error, isError, write } = useContractWrite(config)
+ if(isPrepareError) {
+    console.log("usePrepareContractWrite has following error");
+    console.log(prepareError);
+ }
+
+ console.log("config");
+ console.log(config);
+ 
+ const { data, error, isError, write } = useContractWrite(config);
+
+ console.log(`write`);
+ console.log(write);
+
+ if (isError) {
+    console.log("useContractWrite has following error");
+    console.log(error);
+ }
 
  const execute = () => {
   if (!!write) {
@@ -103,9 +122,11 @@ const CreateLink: NextPage = () => {
    console.log('executed')
   } else {
    console.warn("Can't execute because useContractWrite is not yet ready")
-   console.log(args)
+   console.log(`args`)
+   console.log(args);
    console.log('sendTx')
-   console.log(write)
+   console.log(`write`)
+   console.log(write);
    setIsSubmitting(false)
   }
  }
@@ -201,8 +222,9 @@ const CreateLink: NextPage = () => {
      <Box display="flex" justifyContent="center" mt={5}>
       {!isSuccess && (
        <Box>
-        <Box>{campaignId && <Worldcoin proof={proof} setProof={setProof} setNullifier={setNullifier} setRoot={setRoot} action={campaignId} />}</Box>
-        {proof?.length > 0 && (
+        {/* <Box>{campaignId && <Worldcoin proof={proof} setProof={setProof} setNullifier={setNullifier} setRoot={setRoot} action={campaignId} />}</Box> */}
+        {/* {proof?.length > 0 && ( */}
+        {(
          <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
           <Button
            backgroundColor="purple.300"
