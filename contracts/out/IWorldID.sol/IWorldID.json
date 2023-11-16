@@ -157,17 +157,17 @@
   },
   "ast": {
     "absolutePath": "src/IWorldID.sol",
-    "id": 4704,
+    "id": 4700,
     "exportedSymbols": {
       "IWorldID": [
-        4703
+        4699
       ]
     },
     "nodeType": "SourceUnit",
     "src": "31:717:34",
     "nodes": [
       {
-        "id": 4684,
+        "id": 4680,
         "nodeType": "PragmaDirective",
         "src": "31:24:34",
         "nodes": [],
@@ -179,17 +179,17 @@
         ]
       },
       {
-        "id": 4703,
+        "id": 4699,
         "nodeType": "ContractDefinition",
         "src": "57:691:34",
         "nodes": [
           {
-            "id": 4702,
+            "id": 4698,
             "nodeType": "FunctionDefinition",
             "src": "564:182:34",
             "nodes": [],
             "documentation": {
-              "id": 4685,
+              "id": 4681,
               "nodeType": "StructuredDocumentation",
               "src": "79:483:34",
               "text": "@notice Reverts if the zero-knowledge proof is invalid.\n @param root The of the Merkle tree\n @param groupId The id of the Semaphore group\n @param signalHash A keccak256 hash of the Semaphore signal\n @param nullifierHash The nullifier hash\n @param externalNullifierHash A keccak256 hash of the external nullifier\n @param proof The zero-knowledge proof\n @dev  Note that a double-signaling check is not included here, and should be carried by the caller."
@@ -201,17 +201,17 @@
             "name": "verifyProof",
             "nameLocation": "573:11:34",
             "parameters": {
-              "id": 4700,
+              "id": 4696,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4687,
+                  "id": 4683,
                   "mutability": "mutable",
                   "name": "root",
                   "nameLocation": "596:4:34",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4702,
+                  "scope": 4698,
                   "src": "588:12:34",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -220,7 +220,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 4686,
+                    "id": 4682,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "588:7:34",
@@ -233,12 +233,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 4689,
+                  "id": 4685,
                   "mutability": "mutable",
                   "name": "groupId",
                   "nameLocation": "612:7:34",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4702,
+                  "scope": 4698,
                   "src": "604:15:34",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -247,7 +247,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 4688,
+                    "id": 4684,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "604:7:34",
@@ -260,12 +260,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 4691,
+                  "id": 4687,
                   "mutability": "mutable",
                   "name": "signalHash",
                   "nameLocation": "631:10:34",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4702,
+                  "scope": 4698,
                   "src": "623:18:34",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -274,7 +274,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 4690,
+                    "id": 4686,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "623:7:34",
@@ -287,12 +287,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 4693,
+                  "id": 4689,
                   "mutability": "mutable",
                   "name": "nullifierHash",
                   "nameLocation": "653:13:34",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4702,
+                  "scope": 4698,
                   "src": "645:21:34",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -301,7 +301,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 4692,
+                    "id": 4688,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "645:7:34",
@@ -314,12 +314,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 4695,
+                  "id": 4691,
                   "mutability": "mutable",
                   "name": "externalNullifierHash",
                   "nameLocation": "678:21:34",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4702,
+                  "scope": 4698,
                   "src": "670:29:34",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -328,7 +328,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 4694,
+                    "id": 4690,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "670:7:34",
@@ -341,12 +341,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 4699,
+                  "id": 4695,
                   "mutability": "mutable",
                   "name": "proof",
                   "nameLocation": "723:5:34",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4702,
+                  "scope": 4698,
                   "src": "703:25:34",
                   "stateVariable": false,
                   "storageLocation": "calldata",
@@ -356,7 +356,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 4696,
+                      "id": 4692,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "703:7:34",
@@ -365,10 +365,10 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 4698,
+                    "id": 4694,
                     "length": {
                       "hexValue": "38",
-                      "id": 4697,
+                      "id": 4693,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -395,12 +395,12 @@
               "src": "584:147:34"
             },
             "returnParameters": {
-              "id": 4701,
+              "id": 4697,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "745:0:34"
             },
-            "scope": 4703,
+            "scope": 4699,
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
@@ -413,11 +413,11 @@
         "contractKind": "interface",
         "fullyImplemented": false,
         "linearizedBaseContracts": [
-          4703
+          4699
         ],
         "name": "IWorldID",
         "nameLocation": "67:8:34",
-        "scope": 4704,
+        "scope": 4700,
         "usedErrors": []
       }
     ],
