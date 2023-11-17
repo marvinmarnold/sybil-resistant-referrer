@@ -57,9 +57,11 @@ const CreateLink: NextPage = () => {
   console.log(root)
   console.log(nullifier)
   console.log(proof)
+  console.log(ref);
   //   address _referrer, address signal, uint256 root, uint256 nullifierHash, uint256[8] calldata proof
   // FIXME: the second is the address of the claimer or the campaignId?
-  setArgs([address, address, root, nullifier, proof])
+        // first is address of referrer, second is address of refrree
+  setArgs([ref, address, root, nullifier, proof])
 
   if (!address) return
   console.log('address passed')
@@ -70,10 +72,11 @@ const CreateLink: NextPage = () => {
   if (proof.length === 0) return
   console.log('proof passed')
   if (!ref) return
+  console.log('ref passed')
 
   console.log('Now ready to submit')
   setIsReadyToSubmit(true)
- }, [address, root, nullifier, proof])
+ }, [ref, address, root, nullifier, proof])
 
  //  TODO: Add history on Atom
  console.log('isReadyToSubmit')
