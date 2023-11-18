@@ -712,7 +712,7 @@
     "id": 2801,
     "exportedSymbols": {
       "Context": [
-        7050
+        6996
       ],
       "ERC20": [
         2800
@@ -721,7 +721,7 @@
         2878
       ],
       "IERC20Metadata": [
-        7405
+        7351
       ]
     },
     "nodeType": "SourceUnit",
@@ -761,7 +761,7 @@
         "file": "./extensions/IERC20Metadata.sol",
         "nameLocation": "-1:-1:-1",
         "scope": 2801,
-        "sourceUnit": 7406,
+        "sourceUnit": 7352,
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -774,7 +774,7 @@
         "file": "../../utils/Context.sol",
         "nameLocation": "-1:-1:-1",
         "scope": 2801,
-        "sourceUnit": 7051,
+        "sourceUnit": 6997,
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -1206,7 +1206,7 @@
               ]
             },
             "baseFunctions": [
-              7392
+              7338
             ],
             "documentation": {
               "id": 2259,
@@ -1303,7 +1303,7 @@
               ]
             },
             "baseFunctions": [
-              7398
+              7344
             ],
             "documentation": {
               "id": 2269,
@@ -1404,7 +1404,7 @@
               ]
             },
             "baseFunctions": [
-              7404
+              7350
             ],
             "documentation": {
               "id": 2279,
@@ -1771,7 +1771,7 @@
                       "name": "_msgSender",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7040,
+                      "referencedDeclaration": 6986,
                       "src": "3851:10:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_view$__$returns$_t_address_$",
@@ -2287,7 +2287,7 @@
                       "name": "_msgSender",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7040,
+                      "referencedDeclaration": 6986,
                       "src": "4559:10:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_view$__$returns$_t_address_$",
@@ -2599,7 +2599,7 @@
                       "name": "_msgSender",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7040,
+                      "referencedDeclaration": 6986,
                       "src": "5334:10:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_view$__$returns$_t_address_$",
@@ -3025,7 +3025,7 @@
                       "name": "_msgSender",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7040,
+                      "referencedDeclaration": 6986,
                       "src": "5974:10:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_view$__$returns$_t_address_$",
@@ -3411,7 +3411,7 @@
                       "name": "_msgSender",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 7040,
+                      "referencedDeclaration": 6986,
                       "src": "6700:10:15",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_view$__$returns$_t_address_$",
@@ -8164,7 +8164,7 @@
                 "1550:7:15"
               ],
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 7050,
+              "referencedDeclaration": 6996,
               "src": "1550:7:15"
             },
             "id": 2221,
@@ -8194,7 +8194,7 @@
                 "1567:14:15"
               ],
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 7405,
+              "referencedDeclaration": 7351,
               "src": "1567:14:15"
             },
             "id": 2225,
@@ -8214,9 +8214,9 @@
         "fullyImplemented": true,
         "linearizedBaseContracts": [
           2800,
-          7405,
+          7351,
           2878,
-          7050
+          6996
         ],
         "name": "ERC20",
         "nameLocation": "1541:5:15",

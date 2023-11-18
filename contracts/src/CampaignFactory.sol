@@ -55,8 +55,6 @@ contract CampaignFactory {
         // Make a clone contract
         address clone = Clones.clone(referralCampaign);
         
-        //@dev WorldID Address Base
-        IWorldID worldID = IWorldID(worldAddress);
 
         ReferralCampaign(clone).initialize(msg.sender, 
             _campaignTokenContract, 
@@ -65,7 +63,7 @@ contract CampaignFactory {
             _rewardReferrer, 
             _rewardReferee, 
             _minCampaignTokenBalance,
-            worldID,
+            address(0),
             appID,
             _actionId
         );

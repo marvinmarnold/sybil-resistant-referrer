@@ -49,22 +49,22 @@ const CreateLink: NextPage = () => {
  const [isTxSubmitted, setIsTxSubmitted] = useState(false)
  const [isReadyToSubmit, setIsReadyToSubmit] = useState(false)
 
- const [proof, setProof] = useState<BigInt[]>([])
- const [nullifier, setNullifier] = useState<BigInt>(BigInt(0))
- const [root, setRoot] = useState<BigInt>(BigInt(0))
+ const [proof, setProof] = useState<BigInt[]>([BigInt(1), BigInt(1), BigInt(1), BigInt(1), BigInt(1), BigInt(1), BigInt(1), BigInt(1)])
+ const [nullifier, setNullifier] = useState<BigInt>(BigInt(1))
+ const [root, setRoot] = useState<BigInt>(BigInt(1))
 
  const { address } = account
  const { isConnected } = useAccount()
  //  TODO: Add history on Atom
  const history = []
 
- useEffect(() => {
-  console.log('Address changed, resetting args')
-  setNullifier(BigInt(0))
-  setRoot(BigInt(0))
-  setProof([])
-  setArgs([])
- }, [address])
+ //  useEffect(() => {
+ //   console.log('Address changed, resetting args')
+ //   setNullifier(BigInt(0))
+ //   setRoot(BigInt(0))
+ //   setProof([])
+ //   setArgs([])
+ //  }, [address])
 
  const { config } = usePrepareContractWrite({
   enabled: isReadyToSubmit,

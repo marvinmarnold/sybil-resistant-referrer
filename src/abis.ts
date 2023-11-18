@@ -3,8 +3,6 @@ import {
  GetContractArgs,
  PrepareWriteContractConfig,
  ReadContractConfig,
- WatchContractEventCallback,
- WatchContractEventConfig,
  WriteContractArgs,
  WriteContractMode,
  WriteContractPreparedArgs,
@@ -12,7 +10,6 @@ import {
  getContract,
  prepareWriteContract,
  readContract,
- watchContractEvent,
  writeContract,
 } from 'wagmi/actions'
 
@@ -114,18 +111,6 @@ export function prepareWriteMessage<TAbi extends readonly unknown[] = typeof mes
   TAbi,
   TFunctionName
  >)
-}
-
-/**
- * Wraps __{@link watchContractEvent}__ with `abi` set to __{@link messageABI}__.
- *
- * [__View Contract on Sepolia Etherscan__](https://sepolia.etherscan.io/address/0xcc5a0d6268d70811edad77799f2168afe6382e89)
- */
-export function watchMessageEvent<TAbi extends readonly unknown[] = typeof messageABI, TEventName extends string = string>(
- config: Omit<WatchContractEventConfig<TAbi, TEventName>, 'abi' | 'address'> & { chainId?: keyof typeof messageAddress },
- callback: WatchContractEventCallback<TAbi, TEventName>
-) {
- return watchContractEvent({ abi: messageABI, address: messageAddress[11155111], ...config } as WatchContractEventConfig<TAbi, TEventName>, callback)
 }
 
 export const MintAbi = [

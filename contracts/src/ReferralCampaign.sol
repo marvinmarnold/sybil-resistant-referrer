@@ -6,12 +6,10 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import {IERC20Or721} from "./IERC20Or721.sol";
-import { ByteHasher } from "./ByteHasher.sol";
-import { IWorldID } from "./IWorldID.sol";
 
 //@notice A Referral Campaign Contract for storing referres and their respective referees
 contract ReferralCampaign is Ownable, Initializable {
-    using ByteHasher for bytes;
+    
 
     IERC20Or721 public rewardToken;
 
@@ -61,9 +59,7 @@ contract ReferralCampaign is Ownable, Initializable {
     //@dev Reward for referee
     uint256 rewardReferee;
 
-    //@dev Worldcoin vars 
-    /// @dev The World ID instance that will be used for verifying proofs
-	IWorldID internal worldId;
+    
 
 	/// @dev The contract's external nullifier hash
 	uint256 internal externalNullifier;
@@ -77,6 +73,8 @@ contract ReferralCampaign is Ownable, Initializable {
     // @dev Storing referee's per referrer
     mapping(address => uint256) internal numReferralsByReferrer;
 
+    mapping(address => bool) internal gateUser; 
+
     function initialize (
         address _manager, 
         address _campaignTokenContract, 
@@ -85,7 +83,7 @@ contract ReferralCampaign is Ownable, Initializable {
         uint256 _rewardReferrer, 
         uint256 _rewardReferee, 
         uint256 _minCampaignTokenBalance,
-        IWorldID _worldId,
+        address _worldId,
         string memory _appId, 
         string memory _actionId
         
@@ -100,8 +98,7 @@ contract ReferralCampaign is Ownable, Initializable {
         rewardReferrer = _rewardReferrer;
         rewardReferee = _rewardReferee;
         minCampaignTokenBalance = _minCampaignTokenBalance;
-        externalNullifier = abi.encodePacked(abi.encodePacked(_appId).hashToField(), _actionId).hashToField();
-        worldId = _worldId;
+        // worldId = _worldId;
     }
 
     /// @param signal An arbitrary input from the user, usually the user's wallet address (check README for further details)
@@ -109,31 +106,16 @@ contract ReferralCampaign is Ownable, Initializable {
 	/// @param nullifierHash The nullifier hash for this proof, preventing double signaling (returned by the JS widget).
 	/// @param proof The zero-knowledge proof that demonstrates the claimer is registered with World ID (returned by the JS widget).
 	/// @dev Feel free to rename this method however you want! We've used `claim`, `verify` or `execute` in the past.
-	function verifyAndExecute(address signal, uint256 root, uint256 nullifierHash, uint256[8] calldata proof) public {
-		// First, we make sure this person hasn't done this before
-		if (nullifierHashes[nullifierHash]) revert InvalidNullifier();
-
-		// We now verify the provided proof is valid and the user is verified by World ID
-		worldId.verifyProof(
-			root,
-			groupId,
-			abi.encodePacked(signal).hashToField(),
-			nullifierHash,
-			externalNullifier,
-			proof
-		);
-
-		// We now record the user has done this, so they can't do it again (proof of uniqueness)
-		nullifierHashes[nullifierHash] = true;
-	}
-
+	
 
     //@dev Function to add a Referrer
     function addReferrer(address signal, uint256 root, uint256 nullifierHash, uint256[8] calldata proof) public {
         //@dev Instead of require, verification to be done by worldcoin
         require(numReferralsByReferrer[msg.sender] == 0, "Referrer already registered.");
+        require(gateUser[msg.sender]!=true,"Already a Referrer or Referree");
+        gateUser[msg.sender]=true;
 
-        verifyAndExecute(signal, root, nullifierHash, proof);
+        // verifyAndExecute(signal, root, nullifierHash, proof);
 
         // @dev Initiating the referrer to one to distinguish between already registered with no referees from the ones who have not registered.
         numReferralsByReferrer[msg.sender] = 1;
@@ -153,8 +135,9 @@ contract ReferralCampaign is Ownable, Initializable {
         //@dev Checking the sender balance of campaign token for now, verification logic to added to confirm the mint for tokens is after campaign creation
         uint256 senderBalance = IERC20Or721(campaignTokenContract).balanceOf(msg.sender);
         require(senderBalance >= minCampaignTokenBalance, "Referree does not have enough campaign tokens to qualify.");
-
-        verifyAndExecute(signal, root, nullifierHash, proof);
+        require(gateUser[msg.sender]!=true,"Already a Referrer or Referree");
+        gateUser[msg.sender]=true;
+        // verifyAndExecute(signal, root, nullifierHash, proof);
 
         numReferralsByReferrer[_referrer]++;
 

@@ -1029,53 +1029,53 @@
   },
   "ast": {
     "absolutePath": "src/MockERC721Token.sol",
-    "id": 5246,
+    "id": 5242,
     "exportedSymbols": {
       "Address": [
-        7380
+        7326
       ],
       "Context": [
-        7050
+        6996
       ],
       "ERC165": [
-        7819
+        7765
       ],
       "ERC721": [
         3805
       ],
       "IERC165": [
-        7831
+        7777
       ],
       "IERC721": [
-        7521
+        7467
       ],
       "IERC721Metadata": [
-        7566
+        7512
       ],
       "IERC721Receiver": [
-        7539
+        7485
       ],
       "Math": [
-        8697
+        8643
       ],
       "MockToken721": [
-        5245
+        5241
       ],
       "Ownable": [
         1964
       ],
       "SignedMath": [
-        8802
+        8748
       ],
       "Strings": [
-        7795
+        7741
       ]
     },
     "nodeType": "SourceUnit",
     "src": "32:345:38",
     "nodes": [
       {
-        "id": 5215,
+        "id": 5211,
         "nodeType": "PragmaDirective",
         "src": "32:23:38",
         "nodes": [],
@@ -1087,43 +1087,43 @@
         ]
       },
       {
-        "id": 5216,
+        "id": 5212,
         "nodeType": "ImportDirective",
         "src": "57:57:38",
         "nodes": [],
         "absolutePath": "node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol",
         "file": "@openzeppelin/contracts/token/ERC721/ERC721.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 5246,
+        "scope": 5242,
         "sourceUnit": 3806,
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
-        "id": 5217,
+        "id": 5213,
         "nodeType": "ImportDirective",
         "src": "115:52:38",
         "nodes": [],
         "absolutePath": "node_modules/@openzeppelin/contracts/access/Ownable.sol",
         "file": "@openzeppelin/contracts/access/Ownable.sol",
         "nameLocation": "-1:-1:-1",
-        "scope": 5246,
+        "scope": 5242,
         "sourceUnit": 1965,
         "symbolAliases": [],
         "unitAlias": ""
       },
       {
-        "id": 5245,
+        "id": 5241,
         "nodeType": "ContractDefinition",
         "src": "169:208:38",
         "nodes": [
           {
-            "id": 5229,
+            "id": 5225,
             "nodeType": "FunctionDefinition",
             "src": "216:50:38",
             "nodes": [],
             "body": {
-              "id": 5228,
+              "id": 5224,
               "nodeType": "Block",
               "src": "264:2:38",
               "nodes": [],
@@ -1136,7 +1136,7 @@
                 "arguments": [
                   {
                     "hexValue": "4d6f636b20546f6b656e20373231",
-                    "id": 5224,
+                    "id": 5220,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -1152,7 +1152,7 @@
                   },
                   {
                     "hexValue": "4d54373231",
-                    "id": 5225,
+                    "id": 5221,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -1167,10 +1167,10 @@
                     "value": "MT721"
                   }
                 ],
-                "id": 5226,
+                "id": 5222,
                 "kind": "baseConstructorSpecifier",
                 "modifierName": {
-                  "id": 5223,
+                  "id": 5219,
                   "name": "ERC721",
                   "nameLocations": [
                     "230:6:38"
@@ -1186,29 +1186,29 @@
             "name": "",
             "nameLocation": "-1:-1:-1",
             "parameters": {
-              "id": 5222,
+              "id": 5218,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "227:2:38"
             },
             "returnParameters": {
-              "id": 5227,
+              "id": 5223,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "264:0:38"
             },
-            "scope": 5245,
+            "scope": 5241,
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "public"
           },
           {
-            "id": 5244,
+            "id": 5240,
             "nodeType": "FunctionDefinition",
             "src": "272:103:38",
             "nodes": [],
             "body": {
-              "id": 5243,
+              "id": 5239,
               "nodeType": "Block",
               "src": "336:39:38",
               "nodes": [],
@@ -1217,11 +1217,11 @@
                   "expression": {
                     "arguments": [
                       {
-                        "id": 5239,
+                        "id": 5235,
                         "name": "to",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 5231,
+                        "referencedDeclaration": 5227,
                         "src": "356:2:38",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -1229,11 +1229,11 @@
                         }
                       },
                       {
-                        "id": 5240,
+                        "id": 5236,
                         "name": "tokenId",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 5233,
+                        "referencedDeclaration": 5229,
                         "src": "360:7:38",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1252,7 +1252,7 @@
                           "typeString": "uint256"
                         }
                       ],
-                      "id": 5238,
+                      "id": 5234,
                       "name": "_safeMint",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -1266,7 +1266,7 @@
                         "typeString": "function (address,uint256)"
                       }
                     },
-                    "id": 5241,
+                    "id": 5237,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1282,7 +1282,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 5242,
+                  "id": 5238,
                   "nodeType": "ExpressionStatement",
                   "src": "346:22:38"
                 }
@@ -1293,10 +1293,10 @@
             "kind": "function",
             "modifiers": [
               {
-                "id": 5236,
+                "id": 5232,
                 "kind": "modifierInvocation",
                 "modifierName": {
-                  "id": 5235,
+                  "id": 5231,
                   "name": "onlyOwner",
                   "nameLocations": [
                     "326:9:38"
@@ -1312,17 +1312,17 @@
             "name": "safeMint",
             "nameLocation": "281:8:38",
             "parameters": {
-              "id": 5234,
+              "id": 5230,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 5231,
+                  "id": 5227,
                   "mutability": "mutable",
                   "name": "to",
                   "nameLocation": "298:2:38",
                   "nodeType": "VariableDeclaration",
-                  "scope": 5244,
+                  "scope": 5240,
                   "src": "290:10:38",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1331,7 +1331,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 5230,
+                    "id": 5226,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "290:7:38",
@@ -1345,12 +1345,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 5233,
+                  "id": 5229,
                   "mutability": "mutable",
                   "name": "tokenId",
                   "nameLocation": "310:7:38",
                   "nodeType": "VariableDeclaration",
-                  "scope": 5244,
+                  "scope": 5240,
                   "src": "302:15:38",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1359,7 +1359,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 5232,
+                    "id": 5228,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "302:7:38",
@@ -1374,12 +1374,12 @@
               "src": "289:29:38"
             },
             "returnParameters": {
-              "id": 5237,
+              "id": 5233,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "336:0:38"
             },
-            "scope": 5245,
+            "scope": 5241,
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "public"
@@ -1389,7 +1389,7 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 5218,
+              "id": 5214,
               "name": "ERC721",
               "nameLocations": [
                 "194:6:38"
@@ -1398,13 +1398,13 @@
               "referencedDeclaration": 3805,
               "src": "194:6:38"
             },
-            "id": 5219,
+            "id": 5215,
             "nodeType": "InheritanceSpecifier",
             "src": "194:6:38"
           },
           {
             "baseName": {
-              "id": 5220,
+              "id": 5216,
               "name": "Ownable",
               "nameLocations": [
                 "202:7:38"
@@ -1413,7 +1413,7 @@
               "referencedDeclaration": 1964,
               "src": "202:7:38"
             },
-            "id": 5221,
+            "id": 5217,
             "nodeType": "InheritanceSpecifier",
             "src": "202:7:38"
           }
@@ -1423,18 +1423,18 @@
         "contractKind": "contract",
         "fullyImplemented": true,
         "linearizedBaseContracts": [
-          5245,
+          5241,
           1964,
           3805,
-          7566,
-          7521,
-          7819,
-          7831,
-          7050
+          7512,
+          7467,
+          7765,
+          7777,
+          6996
         ],
         "name": "MockToken721",
         "nameLocation": "178:12:38",
-        "scope": 5246,
+        "scope": 5242,
         "usedErrors": []
       }
     ],
